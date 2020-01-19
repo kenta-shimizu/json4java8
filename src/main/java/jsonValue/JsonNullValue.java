@@ -2,7 +2,7 @@ package jsonValue;
 
 public class JsonNullValue extends JsonValue {
 
-	public JsonNullValue() {
+	protected JsonNullValue() {
 		super();
 	}
 
@@ -12,23 +12,18 @@ public class JsonNullValue extends JsonValue {
 	}
 	
 	@Override
-	public boolean isNull() {
-		return true;
-	}
-	
-	@Override
 	public String toJson() {
 		return "null";
 	}
 	
 	@Override
 	public String toString() {
-		return toJson();
+		return "null";
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof JsonNullValue;
+		return (o != null) && (o instanceof JsonNullValue);
 	}
 	
 	@Override

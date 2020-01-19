@@ -1,19 +1,18 @@
 package jsonValue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.Optional;
 
 public class JsonStringValue extends JsonValue {
 	
-	private final String v;
+	private final JsonString v;
 	
 	private String toJsonProxy;
 	
-	public JsonStringValue(CharSequence cs) {
+	protected JsonStringValue(JsonString v) {
 		super();
 		
-		this.v = cs.toString();
+		this.v = Objects.requireNonNull(v);
 		this.toJsonProxy = null;
 	}
 	
@@ -23,8 +22,18 @@ public class JsonStringValue extends JsonValue {
 	}
 	
 	@Override
+	public Optional<String> optionalString() {
+		return Optional.of(v.unescaped());
+	}
+	
+	@Override
 	public int length() {
-		return v.length();
+		return toString().length();
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return toString().isEmpty();
 	}
 	
 	@Override
@@ -37,7 +46,7 @@ public class JsonStringValue extends JsonValue {
 		synchronized ( this ) {
 			
 			if ( toJsonProxy == null ) {
-				toJsonProxy = "\"" + escape(v) + "\"";
+				toJsonProxy = "\"" + v.escaped() + "\"";
 			}
 			
 			return toJsonProxy;
@@ -46,13 +55,13 @@ public class JsonStringValue extends JsonValue {
 	
 	@Override
 	public String toString() {
-		return v;
+		return v.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if ( o instanceof JsonStringValue ) {
-			return ((JsonStringValue) o).v.equals(v);
+			return ((JsonStringValue) o).toString().equals(toString());
 		} else {
 			return false;
 		}
@@ -60,84 +69,7 @@ public class JsonStringValue extends JsonValue {
 	
 	@Override
 	public int hashCode() {
-		return v.hashCode();
+		return toString().hashCode();
 	}
 	
-	
-	public static JsonStringValue unescape(String v) {
-		
-		try (
-				ByteArrayOutputStream strm = new ByteArrayOutputStream();
-				) {
-			
-			byte[] bb = v.getBytes(StandardCharsets.UTF_8);
-			
-			for (int i = 0, len = bb.length; i < len; ++i) {
-				
-				byte b = bb[i];
-				
-				if ( b == BACKSLASH ) {
-					
-					++i;
-					
-					byte b2 = bb[i];
-					
-					if ( b2 == UNICODE ) {
-						
-						byte[] xx = unescapeUnicode(new byte[]{bb[i + 1], bb[i + 2], bb[i + 3], bb[i + 4]});
-						strm.write(xx);
-						
-						i += 4;
-						
-					} else {
-						
-						Byte x = EscapeSets.unescape(b2);
-						
-						if ( x != null ) {
-							strm.write(x.byteValue());
-						}
-					}
-					
-				} else {
-					
-					strm.write(b);
-				}
-			}
-			
-			return new JsonStringValue(new String(strm.toByteArray(), StandardCharsets.UTF_8));
-		}
-		catch ( IOException notHappen ) {
-			throw new RuntimeException(notHappen);
-		}
-		catch ( IndexOutOfBoundsException e ) {
-			throw new JsonValueIndexOutOfBoundsException("unescape failed \"" + v + "\"");
-		}
-	}
-	
-	private static byte[] unescapeUnicode(byte[] bb) {
-		
-		String s1 = new String(new byte[]{bb[0], bb[1]}, StandardCharsets.UTF_8);
-		String s2 = new String(new byte[]{bb[2], bb[3]}, StandardCharsets.UTF_8);
-		
-		byte b = decodeXXtoByte(s1);
-		
-		if ( b == 0x00 ) {
-			
-			return new byte[] {decodeXXtoByte(s2)};
-			
-		} else {
-			
-			return new byte[] {b, decodeXXtoByte(s2)};
-		}
-	}
-	
-	private static byte decodeXXtoByte(String s) {
-		
-		try {
-			return Byte.parseByte(s, 16);
-		}
-		catch ( NumberFormatException e ) {
-			throw new JsonValueNumberFormatException(s);
-		}
-	}
 }

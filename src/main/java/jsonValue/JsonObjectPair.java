@@ -1,16 +1,18 @@
 package jsonValue;
 
+import java.util.Objects;
+
 public class JsonObjectPair {
 	
-	private final String name;
+	private final JsonString name;
 	private final JsonValue v;
 	
-	public JsonObjectPair(CharSequence name, JsonValue v) {
-		this.name = name.toString();
-		this.v = v;
+	protected JsonObjectPair(JsonString name, JsonValue v) {
+		this.name = Objects.requireNonNull(name, "JsonObjectPair nonNull \"name\"");
+		this.v = Objects.requireNonNull(v, "JsonObjectPair nonNull \"value\"");
 	}
 	
-	public String name() {
+	public JsonString name() {
 		return name;
 	}
 	

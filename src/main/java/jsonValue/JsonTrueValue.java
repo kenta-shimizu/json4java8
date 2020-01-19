@@ -1,8 +1,10 @@
 package jsonValue;
 
+import java.util.Optional;
+
 public class JsonTrueValue extends JsonValue {
 	
-	public JsonTrueValue() {
+	protected JsonTrueValue() {
 		super();
 	}
 	
@@ -12,8 +14,8 @@ public class JsonTrueValue extends JsonValue {
 	}
 	
 	@Override
-	public boolean booleanValue() {
-		return true;
+	public Optional<Boolean> optionalBoolean() {
+		return Optional.of(Boolean.TRUE);
 	}
 	
 	@Override
@@ -23,12 +25,12 @@ public class JsonTrueValue extends JsonValue {
 	
 	@Override
 	public String toString() {
-		return toJson();
+		return Boolean.TRUE.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof JsonTrueValue;
+		return (o != null) && (o instanceof JsonTrueValue);
 	}
 	
 	@Override

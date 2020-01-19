@@ -3,6 +3,7 @@ package jsonValue;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,10 +12,10 @@ public class JsonArrayValue extends JsonValue {
 	private final List<JsonValue> v;
 	private String toJsonProxy;
 	
-	public JsonArrayValue(List<JsonValue> v) {
+	public JsonArrayValue(List<? extends JsonValue> v) {
 		super();
 		
-		this.v = Collections.unmodifiableList(v);
+		this.v = Collections.unmodifiableList(Objects.requireNonNull(v));
 		this.toJsonProxy = null;
 	}
 
@@ -55,6 +56,11 @@ public class JsonArrayValue extends JsonValue {
 	}
 	
 	@Override
+	public boolean isEmpty() {
+		return v.isEmpty();
+	}
+	
+	@Override
 	public String toJson() {
 		return toJsonProxy();
 	}
@@ -78,7 +84,7 @@ public class JsonArrayValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ( o instanceof JsonArrayValue ) {
+		if ((o != null) && (o instanceof JsonArrayValue)) {
 			return ((JsonArrayValue) o).toJson().equals(toJson());
 		} else {
 			return false;

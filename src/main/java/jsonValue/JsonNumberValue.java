@@ -1,13 +1,18 @@
 package jsonValue;
 
+import java.util.Objects;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
+
 public class JsonNumberValue extends JsonValue {
 	
 	private final String v;
 	
-	public JsonNumberValue(CharSequence cs) {
+	protected JsonNumberValue(CharSequence cs) {
 		super();
 		
-		this.v = cs.toString();
+		this.v = Objects.requireNonNull(cs).toString();
 	}
 	
 	@Override
@@ -16,9 +21,9 @@ public class JsonNumberValue extends JsonValue {
 	}
 	
 	@Override
-	public int intValue() {
+	public OptionalInt optionalInt() {
 		try {
-			return Integer.parseInt(v);
+			return OptionalInt.of(Integer.parseInt(v));
 		}
 		catch (NumberFormatException e) {
 			throw new JsonValueNumberFormatException("parse failed \"" + v + "\"");
@@ -26,29 +31,20 @@ public class JsonNumberValue extends JsonValue {
 	}
 	
 	@Override
-	public long longValue() {
+	public OptionalLong optionalLong() {
 		try {
-			return Long.parseLong(v);
+			return OptionalLong.of(Long.parseLong(v));
 		}
 		catch (NumberFormatException e) {
 			throw new JsonValueNumberFormatException("parse failed \"" + v + "\"");
 		}
 	}
 	
-	@Override
-	public float floatValue() {
-		try {
-			return Float.parseFloat(v);
-		}
-		catch (NumberFormatException e) {
-			throw new JsonValueNumberFormatException("parse failed \"" + v + "\"");
-		}
-	}
 	
 	@Override
-	public double doubleValue() {
+	public OptionalDouble optionalDouble() {
 		try {
-			return Double.parseDouble(v);
+			return OptionalDouble.of(Double.parseDouble(v));
 		}
 		catch (NumberFormatException e) {
 			throw new JsonValueNumberFormatException("parse failed \"" + v + "\"");
@@ -62,12 +58,12 @@ public class JsonNumberValue extends JsonValue {
 	
 	@Override
 	public String toString() {
-		return toJson();
+		return v;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		if ( o instanceof JsonNumberValue ) {
+		if ((o != null) && (o instanceof JsonNumberValue)) {
 			return ((JsonNumberValue) o).v.equals(v);
 		} else {
 			return false;
