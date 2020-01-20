@@ -13,6 +13,9 @@ public class JsonNumberValue extends JsonValue {
 		super();
 		
 		this.v = Objects.requireNonNull(cs).toString();
+		if ( this.v.isEmpty() ) {
+			throw new JsonValueNumberFormatException("Value is empty");
+		}
 	}
 	
 	@Override

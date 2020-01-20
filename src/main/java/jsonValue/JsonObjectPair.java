@@ -19,4 +19,23 @@ public class JsonObjectPair {
 	public JsonValue value() {
 		return v;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if ((o != null) && (o instanceof JsonObjectPair)) {
+			return ((JsonObjectPair) o).name().equals(name());
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return name().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return "(\"" + name() + "\": " + value() + ")";
+	}
 }

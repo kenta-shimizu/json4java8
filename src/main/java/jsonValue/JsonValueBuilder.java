@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class JsonValueBuilder {
 
@@ -17,9 +18,13 @@ public class JsonValueBuilder {
 	
 	private static class SingletonHolder {
 		private static final JsonValueBuilder inst = new JsonValueBuilder();
+		private static final JsonString emptyString = JsonString.escaped("");
 		private static final JsonNullValue nullValue = new JsonNullValue();
 		private static final JsonTrueValue trueValue = new JsonTrueValue();
 		private static final JsonFalseValue falseValue = new JsonFalseValue();
+		private static final JsonArrayValue emptyArrayValue = new JsonArrayValue(Collections.emptyList());
+		private static final JsonObjectValue emptyObjectValue = new JsonObjectValue(Collections.emptyList());
+		private static final JsonStringValue emptyStringValue = new JsonStringValue(emptyString);
 	}
 	
 	public static JsonValueBuilder getInstance() {
@@ -51,19 +56,19 @@ public class JsonValueBuilder {
 	}
 	
 	public JsonNumberValue build(int v) {
-		return new JsonNumberValue(String.valueOf(v));
+		return number(v);
 	}
 	
 	public JsonNumberValue build(long v) {
-		return new JsonNumberValue(String.valueOf(v));
+		return number(v);
 	}
 	
 	public JsonNumberValue build(float v) {
-		return new JsonNumberValue(String.valueOf(v));
+		return number(v);
 	}
 	
 	public JsonNumberValue build(double v) {
-		return new JsonNumberValue(String.valueOf(v));
+		return number(v);
 	}
 	
 	public JsonValue build(boolean v) {
@@ -92,15 +97,15 @@ public class JsonValueBuilder {
 			}
 			
 			if ( v instanceof CharSequence ) {
-				return new JsonStringValue(JsonString.unescaped((CharSequence)v));
+				return string((CharSequence)v);
 			}
 			
 			if ( v instanceof JsonString ) {
-				return new JsonStringValue((JsonString)v);
+				return string((JsonString)v);
 			}
 			
 			if ( v instanceof Number ) {
-				return new JsonNumberValue(((Number)v).toString());
+				return number((Number)v);
 			}
 			
 			throw new JsonValueBuildException("build failed \"" + v.toString() + "\"");
@@ -108,22 +113,84 @@ public class JsonValueBuilder {
 	}
 	
 	
-	public JsonArrayValue array() {
-		return new JsonArrayValue(Collections.emptyList());
+	/**
+	 * 
+	 * @param cs
+	 * @return JsonNumberValue
+	 */
+	public JsonNumberValue number(CharSequence cs) {
+		return new JsonNumberValue(cs);
 	}
 	
+	public JsonNumberValue number(Number n) {
+		return number(n.toString());
+	}
+	
+	public JsonNumberValue number(int n) {
+		return number(String.valueOf(n));
+	}
+	
+	public JsonNumberValue number(long n) {
+		return number(String.valueOf(n));
+	}
+	
+	public JsonNumberValue number(float n) {
+		return number(String.valueOf(n));
+	}
+	
+	public JsonNumberValue number(double n) {
+		return number(String.valueOf(n));
+	}
+	
+	
+	/**
+	 * 
+	 * @param v
+	 * @return STRING
+	 */
+	public JsonStringValue string(CharSequence v) {
+		if ( Objects.requireNonNull(v).toString().isEmpty() ) {
+			return SingletonHolder.emptyStringValue;
+		} else {
+			return string(JsonString.unescaped(v));
+		}
+	}
+	
+	/**
+	 * 
+	 * @param v
+	 * @return STRING
+	 */
+	public JsonStringValue string(JsonString v) {
+		return new JsonStringValue(v);
+	}
+	
+	/**
+	 * 
+	 * @return blank ARRAY
+	 */
+	public JsonArrayValue array() {
+		return SingletonHolder.emptyArrayValue;
+	}
+	
+	/**
+	 * 
+	 * @param v
+	 * @return ARRAY
+	 */
 	public JsonArrayValue array(JsonValue... v) {
 		return new JsonArrayValue(Arrays.asList(v));
 	}
 	
-	public JsonValue array(List<? extends JsonValue> v) {
-		
-		if ( v == null ) {
-			
-			return nullValue();
-			
+	/**
+	 * 
+	 * @param v
+	 * @return ARRAY
+	 */
+	public JsonArrayValue array(List<? extends JsonValue> v) {
+		if ( v.isEmpty() ) {
+			return array();
 		} else {
-			
 			return new JsonArrayValue(v);
 		}
 	}
@@ -134,7 +201,7 @@ public class JsonValueBuilder {
 	 * @return blank OBJECT
 	 */
 	public JsonObjectValue object() {
-		return new JsonObjectValue(Collections.emptyList());
+		return SingletonHolder.emptyObjectValue;
 	}
 	
 	/**
@@ -143,22 +210,18 @@ public class JsonValueBuilder {
 	 * @return OBJECT
 	 */
 	public JsonObjectValue object(JsonObjectPair... v) {
-		return new JsonObjectValue(Arrays.asList(v));
+		return object(Arrays.asList(v));
 	}
 
 	/**
 	 * 
 	 * @param v
-	 * @return OBJECT or NULL
+	 * @return OBJECT
 	 */
-	public JsonValue object(Collection<? extends JsonObjectPair> v) {
-		
-		if ( v == null ) {
-			
-			return nullValue();
-			
+	public JsonObjectValue object(Collection<? extends JsonObjectPair> v) {
+		if ( v.isEmpty() ) {
+			return object();
 		} else {
-			
 			return new JsonObjectValue(v);
 		}
 	}
@@ -166,24 +229,17 @@ public class JsonValueBuilder {
 	/**
 	 * 
 	 * @param v
-	 * @return OBJECT or NULL
+	 * @return OBJECT
 	 */
-	public JsonValue object(Map<? extends JsonString, ? extends JsonValue> v) {
+	public JsonObjectValue object(Map<? extends JsonString, ? extends JsonValue> v) {
 		
-		if ( v == null ) {
+		final Collection<JsonObjectPair> pairs = new ArrayList<>();
+		
+		Objects.requireNonNull(v).forEach((name, value) -> {
+			pairs.add(pair(name, value));
+		});
 			
-			return nullValue();
-			
-		} else {
-			
-			final Collection<JsonObjectPair> pairs = new ArrayList<>();
-			
-			v.forEach((name, value) -> {
-				pairs.add(pair(name, value));
-			});
-			
-			return object(pairs);
-		}
+		return object(pairs);
 	}
 	
 	/**

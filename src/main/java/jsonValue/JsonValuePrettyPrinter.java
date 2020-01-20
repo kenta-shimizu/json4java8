@@ -49,7 +49,7 @@ public class JsonValuePrettyPrinter {
 	public void print(JsonValue v, Writer writer) throws IOException {
 		
 		synchronized ( this ) {
-			_print(v, writer, 0);
+			print(v, writer, 0);
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class JsonValuePrettyPrinter {
 						BufferedWriter bw = new BufferedWriter(sw);
 						) {
 					
-					_print(v, bw, 0);
+					print(v, bw, 0);
 				}
 				
 				return sw.toString();
@@ -90,7 +90,8 @@ public class JsonValuePrettyPrinter {
 	private static final String V_ALBK = "[";
 	private static final String V_ARBK = "]";
 	
-	private void _print(JsonValue v, Writer writer, int level) throws IOException {
+	
+	private void print(JsonValue v, Writer writer, int level) throws IOException {
 		
 		switch ( v.type() ) {
 		case NULL:
@@ -120,12 +121,12 @@ public class JsonValuePrettyPrinter {
 				for (JsonValue jv : v.values()) {
 					
 					if ( f ) {
-						this.writeComma(writer);
+						writeComma(writer);
 					} else {
 						f = true;
 					}
 					
-					_print(jv, writer, deepLevel);
+					print(jv, writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
@@ -152,12 +153,12 @@ public class JsonValuePrettyPrinter {
 				for ( JsonObjectPair pair : v.objectPairs() ) {
 					
 					if ( f ) {
-						this.writeComma(writer);
+						writeComma(writer);
 					} else {
 						f = true;
 					}
 					
-					_printObjectPair(pair, writer, deepLevel);
+					printObjectPair(pair, writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
@@ -171,7 +172,7 @@ public class JsonValuePrettyPrinter {
 		}
 	}
 	
-	private void _printObjectPair(JsonObjectPair pair, Writer writer, int level) throws IOException {
+	private void printObjectPair(JsonObjectPair pair, Writer writer, int level) throws IOException {
 		
 		JsonValue v = pair.value();
 		
@@ -205,12 +206,12 @@ public class JsonValuePrettyPrinter {
 				for (JsonValue jv : v.values()) {
 					
 					if ( f ) {
-						this.writeComma(writer);
+						writeComma(writer);
 					} else {
 						f = true;
 					}
 					
-					_print(jv, writer, deepLevel);
+					print(jv, writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
@@ -236,12 +237,12 @@ public class JsonValuePrettyPrinter {
 				for ( JsonObjectPair p : v.objectPairs() ) {
 					
 					if ( f ) {
-						this.writeComma(writer);
+						writeComma(writer);
 					} else {
 						f = true;
 					}
 					
-					_printObjectPair(p, writer, deepLevel);
+					printObjectPair(p, writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
