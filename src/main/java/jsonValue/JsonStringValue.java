@@ -1,5 +1,7 @@
 package jsonValue;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -41,12 +43,19 @@ public class JsonStringValue extends JsonValue {
 		return toJsonProxy();
 	}
 	
+	@Override
+	public void toJson(Writer writer) throws IOException {
+		writer.write(toJsonProxy());
+	}
+	
 	private String toJsonProxy() {
 		
 		synchronized ( this ) {
 			
 			if ( toJsonProxy == null ) {
-				toJsonProxy = "\"" + v.escaped() + "\"";
+				toJsonProxy = JsonStructuralChar.QUOT.str
+						+ v.escaped()
+						+ JsonStructuralChar.QUOT.str;
 			}
 			
 			return toJsonProxy;

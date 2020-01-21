@@ -1,5 +1,7 @@
 package jsonValue;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -65,12 +67,20 @@ public class JsonArrayValue extends JsonValue {
 		return toJsonProxy();
 	}
 	
+	@Override
+	public void toJson(Writer writer) throws IOException {
+		writer.write(toJsonProxy());
+	}
+	
 	private String toJsonProxy() {
 		synchronized ( this ) {
 			if ( toJsonProxy == null ) {
 				toJsonProxy = v.stream()
 						.map(x -> x.toJson())
-						.collect(Collectors.joining(",", "[", "]"));
+						.collect(Collectors.joining(
+								JsonStructuralChar.COMMA.str,
+								JsonStructuralChar.ARRAY_LEFT.str,
+								JsonStructuralChar.ARRAY_RIGHT.str));
 			}
 			
 			return toJsonProxy;

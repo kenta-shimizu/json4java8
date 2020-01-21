@@ -1,5 +1,7 @@
 package jsonValue;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Optional;
 
 public class JsonFalseValue extends JsonValue {
@@ -19,8 +21,8 @@ public class JsonFalseValue extends JsonValue {
 	}
 	
 	@Override
-	public String toJson() {
-		return "false";
+	public void toJson(Writer writer) throws IOException {
+		writer.write(JsonLiteral.FALSE.toString());
 	}
 	
 	@Override

@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class JsonValueParser {
+public class JsonValueJsonParser {
 
-	private JsonValueParser() {
+	private JsonValueJsonParser() {
 		/* Nothing */
 	}
 	
 	private static class SingletonHolder {
-		private static final JsonValueParser inst = new JsonValueParser();
+		private static final JsonValueJsonParser inst = new JsonValueJsonParser();
 	}
 	
-	public static JsonValueParser getInstance() {
+	public static JsonValueJsonParser getInstance() {
 		return SingletonHolder.inst;
 	}
 	
 	/**
 	 * 
-	 * @param cs
+	 * @param json
 	 * @return
 	 * @thows JsonValueParseException
 	 */
@@ -71,30 +71,6 @@ public class JsonValueParser {
 	}
 	
 	
-	private static final String L_NULL = "null";
-	private static final String L_TRUE = "true";
-	private static final String L_FALSE = "false";
-	
-	private static final String S_BSLASH = "\\";
-	private static final String S_QUOT = "\"";
-	private static final String S_OLBK = "{";
-	private static final String S_ORBK = "}";
-	private static final String S_ALBK = "[";
-	private static final String S_ARBK = "]";
-	private static final String S_COMMA = ",";
-	private static final String S_COLON = ":";
-	
-	private static final char C_WS_MAX = 0x0020;
-	private static final char C_BSLASH = S_BSLASH.charAt(0);
-	private static final char C_QUOT = S_QUOT.charAt(0);
-	private static final char C_OLBK = S_OLBK.charAt(0);
-	private static final char C_ORBK = S_ORBK.charAt(0);
-	private static final char C_ALBK = S_ALBK.charAt(0);
-	private static final char C_ARBK = S_ARBK.charAt(0);
-	private static final char C_COMMA = S_COMMA.charAt(0);
-	private static final char C_COLON = S_COLON.charAt(0);
-	
-	
 	private static class SeekCharResult {
 		
 		private final char c;
@@ -124,16 +100,15 @@ public class JsonValueParser {
 		
 		SeekValueResult vr;
 		
-		if (r.c == C_QUOT) {
+		if ( JsonStructuralChar.QUOT.match(r.c) ) {
 			
 			vr = fromJsonStringValue(str, r.index);
 			
-			
-		} else if (r.c == C_ALBK) {
+		} else if ( JsonStructuralChar.ARRAY_LEFT.match(r.c) ) {
 			
 			vr = fromJsonArrayValue(str, r.index);
 			
-		} else if (r.c == C_OLBK) {
+		} else if ( JsonStructuralChar.OBJECT_LEFT.match(r.c) ) {
 			
 			vr = fromJsonObjectValue(str, r.index);
 			
@@ -176,19 +151,19 @@ public class JsonValueParser {
 			s = str.substring(fromIndex, r.index).trim();
 		}
 		
-		if ( s.equals(L_NULL) ) {
+		if ( JsonLiteral.NULL.match(s) ) {
 			
 			return new SeekValueResult(
 					JsonValueBuilder.getInstance().nullValue()
 					, r.index);
 			
-		} else if ( s.equals(L_TRUE) ) {
+		} else if ( JsonLiteral.TRUE.match(s) ) {
 			
 			return new SeekValueResult(
 					JsonValueBuilder.getInstance().trueValue()
 					, r.index);
 			
-		} else if ( s.equals(L_FALSE) ) {
+		} else if ( JsonLiteral.FALSE.match(s) ) {
 			
 			return new SeekValueResult(
 					JsonValueBuilder.getInstance().falseValue()
@@ -221,36 +196,45 @@ public class JsonValueParser {
 		
 		final List<JsonValue> ll = new ArrayList<>();
 		
+		boolean first = true;
+		
 		for (int i = (fromIndex + 1), len = str.length(); i < len;) {
 			
 			{
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( r.c == C_ARBK ) {
+				if ( first ) {
 					
-					return new SeekValueResult(
-							JsonValueBuilder.getInstance().array(ll)
-							, r.index + 1);
+					first = false;
 					
-				} else if ( r.c == C_QUOT ) {
+					if ( JsonStructuralChar.ARRAY_RIGHT.match(r.c) ) {
+						
+						return new SeekValueResult(
+								JsonValueBuilder.getInstance().array(ll)
+								, r.index + 1);
+						
+					}
+				}
+				
+				if ( JsonStructuralChar.QUOT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonStringValue(str, r.index);
 					ll.add(vr.value);
 					i = vr.endIndex;
 					
-				} else if ( r.c == C_ALBK ) {
+				} else if ( JsonStructuralChar.ARRAY_LEFT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonArrayValue(str, r.index);
 					ll.add(vr.value);
 					i = vr.endIndex;
 					
-				} else if ( r.c == C_OLBK ) {
+				} else if ( JsonStructuralChar.OBJECT_LEFT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonObjectValue(str, r.index);
 					ll.add(vr.value);
 					i = vr.endIndex;
 					
-				} else if ((r.c == C_COLON) || (r.c == C_COMMA)) {
+				} else if (JsonStructuralChar.COLON.match(r.c) || JsonStructuralChar.COMMA.match(r.c)) {
 					
 					throw new JsonValueParseException("Value is empty \"" + str + "\"");
 					
@@ -273,13 +257,15 @@ public class JsonValueParser {
 			{
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( r.c == C_COMMA ) {
+				if ( JsonStructuralChar.COMMA.match(r.c) ) {
 					
 					i = r.index + 1;
 					
-				} else if ( r.c == C_ARBK ) {
+				} else if ( JsonStructuralChar.ARRAY_RIGHT.match(r.c) ) {
 					
-					i = r.index;
+					return new SeekValueResult(
+							JsonValueBuilder.getInstance().array(ll)
+							, r.index + 1);
 					
 				} else {
 					
@@ -297,12 +283,17 @@ public class JsonValueParser {
 		
 		final Collection<JsonObjectPair> pairs = new ArrayList<>();
 		
+		boolean first = true;
+		
 		for (int i = (fromIndex + 1), len = str.length(); i < len;) {
 			
-			{
+			if ( first ) {
+				
+				first = false;
+				
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( r.c == C_ORBK ) {
+				if ( JsonStructuralChar.OBJECT_RIGHT.match(r.c) ) {
 					
 					return new SeekValueResult(
 							jvb.object(pairs)
@@ -322,25 +313,25 @@ public class JsonValueParser {
 			{
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( r.c == C_QUOT ) {
+				if ( JsonStructuralChar.QUOT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonStringValue(str, r.index);
 					pairs.add(jvb.pair(js, vr.value));
 					i = vr.endIndex;
 					
-				} else if ( r.c == C_ALBK ) {
+				} else if ( JsonStructuralChar.ARRAY_LEFT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonArrayValue(str, r.index);
 					pairs.add(jvb.pair(js, vr.value));
 					i = vr.endIndex;
 					
-				} else if ( r.c == C_OLBK ) {
+				} else if ( JsonStructuralChar.OBJECT_LEFT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonObjectValue(str, r.index);
 					pairs.add(jvb.pair(js, vr.value));
 					i = vr.endIndex;
 					
-				} else if ((r.c == C_COLON) || (r.c == C_COMMA)) {
+				} else if (JsonStructuralChar.COLON.match(r.c) || JsonStructuralChar.COMMA.match(r.c)) {
 					
 					throw new JsonValueParseException("Value is empty. index: " + r.index + " \"" + str + "\"");
 					
@@ -363,13 +354,15 @@ public class JsonValueParser {
 			{
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( r.c == C_COMMA ) {
+				if ( JsonStructuralChar.COMMA.match(r.c) ) {
 					
 					i = r.index + 1;
 					
-				} else if ( r.c == C_ORBK ) {
+				} else if ( JsonStructuralChar.OBJECT_RIGHT.match(r.c) ) {
 					
-					i = r.index;
+					return new SeekValueResult(
+							jvb.object(pairs)
+							, r.index + 1);
 					
 				} else {
 					
@@ -387,7 +380,7 @@ public class JsonValueParser {
 	
 	private static int seekIndexOfNextQuot(String str, int fromIndex) {
 		SeekCharResult r = seekNextChar(str, fromIndex);
-		if ((r.index >= 0) && (r.c == C_QUOT)) {
+		if ((r.index >= 0) && JsonStructuralChar.QUOT.match(r.c) ) {
 			return r.index;
 		} else {
 			throw new JsonValueParseException("Not found Quot. fromIndex: " + fromIndex + " \"" + str + "\"");
@@ -396,7 +389,7 @@ public class JsonValueParser {
 	
 	private static int seekIndexOfNextColon(String str, int fromIndex) {
 		SeekCharResult r = seekNextChar(str, fromIndex);
-		if ((r.index >= 0) && (r.c == C_COLON)) {
+		if ((r.index >= 0) && JsonStructuralChar.COLON.match(r.c)) {
 			return r.index;
 		} else {
 			throw new JsonValueParseException("Not found \":\" fromIndex: " + fromIndex + " \"" + str + "\"");
@@ -409,18 +402,21 @@ public class JsonValueParser {
 			
 			char c = str.charAt(i);
 			
-			if ( c == C_BSLASH ) {
+			if ( JsonStructuralChar.BACKSLASH.match(c) ) {
 				++i;
 				continue;
 			}
 			
-			if ( c == C_QUOT ) {
+			if ( JsonStructuralChar.QUOT.match(c) ) {
 				return i + 1;
 			}
 		}
 		
 		throw new JsonValueParseException("Not found end-of-STRING. fromIndex: " + fromIndex + " \"" + str + "\"");
 	}
+	
+	
+	private static final char C_WS_MAX = 0x0020;
 	
 	private static SeekCharResult seekNextChar(String str, int fromIndex) {
 		
@@ -436,7 +432,11 @@ public class JsonValueParser {
 		return new SeekCharResult(C_WS_MAX, -1);
 	}
 	
-	private static final char[] delimiters = new char[] {C_COMMA, C_ARBK, C_ORBK};
+	private static final JsonStructuralChar[] delimiters = new JsonStructuralChar[]{
+			JsonStructuralChar.COMMA,
+			JsonStructuralChar.ARRAY_RIGHT,
+			JsonStructuralChar.OBJECT_RIGHT
+	};
 	
 	private static SeekCharResult seekNextEndDelimiter(String str, int fromIndex) {
 		
@@ -444,9 +444,9 @@ public class JsonValueParser {
 			
 			char c = str.charAt(i);
 			
-			for (char d : delimiters ) {
+			for (JsonStructuralChar d : delimiters ) {
 				
-				if ( c == d ) {
+				if ( d.match(c) ) {
 					return new SeekCharResult(c, i);
 				}
 			}

@@ -1,5 +1,7 @@
 package jsonValue;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Optional;
 
 public class JsonTrueValue extends JsonValue {
@@ -19,8 +21,8 @@ public class JsonTrueValue extends JsonValue {
 	}
 	
 	@Override
-	public String toJson() {
-		return "true";
+	public void toJson(Writer writer) throws IOException {
+		writer.write(JsonLiteral.TRUE.toString());
 	}
 	
 	@Override

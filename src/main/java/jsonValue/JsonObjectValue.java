@@ -1,5 +1,7 @@
 package jsonValue;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,9 +43,9 @@ public class JsonObjectValue extends JsonValue {
 	}
 	
 	@Override
-	public void forEach(BiConsumer<JsonString, JsonValue> consumer) {
+	public void forEach(BiConsumer<JsonString, JsonValue> action) {
 		v.stream().forEach(x -> {
-			consumer.accept(x.name(), x.value());
+			action.accept(x.name(), x.value());
 		});
 	}
 	
@@ -85,14 +87,26 @@ public class JsonObjectValue extends JsonValue {
 		return toJsonProxy();
 	}
 	
+	@Override
+	public void toJson(Writer writer) throws IOException {
+		writer.write(toJsonProxy());
+	}
+	
 	private String toJsonProxy() {
 		synchronized ( this ) {
 			if ( toJsonProxy == null ) {
 				toJsonProxy = v.stream()
 						.map(x -> {
-							return "\"" + x.name().escaped() + "\":" + x.value().toJson();
+							return JsonStructuralChar.QUOT.str
+									+ x.name().escaped()
+									+ JsonStructuralChar.QUOT.str
+									+ JsonStructuralChar.COLON.str
+									+ x.value().toJson();
 						})
-						.collect(Collectors.joining(",", "{", "}"));
+						.collect(Collectors.joining(
+								JsonStructuralChar.COMMA.str,
+								JsonStructuralChar.OBJECT_LEFT.str,
+								JsonStructuralChar.OBJECT_RIGHT.str));
 			}
 			
 			return toJsonProxy;

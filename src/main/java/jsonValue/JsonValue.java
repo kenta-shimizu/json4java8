@@ -2,6 +2,7 @@ package jsonValue;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collection;
@@ -84,7 +85,7 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @param consumer<NAME, VALUE>
 	 * @throws JsonValueUnsupportedOperationException
 	 */
-	public void forEach(BiConsumer<JsonString, JsonValue> consumer) {
+	public void forEach(BiConsumer<JsonString, JsonValue> action) {
 		throw new JsonValueUnsupportedOperationException(type() + " not support #forEach");
 	}
 	
@@ -234,6 +235,9 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 		return Optional.empty();
 	}
 	
+	public Optional<Number> optionalNubmer() {
+		return Optional.empty();
+	}
 	
 	/**
 	 * enable if type is TRUE or FALSE
@@ -285,7 +289,7 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @return JsonValue
 	 */
 	public static JsonValue fromJson(CharSequence json) {
-		return JsonValueParser.getInstance().parse(json);
+		return JsonValueJsonParser.getInstance().parse(json);
 	}
 	
 	/**
@@ -296,7 +300,7 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @throws IOException
 	 */
 	public static JsonValue fromJson(Reader reader) throws IOException {
-		return JsonValueParser.getInstance().parse(reader);
+		return JsonValueJsonParser.getInstance().parse(reader);
 	}
 	
 	/**
@@ -304,7 +308,25 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * 
 	 * @return json
 	 */
-	abstract public String toJson();
+	public String toJson() {
+		
+		try (
+				StringWriter sw = new StringWriter();
+				) {
+			toJson(sw);
+			return sw.toString();
+		}
+		catch (IOException notHappen) {
+			throw new RuntimeException(notHappen);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param writer
+	 * @return
+	 */
+	abstract public void toJson(Writer writer) throws IOException;
 	
 	
 	/**
@@ -335,6 +357,14 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	
 	public void prettyPrint(Writer writer, JsonValuePrettyPrinterConfig config) throws IOException {
 		new JsonValuePrettyPrinter(config).print(this, writer);
+	}
+	
+	public static JsonValue fromPojo(Object pojo) {
+		return JsonValuePojoParser.getInstance().fromPojo(pojo);
+	}
+	
+	public <T> T toPojo(Class<T> classOfT) {
+		return JsonValuePojoParser.getInstance().toPojo(this, classOfT);
 	}
 	
 }

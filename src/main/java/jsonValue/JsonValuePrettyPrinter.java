@@ -1,6 +1,5 @@
 package jsonValue;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -66,13 +65,7 @@ public class JsonValuePrettyPrinter {
 					StringWriter sw = new StringWriter();
 					) {
 				
-				try (
-						BufferedWriter bw = new BufferedWriter(sw);
-						) {
-					
-					print(v, bw, 0);
-				}
-				
+				print(v, sw);
 				return sw.toString();
 			}
 			catch ( IOException notHappen ) {
@@ -80,16 +73,6 @@ public class JsonValuePrettyPrinter {
 			}
 		}
 	}
-	
-	
-	private static final String V_QUOT = "\"";
-	private static final String V_COMMA = ",";
-	private static final String V_COLON = ":";
-	private static final String V_OLBK = "{";
-	private static final String V_ORBK = "}";
-	private static final String V_ALBK = "[";
-	private static final String V_ARBK = "]";
-	
 	
 	private void print(JsonValue v, Writer writer, int level) throws IOException {
 		
@@ -101,14 +84,14 @@ public class JsonValuePrettyPrinter {
 		case NUMBER: {
 			
 			writeIndent(writer, level);
-			writer.write(v.toJson());
+			v.toJson(writer);
 			
 			break;
 		}
 		case ARRAY: {
 			
 			writeIndent(writer, level);
-			writer.write(V_ALBK);
+			writer.write(JsonStructuralChar.ARRAY_LEFT.str);
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -133,14 +116,14 @@ public class JsonValuePrettyPrinter {
 				writeIndent(writer, level);
 			}
 			
-			writer.write(V_ARBK);
+			writer.write(JsonStructuralChar.ARRAY_RIGHT.str);
 			
 			break;
 		}
 		case OBJECT: {
 			
 			writeIndent(writer, level);
-			writer.write(V_OLBK);
+			writer.write(JsonStructuralChar.OBJECT_LEFT.str);
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -165,7 +148,7 @@ public class JsonValuePrettyPrinter {
 				writeIndent(writer, level);
 			}
 			
-			writer.write(V_ORBK);
+			writer.write(JsonStructuralChar.OBJECT_RIGHT.str);
 			
 			break;
 		}
@@ -187,13 +170,13 @@ public class JsonValuePrettyPrinter {
 		case STRING:
 		case NUMBER: {
 			
-			writer.write(v.toJson());
+			v.toJson(writer);
 			
 			break;
 		}
 		case ARRAY: {
 			
-			writer.write(V_ALBK);
+			writer.write(JsonStructuralChar.ARRAY_LEFT.str);
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -218,13 +201,13 @@ public class JsonValuePrettyPrinter {
 				writeIndent(writer, level);
 			}
 			
-			writer.write(V_ARBK);
+			writer.write(JsonStructuralChar.ARRAY_RIGHT.str);
 
 			break;
 		}
 		case OBJECT: {
 			
-			writer.write(V_OLBK);
+			writer.write(JsonStructuralChar.OBJECT_LEFT.str);
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -249,7 +232,7 @@ public class JsonValuePrettyPrinter {
 				writeIndent(writer, level);
 			}
 			
-			writer.write(V_ORBK);
+			writer.write(JsonStructuralChar.OBJECT_RIGHT.str);
 
 			break;
 		}
@@ -268,20 +251,20 @@ public class JsonValuePrettyPrinter {
 	
 	private void writeComma(Writer writer) throws IOException {
 		writer.write(config().prefixComma());
-		writer.write(V_COMMA);
+		writer.write(JsonStructuralChar.COMMA.str);
 		writer.write(config().suffixComma());
 	}
 	
 	private void writeColon(Writer writer) throws IOException {
 		writer.write(config().prefixColon());
-		writer.write(V_COLON);
+		writer.write(JsonStructuralChar.COLON.str);
 		writer.write(config().suffixColon());
 	}
 	
 	private void writeObjectName(Writer writer, JsonObjectPair pair) throws IOException {
-		writer.write(V_QUOT);
+		writer.write(JsonStructuralChar.QUOT.str);
 		writer.write(pair.name().escaped());
-		writer.write(V_QUOT);
+		writer.write(JsonStructuralChar.QUOT.str);
 	}
 	
 }

@@ -1,19 +1,22 @@
 package jsonValue;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class JsonNullValue extends JsonValue {
 
 	protected JsonNullValue() {
 		super();
 	}
-
+	
 	@Override
 	public JsonValueType type() {
 		return JsonValueType.NULL;
 	}
 	
 	@Override
-	public String toJson() {
-		return "null";
+	public void toJson(Writer writer) throws IOException {
+		writer.write(JsonLiteral.NULL.toString());
 	}
 	
 	@Override

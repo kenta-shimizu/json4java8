@@ -18,6 +18,7 @@ public class JsonValueBuilder {
 	
 	private static class SingletonHolder {
 		private static final JsonValueBuilder inst = new JsonValueBuilder();
+		
 		private static final JsonString emptyString = JsonString.escaped("");
 		private static final JsonNullValue nullValue = new JsonNullValue();
 		private static final JsonTrueValue trueValue = new JsonTrueValue();
@@ -123,23 +124,23 @@ public class JsonValueBuilder {
 	}
 	
 	public JsonNumberValue number(Number n) {
-		return number(n.toString());
+		return new JsonNumberValue(n);
 	}
 	
 	public JsonNumberValue number(int n) {
-		return number(String.valueOf(n));
+		return number(Integer.valueOf(n));
 	}
 	
 	public JsonNumberValue number(long n) {
-		return number(String.valueOf(n));
+		return number(Long.valueOf(n));
 	}
 	
 	public JsonNumberValue number(float n) {
-		return number(String.valueOf(n));
+		return number(Float.valueOf(n));
 	}
 	
 	public JsonNumberValue number(double n) {
-		return number(String.valueOf(n));
+		return number(Double.valueOf(n));
 	}
 	
 	
@@ -316,7 +317,7 @@ public class JsonValueBuilder {
 	 * @throws JsonValueParseException
 	 */
 	public JsonValue fromJson(CharSequence v) {
-		return JsonValueParser.getInstance().parse(v);
+		return JsonValueJsonParser.getInstance().parse(v);
 	}
 	
 	/**
@@ -327,7 +328,7 @@ public class JsonValueBuilder {
 	 * @throws JsonValueParseException
 	 */
 	public JsonValue fromJson(Reader reader) throws IOException {
-		return JsonValueParser.getInstance().parse(reader);
+		return JsonValueJsonParser.getInstance().parse(reader);
 	}
 	
 }
