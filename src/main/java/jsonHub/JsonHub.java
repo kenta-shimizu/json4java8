@@ -142,16 +142,16 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public JsonHub get(String... names) {
-		return _get(new LinkedList<>(Arrays.asList(names)));
+		return get(new LinkedList<>(Arrays.asList(names)));
 	}
 	
-	private JsonHub _get(LinkedList<String> ll) {
+	private JsonHub get(LinkedList<String> ll) {
 		
 		if ( ll.isEmpty() ) {
 			return this;
 		} else {
 			String s = ll.removeFirst();
-			return get(s)._get(ll);
+			return get(s).get(ll);
 		}
 	}
 	
@@ -293,7 +293,7 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	}
 	
 	/**
-	 * parse to JaonValue
+	 * parse to JaonHub
 	 * 
 	 * @param reader
 	 * @return JsonHub
@@ -304,7 +304,7 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	}
 	
 	/**
-	 * parse to minimun Json String
+	 * parse to compact-JSON-String
 	 * 
 	 * @return json
 	 */
@@ -313,6 +313,7 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 		try (
 				StringWriter sw = new StringWriter();
 				) {
+			
 			toJson(sw);
 			return sw.toString();
 		}
@@ -322,9 +323,10 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	}
 	
 	/**
+	 * compact-JSON-String to writer
 	 * 
 	 * @param writer
-	 * @return
+	 * @throws IOException
 	 */
 	abstract public void toJson(Writer writer) throws IOException;
 	

@@ -73,16 +73,14 @@ public class JsonHubPojoParser {
 			
 			int iMod = field.getModifiers();
 			
-			if (
-					! Modifier.isStatic(iMod)
-					&& ! Modifier.isFinal(iMod)
-					) {
-				
-				pairs.add(
-						jvb.pair(
-								field.getName()
-								, fromObjectPojo(field.get(pojo))));
+			if ( Modifier.isStatic(iMod) ) {
+				continue;
 			}
+			
+			pairs.add(
+					jvb.pair(
+							field.getName()
+							, fromObjectPojo(field.get(pojo))));
 		}
 		
 		return jvb.object(pairs);

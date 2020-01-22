@@ -1,6 +1,5 @@
 package jsonHub;
 
-import java.io.BufferedReader;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -51,19 +50,15 @@ public class JsonHubJsonParser {
 				CharArrayWriter writer = new CharArrayWriter();
 				) {
 			
-			try (
-					BufferedReader br = new BufferedReader(reader);
-					) {
+			for ( ;; ) {
 				
-				for ( ;; ) {
-					
-					int r = br.read();
-					if ( r < 0 ) {
-						break;
-					}
-					
-					writer.write(r);
+				int r = reader.read();
+				
+				if ( r < 0 ) {
+					break;
 				}
+				
+				writer.write(r);
 			}
 			
 			return parse(writer.toString());
