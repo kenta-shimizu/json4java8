@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -9,12 +9,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class JsonArrayValue extends JsonValue {
+public class JsonArrayHub extends JsonHub {
 	
-	private final List<JsonValue> v;
+	private final List<JsonHub> v;
 	private String toJsonProxy;
 	
-	public JsonArrayValue(List<? extends JsonValue> v) {
+	public JsonArrayHub(List<? extends JsonHub> v) {
 		super();
 		
 		this.v = Collections.unmodifiableList(Objects.requireNonNull(v));
@@ -22,33 +22,33 @@ public class JsonArrayValue extends JsonValue {
 	}
 
 	@Override
-	public Iterator<JsonValue> iterator() {
+	public Iterator<JsonHub> iterator() {
 		return v.iterator();
 	}
 	
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.ARRAY;
+	public JsonHubType type() {
+		return JsonHubType.ARRAY;
 	}
 	
 	@Override
-	public Stream<JsonValue> stream() {
+	public Stream<JsonHub> stream() {
 		return v.stream();
 	}
 	
 	@Override
-	public List<JsonValue> values() {
+	public List<JsonHub> values() {
 		return Collections.unmodifiableList(v);
 	}
 	
 	@Override
-	public JsonValue get(int index) {
+	public JsonHub get(int index) {
 		
 		try {
 			return v.get(index);
 		}
 		catch ( IndexOutOfBoundsException e ) {
-			throw new JsonValueIndexOutOfBoundsException("get: " + index);
+			throw new JsonHubIndexOutOfBoundsException("get: " + index);
 		}
 	}
 	
@@ -78,9 +78,9 @@ public class JsonArrayValue extends JsonValue {
 				toJsonProxy = v.stream()
 						.map(x -> x.toJson())
 						.collect(Collectors.joining(
-								JsonStructuralChar.COMMA.str,
-								JsonStructuralChar.ARRAY_LEFT.str,
-								JsonStructuralChar.ARRAY_RIGHT.str));
+								JsonStructuralChar.SEPARATOR_VALUE.str(),
+								JsonStructuralChar.ARRAY_BIGIN.str(),
+								JsonStructuralChar.ARRAY_END.str()));
 			}
 			
 			return toJsonProxy;
@@ -94,8 +94,8 @@ public class JsonArrayValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonArrayValue)) {
-			return ((JsonArrayValue) o).toJson().equals(toJson());
+		if ((o != null) && (o instanceof JsonArrayHub)) {
+			return ((JsonArrayHub) o).toJson().equals(toJson());
 		} else {
 			return false;
 		}

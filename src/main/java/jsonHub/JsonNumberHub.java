@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -8,12 +8,12 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-public class JsonNumberValue extends JsonValue {
+public class JsonNumberHub extends JsonHub {
 	
 	private final Number num;
 	private final String str;
 	
-	protected JsonNumberValue(CharSequence cs) {
+	protected JsonNumberHub(CharSequence cs) {
 		super();
 		
 		this.str = Objects.requireNonNull(cs).toString();
@@ -26,11 +26,11 @@ public class JsonNumberValue extends JsonValue {
 			}
 		}
 		catch ( NumberFormatException e ) {
-			throw new JsonValueNumberFormatException(e.getMessage());
+			throw new JsonHubNumberFormatException(e.getMessage());
 		}
 	}
 	
-	protected JsonNumberValue(Number num) {
+	protected JsonNumberHub(Number num) {
 		super();
 		
 		this.num = Objects.requireNonNull(num);
@@ -38,8 +38,8 @@ public class JsonNumberValue extends JsonValue {
 	}
 	
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.NUMBER;
+	public JsonHubType type() {
+		return JsonHubType.NUMBER;
 	}
 	
 	@Override
@@ -79,8 +79,8 @@ public class JsonNumberValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonNumberValue)) {
-			return ((JsonNumberValue) o).num.equals(num);
+		if ((o != null) && (o instanceof JsonNumberHub)) {
+			return ((JsonNumberHub) o).num.equals(num);
 		} else {
 			return false;
 		}

@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -146,7 +146,7 @@ public class JsonStringCoder {
 			throw new RuntimeException(notHappen);
 		}
 		catch ( IndexOutOfBoundsException e ) {
-			throw new JsonValueIndexOutOfBoundsException("unescape failed \"" + cs.toString() + "\"");
+			throw new JsonHubIndexOutOfBoundsException("unescape failed \"" + cs.toString() + "\"");
 		}
 	}
 	
@@ -173,7 +173,7 @@ public class JsonStringCoder {
 			return Byte.parseByte(s, 16);
 		}
 		catch ( NumberFormatException e ) {
-			throw new JsonValueNumberFormatException(s);
+			throw new JsonHubNumberFormatException(s);
 		}
 	}
 	

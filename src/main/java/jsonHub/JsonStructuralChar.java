@@ -1,25 +1,29 @@
-package jsonValue;
+package jsonHub;
 
 import java.util.Objects;
 
 public enum JsonStructuralChar {
 	
-	BACKSLASH("\\"),
+	ESCAPE("\\"),
 	QUOT("\""),
-	OBJECT_LEFT("{"),
-	OBJECT_RIGHT("}"),
-	ARRAY_LEFT("["),
-	ARRAY_RIGHT("]"),
-	COMMA(","),
-	COLON(":"),
+	OBJECT_BIGIN("{"),
+	OBJECT_END("}"),
+	ARRAY_BIGIN("["),
+	ARRAY_END("]"),
+	SEPARATOR_VALUE(","),
+	SEPARATOR_NAME(":"),
 	;
 	
-	public final String str;
-	public final char chr;
+	private final String str;
+	private final char chr;
 	
 	private JsonStructuralChar(String s) {
 		this.str = s;
 		this.chr = s.charAt(0);
+	}
+	
+	public String str() {
+		return str;
 	}
 	
 	public boolean match(CharSequence cs) {

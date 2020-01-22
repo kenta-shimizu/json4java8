@@ -1,13 +1,13 @@
-package jsonValue;
+package jsonHub;
 
 import java.util.Objects;
 
 public class JsonObjectPair {
 	
 	private final JsonString name;
-	private final JsonValue v;
+	private final JsonHub v;
 	
-	protected JsonObjectPair(JsonString name, JsonValue v) {
+	protected JsonObjectPair(JsonString name, JsonHub v) {
 		this.name = Objects.requireNonNull(name, "JsonObjectPair nonNull \"name\"");
 		this.v = Objects.requireNonNull(v, "JsonObjectPair nonNull \"value\"");
 	}
@@ -16,7 +16,7 @@ public class JsonObjectPair {
 		return name;
 	}
 	
-	public JsonValue value() {
+	public JsonHub value() {
 		return v;
 	}
 	

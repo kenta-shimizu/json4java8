@@ -1,18 +1,18 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Optional;
 
-public class JsonTrueValue extends JsonValue {
+public class JsonTrueHub extends JsonHub {
 	
-	protected JsonTrueValue() {
+	protected JsonTrueHub() {
 		super();
 	}
 	
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.TRUE;
+	public JsonHubType type() {
+		return JsonHubType.TRUE;
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class JsonTrueValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		return (o != null) && (o instanceof JsonTrueValue);
+		return (o != null) && (o instanceof JsonTrueHub);
 	}
 	
 	@Override

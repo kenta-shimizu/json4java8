@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class JsonValueJsonParser {
+public class JsonHubJsonParser {
 
-	private JsonValueJsonParser() {
+	private JsonHubJsonParser() {
 		/* Nothing */
 	}
 	
 	private static class SingletonHolder {
-		private static final JsonValueJsonParser inst = new JsonValueJsonParser();
+		private static final JsonHubJsonParser inst = new JsonHubJsonParser();
 	}
 	
-	public static JsonValueJsonParser getInstance() {
+	public static JsonHubJsonParser getInstance() {
 		return SingletonHolder.inst;
 	}
 	
@@ -26,26 +26,26 @@ public class JsonValueJsonParser {
 	 * 
 	 * @param json
 	 * @return
-	 * @thows JsonValueParseException
+	 * @thows JsonHubParseException
 	 */
-	public JsonValue parse(CharSequence cs) {
+	public JsonHub parse(CharSequence cs) {
 		
 		try {
 			return fromJson(cs.toString());
 		}
-		catch ( JsonValueIndexOutOfBoundsException | JsonValueNumberFormatException e ) {
-			throw new JsonValueParseException(e);
+		catch ( JsonHubIndexOutOfBoundsException | JsonHubNumberFormatException e ) {
+			throw new JsonHubParseException(e);
 		}
 	}
 	
 	/**
 	 * 
 	 * @param reader
-	 * @return jsonValue
-	 * @throws JsonValueParseException
+	 * @return jsonHub
+	 * @throws JsonHubParseException
 	 * @throws IOException
 	 */
-	public JsonValue parse(Reader reader) throws IOException {
+	public JsonHub parse(Reader reader) throws IOException {
 		
 		try (
 				CharArrayWriter writer = new CharArrayWriter();
@@ -84,17 +84,17 @@ public class JsonValueJsonParser {
 	
 	private static class SeekValueResult {
 		
-		private final JsonValue value;
+		private final JsonHub value;
 		private final int endIndex;
 		
-		private SeekValueResult(JsonValue v, int index) {
+		private SeekValueResult(JsonHub v, int index) {
 			this.value = v;
 			this.endIndex = index;
 		}
 	}
 	
 	
-	private static JsonValue fromJson(String str) {
+	private static JsonHub fromJson(String str) {
 		
 		SeekCharResult r = seekNextChar(str, 0);
 		
@@ -104,11 +104,11 @@ public class JsonValueJsonParser {
 			
 			vr = fromJsonStringValue(str, r.index);
 			
-		} else if ( JsonStructuralChar.ARRAY_LEFT.match(r.c) ) {
+		} else if ( JsonStructuralChar.ARRAY_BIGIN.match(r.c) ) {
 			
 			vr = fromJsonArrayValue(str, r.index);
 			
-		} else if ( JsonStructuralChar.OBJECT_LEFT.match(r.c) ) {
+		} else if ( JsonStructuralChar.OBJECT_BIGIN.match(r.c) ) {
 			
 			vr = fromJsonObjectValue(str, r.index);
 			
@@ -122,7 +122,7 @@ public class JsonValueJsonParser {
 				
 			} else {
 				
-				throw new JsonValueParseException("Value is not Single \"" + str + "\"");
+				throw new JsonHubParseException("Value is not Single \"" + str + "\"");
 			}
 		}
 		
@@ -132,7 +132,7 @@ public class JsonValueJsonParser {
 			
 		} else {
 			
-			throw new JsonValueParseException("Value is not Single \"" + str + "\"");
+			throw new JsonHubParseException("Value is not Single \"" + str + "\"");
 		}
 	}
 	
@@ -154,19 +154,19 @@ public class JsonValueJsonParser {
 		if ( JsonLiteral.NULL.match(s) ) {
 			
 			return new SeekValueResult(
-					JsonValueBuilder.getInstance().nullValue()
+					JsonHubBuilder.getInstance().nullValue()
 					, r.index);
 			
 		} else if ( JsonLiteral.TRUE.match(s) ) {
 			
 			return new SeekValueResult(
-					JsonValueBuilder.getInstance().trueValue()
+					JsonHubBuilder.getInstance().trueValue()
 					, r.index);
 			
 		} else if ( JsonLiteral.FALSE.match(s) ) {
 			
 			return new SeekValueResult(
-					JsonValueBuilder.getInstance().falseValue()
+					JsonHubBuilder.getInstance().falseValue()
 					, r.index);
 			
 		} else {
@@ -187,14 +187,14 @@ public class JsonValueJsonParser {
 		int endIndex = seekEndIndexOfString(str, fromIndex);
 		
 		return new SeekValueResult(
-				JsonValueBuilder.getInstance().string(
+				JsonHubBuilder.getInstance().string(
 						fromJsonString(str.substring(fromIndex, endIndex)))
 				, endIndex);
 	}
 	
 	private static SeekValueResult fromJsonArrayValue(String str, int fromIndex) {
 		
-		final List<JsonValue> ll = new ArrayList<>();
+		final List<JsonHub> ll = new ArrayList<>();
 		
 		boolean first = true;
 		
@@ -207,10 +207,10 @@ public class JsonValueJsonParser {
 					
 					first = false;
 					
-					if ( JsonStructuralChar.ARRAY_RIGHT.match(r.c) ) {
+					if ( JsonStructuralChar.ARRAY_END.match(r.c) ) {
 						
 						return new SeekValueResult(
-								JsonValueBuilder.getInstance().array(ll)
+								JsonHubBuilder.getInstance().array(ll)
 								, r.index + 1);
 						
 					}
@@ -222,21 +222,21 @@ public class JsonValueJsonParser {
 					ll.add(vr.value);
 					i = vr.endIndex;
 					
-				} else if ( JsonStructuralChar.ARRAY_LEFT.match(r.c) ) {
+				} else if ( JsonStructuralChar.ARRAY_BIGIN.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonArrayValue(str, r.index);
 					ll.add(vr.value);
 					i = vr.endIndex;
 					
-				} else if ( JsonStructuralChar.OBJECT_LEFT.match(r.c) ) {
+				} else if ( JsonStructuralChar.OBJECT_BIGIN.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonObjectValue(str, r.index);
 					ll.add(vr.value);
 					i = vr.endIndex;
 					
-				} else if (JsonStructuralChar.COLON.match(r.c) || JsonStructuralChar.COMMA.match(r.c)) {
+				} else if (JsonStructuralChar.SEPARATOR_NAME.match(r.c) || JsonStructuralChar.SEPARATOR_VALUE.match(r.c)) {
 					
-					throw new JsonValueParseException("Value is empty \"" + str + "\"");
+					throw new JsonHubParseException("Value is empty \"" + str + "\"");
 					
 				} else {
 					
@@ -244,7 +244,7 @@ public class JsonValueJsonParser {
 					
 					if ( vr.endIndex < 0 ) {
 						
-						throw new JsonValueParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
+						throw new JsonHubParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
 						
 					} else {
 						
@@ -257,29 +257,29 @@ public class JsonValueJsonParser {
 			{
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( JsonStructuralChar.COMMA.match(r.c) ) {
+				if ( JsonStructuralChar.SEPARATOR_VALUE.match(r.c) ) {
 					
 					i = r.index + 1;
 					
-				} else if ( JsonStructuralChar.ARRAY_RIGHT.match(r.c) ) {
+				} else if ( JsonStructuralChar.ARRAY_END.match(r.c) ) {
 					
 					return new SeekValueResult(
-							JsonValueBuilder.getInstance().array(ll)
+							JsonHubBuilder.getInstance().array(ll)
 							, r.index + 1);
 					
 				} else {
 					
-					throw new JsonValueParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
+					throw new JsonHubParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
 				}
 			}
 		}
 		
-		throw new JsonValueParseException("Not found end-of-ARRAY. fromIndex: " + fromIndex + " \"" + str + "\"");
+		throw new JsonHubParseException("Not found end-of-ARRAY. fromIndex: " + fromIndex + " \"" + str + "\"");
 	}
 	
 	private static SeekValueResult fromJsonObjectValue(String str, int fromIndex) {
 		
-		final JsonValueBuilder jvb = JsonValueBuilder.getInstance();
+		final JsonHubBuilder jvb = JsonHubBuilder.getInstance();
 		
 		final Collection<JsonObjectPair> pairs = new ArrayList<>();
 		
@@ -293,7 +293,7 @@ public class JsonValueJsonParser {
 				
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( JsonStructuralChar.OBJECT_RIGHT.match(r.c) ) {
+				if ( JsonStructuralChar.OBJECT_END.match(r.c) ) {
 					
 					return new SeekValueResult(
 							jvb.object(pairs)
@@ -319,21 +319,21 @@ public class JsonValueJsonParser {
 					pairs.add(jvb.pair(js, vr.value));
 					i = vr.endIndex;
 					
-				} else if ( JsonStructuralChar.ARRAY_LEFT.match(r.c) ) {
+				} else if ( JsonStructuralChar.ARRAY_BIGIN.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonArrayValue(str, r.index);
 					pairs.add(jvb.pair(js, vr.value));
 					i = vr.endIndex;
 					
-				} else if ( JsonStructuralChar.OBJECT_LEFT.match(r.c) ) {
+				} else if ( JsonStructuralChar.OBJECT_BIGIN.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonObjectValue(str, r.index);
 					pairs.add(jvb.pair(js, vr.value));
 					i = vr.endIndex;
 					
-				} else if (JsonStructuralChar.COLON.match(r.c) || JsonStructuralChar.COMMA.match(r.c)) {
+				} else if (JsonStructuralChar.SEPARATOR_NAME.match(r.c) || JsonStructuralChar.SEPARATOR_VALUE.match(r.c)) {
 					
-					throw new JsonValueParseException("Value is empty. index: " + r.index + " \"" + str + "\"");
+					throw new JsonHubParseException("Value is empty. index: " + r.index + " \"" + str + "\"");
 					
 				} else {
 					
@@ -341,7 +341,7 @@ public class JsonValueJsonParser {
 					
 					if ( vr.endIndex < 0 ) {
 						
-						throw new JsonValueParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
+						throw new JsonHubParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
 						
 					} else {
 						
@@ -354,11 +354,11 @@ public class JsonValueJsonParser {
 			{
 				SeekCharResult r  = seekNextChar(str, i);
 				
-				if ( JsonStructuralChar.COMMA.match(r.c) ) {
+				if ( JsonStructuralChar.SEPARATOR_VALUE.match(r.c) ) {
 					
 					i = r.index + 1;
 					
-				} else if ( JsonStructuralChar.OBJECT_RIGHT.match(r.c) ) {
+				} else if ( JsonStructuralChar.OBJECT_END.match(r.c) ) {
 					
 					return new SeekValueResult(
 							jvb.object(pairs)
@@ -366,16 +366,16 @@ public class JsonValueJsonParser {
 					
 				} else {
 					
-					throw new JsonValueParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
+					throw new JsonHubParseException("Not found end-of-value. index: " + r.index + " \"" + str + "\"");
 				}
 			}
 		}
 		
-		throw new JsonValueParseException("Not found end-of-OBJECT. fromIndex: " + fromIndex + " \"" + str + "\"");
+		throw new JsonHubParseException("Not found end-of-OBJECT. fromIndex: " + fromIndex + " \"" + str + "\"");
 	}
 	
-	private static JsonNumberValue fromJsonNumberValue(String str) {
-		return JsonValueBuilder.getInstance().number(str);
+	private static JsonNumberHub fromJsonNumberValue(String str) {
+		return JsonHubBuilder.getInstance().number(str);
 	}
 	
 	private static int seekIndexOfNextQuot(String str, int fromIndex) {
@@ -383,16 +383,16 @@ public class JsonValueJsonParser {
 		if ((r.index >= 0) && JsonStructuralChar.QUOT.match(r.c) ) {
 			return r.index;
 		} else {
-			throw new JsonValueParseException("Not found Quot. fromIndex: " + fromIndex + " \"" + str + "\"");
+			throw new JsonHubParseException("Not found Quot. fromIndex: " + fromIndex + " \"" + str + "\"");
 		}
 	}
 	
 	private static int seekIndexOfNextColon(String str, int fromIndex) {
 		SeekCharResult r = seekNextChar(str, fromIndex);
-		if ((r.index >= 0) && JsonStructuralChar.COLON.match(r.c)) {
+		if ((r.index >= 0) && JsonStructuralChar.SEPARATOR_NAME.match(r.c)) {
 			return r.index;
 		} else {
-			throw new JsonValueParseException("Not found \":\" fromIndex: " + fromIndex + " \"" + str + "\"");
+			throw new JsonHubParseException("Not found \":\" fromIndex: " + fromIndex + " \"" + str + "\"");
 		}
 	}
 	
@@ -402,7 +402,7 @@ public class JsonValueJsonParser {
 			
 			char c = str.charAt(i);
 			
-			if ( JsonStructuralChar.BACKSLASH.match(c) ) {
+			if ( JsonStructuralChar.ESCAPE.match(c) ) {
 				++i;
 				continue;
 			}
@@ -412,7 +412,7 @@ public class JsonValueJsonParser {
 			}
 		}
 		
-		throw new JsonValueParseException("Not found end-of-STRING. fromIndex: " + fromIndex + " \"" + str + "\"");
+		throw new JsonHubParseException("Not found end-of-STRING. fromIndex: " + fromIndex + " \"" + str + "\"");
 	}
 	
 	
@@ -433,9 +433,9 @@ public class JsonValueJsonParser {
 	}
 	
 	private static final JsonStructuralChar[] delimiters = new JsonStructuralChar[]{
-			JsonStructuralChar.COMMA,
-			JsonStructuralChar.ARRAY_RIGHT,
-			JsonStructuralChar.OBJECT_RIGHT
+			JsonStructuralChar.SEPARATOR_VALUE,
+			JsonStructuralChar.ARRAY_END,
+			JsonStructuralChar.OBJECT_END
 	};
 	
 	private static SeekCharResult seekNextEndDelimiter(String str, int fromIndex) {

@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -21,72 +21,72 @@ import java.util.stream.Stream;
  * Immutable Object
  *
  */
-abstract public class JsonValue implements Iterable<JsonValue> {
+abstract public class JsonHub implements Iterable<JsonHub> {
 	
-	public JsonValue() {
+	public JsonHub() {
 		/* Nothing */
 	}
 	
 	/**
 	 * enable if type is ARRAY
 	 * 
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	@Override
-	public Iterator<JsonValue> iterator() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #iterator");
+	public Iterator<JsonHub> iterator() {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #iterator");
 	}
 	
-	abstract public JsonValueType type();
+	abstract public JsonHubType type();
 	
 	/**
 	 * enable if type is ARRAY
 	 * 
 	 * @return Array values stream
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public Stream<JsonValue> stream() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #stream");
+	public Stream<JsonHub> stream() {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #stream");
 	}
 	
 	/**
 	 * enable if type is OBJECT
 	 * 
 	 * @return names
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public Set<JsonString> keySet() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #keySet");
+		throw new JsonHubUnsupportedOperationException(type() + " not support #keySet");
 	}
 	
 	/**
 	 * enable if type is OBJECT
 	 * 
 	 * @return pairs
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	protected Collection<JsonObjectPair> objectPairs() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #objectPairs");
+		throw new JsonHubUnsupportedOperationException(type() + " not support #objectPairs");
 	}
 	
 	/**
 	 * enable if type is OBJECT or ARRAY
 	 * 
 	 * @return values
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public List<JsonValue> values() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #values");
+	public List<JsonHub> values() {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #values");
 	}
 	
 	/**
 	 * enable if type is OBJECT
 	 * 
 	 * @param consumer<NAME, VALUE>
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public void forEach(BiConsumer<JsonString, JsonValue> action) {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #forEach");
+	public void forEach(BiConsumer<JsonString, JsonHub> action) {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
 	}
 	
 	/**
@@ -94,10 +94,10 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 *  
 	 * @param index
 	 * @return value
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public JsonValue get(int index) {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #get(" + index + ")");
+	public JsonHub get(int index) {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #get(" + index + ")");
 	}
 	
 	/**
@@ -105,10 +105,10 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * 
 	 * @param name
 	 * @return true if has name
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public boolean containsKey(CharSequence name) {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #containsKey(\"" + name + "\")");
+		throw new JsonHubUnsupportedOperationException(type() + " not support #containsKey(\"" + name + "\")");
 	}
 	
 	/**
@@ -116,10 +116,10 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * 
 	 * @param name
 	 * @return value. null if not has name.
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public JsonValue get(CharSequence name) {
-		throw new JsonValueUnsupportedOperationException(type() + "not support #get(\"" + name + "\")");
+	public JsonHub get(CharSequence name) {
+		throw new JsonHubUnsupportedOperationException(type() + "not support #get(\"" + name + "\")");
 	}
 	
 	/**
@@ -127,11 +127,11 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * 
 	 * @param name
 	 * @param defaultValue
-	 * @return JsonValue
-	 * @throws JsonValueUnsupportedOperationException
+	 * @return JsonHub
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public JsonValue getOrDefault(CharSequence name, JsonValue defaultValue) {
-		throw new JsonValueUnsupportedOperationException(type() + "not support #getOrDefault");
+	public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue) {
+		throw new JsonHubUnsupportedOperationException(type() + "not support #getOrDefault");
 	}
 	
 	/**
@@ -139,13 +139,13 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * 
 	 * @param names
 	 * @return value
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public JsonValue get(String... names) {
+	public JsonHub get(String... names) {
 		return _get(new LinkedList<>(Arrays.asList(names)));
 	}
 	
-	private JsonValue _get(LinkedList<String> ll) {
+	private JsonHub _get(LinkedList<String> ll) {
 		
 		if ( ll.isEmpty() ) {
 			return this;
@@ -159,20 +159,20 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * enable if STRING or ARRAY or OBJECT
 	 * 
 	 * @return length
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public int length() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #length");
+		throw new JsonHubUnsupportedOperationException(type() + " not support #length");
 	}
 	
 	/**
 	 * enable if STRING or ARRAY or OBJECT
 	 * 
 	 * @return true if empty
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public boolean isEmpty() {
-		throw new JsonValueUnsupportedOperationException(type() + " not support #isEmpty");
+		throw new JsonHubUnsupportedOperationException(type() + " not support #isEmpty");
 	}
 	
 	/**
@@ -180,7 +180,7 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @return true if value is null
 	 */
 	public boolean isNull() {
-		return type() == JsonValueType.NULL;
+		return type() == JsonHubType.NULL;
 	}
 	
 	/**
@@ -192,27 +192,27 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	}
 	
 	public boolean isTrue() {
-		return type() == JsonValueType.TRUE;
+		return type() == JsonHubType.TRUE;
 	}
 	
 	public boolean isFalse() {
-		return type() == JsonValueType.FALSE;
+		return type() == JsonHubType.FALSE;
 	}
 	
 	public boolean isString() {
-		return type() == JsonValueType.STRING;
+		return type() == JsonHubType.STRING;
 	}
 	
 	public boolean isNumber() {
-		return type() == JsonValueType.NUMBER;
+		return type() == JsonHubType.NUMBER;
 	}
 	
 	public boolean isArray() {
-		return type() == JsonValueType.ARRAY;
+		return type() == JsonHubType.ARRAY;
 	}
 	
 	public boolean isObject() {
-		return type() == JsonValueType.OBJECT;
+		return type() == JsonHubType.OBJECT;
 	}
 	
 	public Optional<Boolean> optionalBoolean() {
@@ -243,64 +243,64 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * enable if type is TRUE or FALSE
 	 * 
 	 * @return boolean
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public boolean booleanValue() {
-		return optionalBoolean().orElseThrow(() -> new JsonValueUnsupportedOperationException(type() + " not support #booleanValue"));
+		return optionalBoolean().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #booleanValue"));
 	}
 	
 	/**
 	 * enable if type is NUMBER
 	 * 
 	 * @return value
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public int intValue() {
-		return optionalInt().orElseThrow(() -> new JsonValueUnsupportedOperationException(type() + " not support #intValue"));
+		return optionalInt().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #intValue"));
 	}
 	
 	/**
 	 * enable if type is NUMBER
 	 * 
 	 * @return value
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public long longValue() {
-		return optionalLong().orElseThrow(() -> new JsonValueUnsupportedOperationException(type() + " not support #longValue"));
+		return optionalLong().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #longValue"));
 	}
 	
 	/**
 	 * enable if type is NUMBER
 	 * 
 	 * @return value
-	 * @throws JsonValueUnsupportedOperationException
+	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public double doubleValue() {
-		return optionalDouble().orElseThrow(() -> new JsonValueUnsupportedOperationException(type() + " not support #doubleValue"));
+		return optionalDouble().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #doubleValue"));
 	}
 	
 	
 	/* builders */
 	
 	/**
-	 * parse to JsonValue
+	 * parse to JsonHub
 	 * 
 	 * @param json
-	 * @return JsonValue
+	 * @return JsonHub
 	 */
-	public static JsonValue fromJson(CharSequence json) {
-		return JsonValueJsonParser.getInstance().parse(json);
+	public static JsonHub fromJson(CharSequence json) {
+		return JsonHubJsonParser.getInstance().parse(json);
 	}
 	
 	/**
 	 * parse to JaonValue
 	 * 
 	 * @param reader
-	 * @return JsonValue
+	 * @return JsonHub
 	 * @throws IOException
 	 */
-	public static JsonValue fromJson(Reader reader) throws IOException {
-		return JsonValueJsonParser.getInstance().parse(reader);
+	public static JsonHub fromJson(Reader reader) throws IOException {
+		return JsonHubJsonParser.getInstance().parse(reader);
 	}
 	
 	/**
@@ -334,7 +334,7 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @return Pretty-Print-JSON
 	 */
 	public String prettyPrint() {
-		return new JsonValuePrettyPrinter().print(this);
+		return JsonHubPrettyPrinter.getDefaultPrinter().print(this);
 	}
 	
 	/**
@@ -342,8 +342,8 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @param config
 	 * @return Pretty-Print-JSON
 	 */
-	public String prettyPrint(JsonValuePrettyPrinterConfig config) {
-		return new JsonValuePrettyPrinter(config).print(this);
+	public String prettyPrint(JsonHubPrettyPrinterConfig config) {
+		return new JsonHubPrettyPrinter(config).print(this);
 	}
 	
 	/**
@@ -352,19 +352,19 @@ abstract public class JsonValue implements Iterable<JsonValue> {
 	 * @throws IOException
 	 */
 	public void prettyPrint(Writer writer) throws IOException {
-		new JsonValuePrettyPrinter().print(this, writer);
+		JsonHubPrettyPrinter.getDefaultPrinter().print(this, writer);
 	}
 	
-	public void prettyPrint(Writer writer, JsonValuePrettyPrinterConfig config) throws IOException {
-		new JsonValuePrettyPrinter(config).print(this, writer);
+	public void prettyPrint(Writer writer, JsonHubPrettyPrinterConfig config) throws IOException {
+		new JsonHubPrettyPrinter(config).print(this, writer);
 	}
 	
-	public static JsonValue fromPojo(Object pojo) {
-		return JsonValuePojoParser.getInstance().fromPojo(pojo);
+	public static JsonHub fromPojo(Object pojo) {
+		return JsonHubPojoParser.getInstance().fromPojo(pojo);
 	}
 	
 	public <T> T toPojo(Class<T> classOfT) {
-		return JsonValuePojoParser.getInstance().toPojo(this, classOfT);
+		return JsonHubPojoParser.getInstance().toPojo(this, classOfT);
 	}
 	
 }

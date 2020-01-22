@@ -1,17 +1,17 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
 
-public class JsonNullValue extends JsonValue {
+public class JsonNullHub extends JsonHub {
 
-	protected JsonNullValue() {
+	protected JsonNullHub() {
 		super();
 	}
 	
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.NULL;
+	public JsonHubType type() {
+		return JsonHubType.NULL;
 	}
 	
 	@Override
@@ -21,12 +21,12 @@ public class JsonNullValue extends JsonValue {
 	
 	@Override
 	public String toString() {
-		return "null";
+		return JsonLiteral.NULL.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		return (o != null) && (o instanceof JsonNullValue);
+		return (o != null) && (o instanceof JsonNullHub);
 	}
 	
 	@Override

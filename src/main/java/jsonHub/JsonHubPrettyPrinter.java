@@ -1,18 +1,18 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class JsonValuePrettyPrinter {
+public class JsonHubPrettyPrinter {
 	
-	private JsonValuePrettyPrinterConfig config;
+	private JsonHubPrettyPrinterConfig config;
 	
-	public JsonValuePrettyPrinter() {
-		this(new JsonValuePrettyPrinterConfig());
+	public JsonHubPrettyPrinter() {
+		this(new JsonHubPrettyPrinterConfig());
 	}
 	
-	public JsonValuePrettyPrinter(JsonValuePrettyPrinterConfig config) {
+	public JsonHubPrettyPrinter(JsonHubPrettyPrinterConfig config) {
 		this.config = config;
 	}
 	
@@ -21,31 +21,34 @@ public class JsonValuePrettyPrinter {
 	 * 
 	 * @param config
 	 */
-	public void config(JsonValuePrettyPrinterConfig config) {
+	public void config(JsonHubPrettyPrinterConfig config) {
 		synchronized ( this ) {
 			this.config = config;
 		}
 	}
 	
-	/**
-	 * get-config
-	 * 
-	 * @return config
-	 */
-	public JsonValuePrettyPrinterConfig config() {
+	private JsonHubPrettyPrinterConfig config() {
 		synchronized ( this ) {
 			return config;
 		}
 	}
 	
+	private static class SingletonHolder {
+		private static final JsonHubPrettyPrinter inst = new JsonHubPrettyPrinter();
+	}
+	
+	public static JsonHubPrettyPrinter getDefaultPrinter() {
+		return SingletonHolder.inst;
+	}
+	
 	/**
 	 * Pretty-Print-JSON
 	 * 
-	 * @param JsonValue
+	 * @param JsonHub
 	 * @param writer
 	 * @throws IOException
 	 */
-	public void print(JsonValue v, Writer writer) throws IOException {
+	public void print(JsonHub v, Writer writer) throws IOException {
 		
 		synchronized ( this ) {
 			print(v, writer, 0);
@@ -54,10 +57,10 @@ public class JsonValuePrettyPrinter {
 	
 	/**
 	 * 
-	 * @param JsonValue
+	 * @param JsonHub
 	 * @return Pretty-Print-JSON
 	 */
-	public String print(JsonValue v) {
+	public String print(JsonHub v) {
 		
 		synchronized ( this ) {
 			
@@ -74,7 +77,7 @@ public class JsonValuePrettyPrinter {
 		}
 	}
 	
-	private void print(JsonValue v, Writer writer, int level) throws IOException {
+	private void print(JsonHub v, Writer writer, int level) throws IOException {
 		
 		switch ( v.type() ) {
 		case NULL:
@@ -91,7 +94,7 @@ public class JsonValuePrettyPrinter {
 		case ARRAY: {
 			
 			writeIndent(writer, level);
-			writer.write(JsonStructuralChar.ARRAY_LEFT.str);
+			writer.write(JsonStructuralChar.ARRAY_BIGIN.str());
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -101,29 +104,29 @@ public class JsonValuePrettyPrinter {
 				
 				boolean f = false;
 				
-				for (JsonValue jv : v.values()) {
+				for (JsonHub jh : v.values()) {
 					
 					if ( f ) {
-						writeComma(writer);
+						writeValueSeparator(writer);
 					} else {
 						f = true;
 					}
 					
-					print(jv, writer, deepLevel);
+					print(jh, writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
 				writeIndent(writer, level);
 			}
 			
-			writer.write(JsonStructuralChar.ARRAY_RIGHT.str);
+			writer.write(JsonStructuralChar.ARRAY_END.str());
 			
 			break;
 		}
 		case OBJECT: {
 			
 			writeIndent(writer, level);
-			writer.write(JsonStructuralChar.OBJECT_LEFT.str);
+			writer.write(JsonStructuralChar.OBJECT_BIGIN.str());
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -136,7 +139,7 @@ public class JsonValuePrettyPrinter {
 				for ( JsonObjectPair pair : v.objectPairs() ) {
 					
 					if ( f ) {
-						writeComma(writer);
+						writeValueSeparator(writer);
 					} else {
 						f = true;
 					}
@@ -148,7 +151,7 @@ public class JsonValuePrettyPrinter {
 				writeIndent(writer, level);
 			}
 			
-			writer.write(JsonStructuralChar.OBJECT_RIGHT.str);
+			writer.write(JsonStructuralChar.OBJECT_END.str());
 			
 			break;
 		}
@@ -157,11 +160,11 @@ public class JsonValuePrettyPrinter {
 	
 	private void printObjectPair(JsonObjectPair pair, Writer writer, int level) throws IOException {
 		
-		JsonValue v = pair.value();
+		JsonHub v = pair.value();
 		
 		writeIndent(writer, level);
 		writeObjectName(writer, pair);
-		writeColon(writer);
+		writeNameSeparator(writer);
 		
 		switch ( v.type() ) {
 		case NULL:
@@ -176,7 +179,7 @@ public class JsonValuePrettyPrinter {
 		}
 		case ARRAY: {
 			
-			writer.write(JsonStructuralChar.ARRAY_LEFT.str);
+			writer.write(JsonStructuralChar.ARRAY_BIGIN.str());
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -186,28 +189,28 @@ public class JsonValuePrettyPrinter {
 				
 				boolean f = false;
 				
-				for (JsonValue jv : v.values()) {
+				for (JsonHub jh : v.values()) {
 					
 					if ( f ) {
-						writeComma(writer);
+						writeValueSeparator(writer);
 					} else {
 						f = true;
 					}
 					
-					print(jv, writer, deepLevel);
+					print(jh, writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
 				writeIndent(writer, level);
 			}
 			
-			writer.write(JsonStructuralChar.ARRAY_RIGHT.str);
+			writer.write(JsonStructuralChar.ARRAY_END.str());
 
 			break;
 		}
 		case OBJECT: {
 			
-			writer.write(JsonStructuralChar.OBJECT_LEFT.str);
+			writer.write(JsonStructuralChar.OBJECT_BIGIN.str());
 			
 			if ( ! v.isEmpty() ) {
 				
@@ -220,7 +223,7 @@ public class JsonValuePrettyPrinter {
 				for ( JsonObjectPair p : v.objectPairs() ) {
 					
 					if ( f ) {
-						writeComma(writer);
+						writeValueSeparator(writer);
 					} else {
 						f = true;
 					}
@@ -232,7 +235,7 @@ public class JsonValuePrettyPrinter {
 				writeIndent(writer, level);
 			}
 			
-			writer.write(JsonStructuralChar.OBJECT_RIGHT.str);
+			writer.write(JsonStructuralChar.OBJECT_END.str());
 
 			break;
 		}
@@ -249,22 +252,22 @@ public class JsonValuePrettyPrinter {
 		writer.write(config().lineSeparator());
 	}
 	
-	private void writeComma(Writer writer) throws IOException {
-		writer.write(config().prefixComma());
-		writer.write(JsonStructuralChar.COMMA.str);
-		writer.write(config().suffixComma());
+	private void writeValueSeparator(Writer writer) throws IOException {
+		writer.write(config().prefixValueSeparator());
+		writer.write(JsonStructuralChar.SEPARATOR_VALUE.str());
+		writer.write(config().suffixValueSeparator());
 	}
 	
-	private void writeColon(Writer writer) throws IOException {
-		writer.write(config().prefixColon());
-		writer.write(JsonStructuralChar.COLON.str);
-		writer.write(config().suffixColon());
+	private void writeNameSeparator(Writer writer) throws IOException {
+		writer.write(config().prefixNameSeparator());
+		writer.write(JsonStructuralChar.SEPARATOR_NAME.str());
+		writer.write(config().suffixNameSeparator());
 	}
 	
 	private void writeObjectName(Writer writer, JsonObjectPair pair) throws IOException {
-		writer.write(JsonStructuralChar.QUOT.str);
+		writer.write(JsonStructuralChar.QUOT.str());
 		writer.write(pair.name().escaped());
-		writer.write(JsonStructuralChar.QUOT.str);
+		writer.write(JsonStructuralChar.QUOT.str());
 	}
 	
 }

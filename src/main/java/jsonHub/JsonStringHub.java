@@ -1,17 +1,17 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Objects;
 import java.util.Optional;
 
-public class JsonStringValue extends JsonValue {
+public class JsonStringHub extends JsonHub {
 	
 	private final JsonString v;
 	
 	private String toJsonProxy;
 	
-	protected JsonStringValue(JsonString v) {
+	protected JsonStringHub(JsonString v) {
 		super();
 		
 		this.v = Objects.requireNonNull(v);
@@ -19,8 +19,8 @@ public class JsonStringValue extends JsonValue {
 	}
 	
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.STRING;
+	public JsonHubType type() {
+		return JsonHubType.STRING;
 	}
 	
 	@Override
@@ -53,9 +53,9 @@ public class JsonStringValue extends JsonValue {
 		synchronized ( this ) {
 			
 			if ( toJsonProxy == null ) {
-				toJsonProxy = JsonStructuralChar.QUOT.str
+				toJsonProxy = JsonStructuralChar.QUOT.str()
 						+ v.escaped()
-						+ JsonStructuralChar.QUOT.str;
+						+ JsonStructuralChar.QUOT.str();
 			}
 			
 			return toJsonProxy;
@@ -69,8 +69,8 @@ public class JsonStringValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ( o instanceof JsonStringValue ) {
-			return ((JsonStringValue) o).toString().equals(toString());
+		if ((o != null) && (o instanceof JsonStringHub)) {
+			return ((JsonStringHub) o).toString().equals(toString());
 		} else {
 			return false;
 		}

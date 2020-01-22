@@ -1,18 +1,18 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Optional;
 
-public class JsonFalseValue extends JsonValue {
+public class JsonFalseHub extends JsonHub {
 
-	protected JsonFalseValue() {
+	protected JsonFalseHub() {
 		super();
 	}
 	
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.FALSE;
+	public JsonHubType type() {
+		return JsonHubType.FALSE;
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class JsonFalseValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		return (o != null) && (o instanceof JsonFalseValue);
+		return (o != null) && (o instanceof JsonFalseHub);
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -10,69 +10,69 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class JsonValueBuilder {
+public class JsonHubBuilder {
 
-	private JsonValueBuilder() {
+	private JsonHubBuilder() {
 		/* Nothing */
 	}
 	
 	private static class SingletonHolder {
-		private static final JsonValueBuilder inst = new JsonValueBuilder();
+		private static final JsonHubBuilder inst = new JsonHubBuilder();
 		
 		private static final JsonString emptyString = JsonString.escaped("");
-		private static final JsonNullValue nullValue = new JsonNullValue();
-		private static final JsonTrueValue trueValue = new JsonTrueValue();
-		private static final JsonFalseValue falseValue = new JsonFalseValue();
-		private static final JsonArrayValue emptyArrayValue = new JsonArrayValue(Collections.emptyList());
-		private static final JsonObjectValue emptyObjectValue = new JsonObjectValue(Collections.emptyList());
-		private static final JsonStringValue emptyStringValue = new JsonStringValue(emptyString);
+		private static final JsonNullHub nullValue = new JsonNullHub();
+		private static final JsonTrueHub trueValue = new JsonTrueHub();
+		private static final JsonFalseHub falseValue = new JsonFalseHub();
+		private static final JsonArrayHub emptyArrayValue = new JsonArrayHub(Collections.emptyList());
+		private static final JsonObjectHub emptyObjectValue = new JsonObjectHub(Collections.emptyList());
+		private static final JsonStringHub emptyStringValue = new JsonStringHub(emptyString);
 	}
 	
-	public static JsonValueBuilder getInstance() {
+	public static JsonHubBuilder getInstance() {
 		return SingletonHolder.inst;
 	}
 	
 	/**
 	 * 
-	 * @return JsonNullValue
+	 * @return JsonNullHub
 	 */
-	public JsonNullValue nullValue() {
+	public JsonNullHub nullValue() {
 		return SingletonHolder.nullValue;
 	}
 	
 	/**
 	 * 
-	 * @return JsonTrueValue
+	 * @return JsonTrueHub
 	 */
-	public JsonTrueValue trueValue() {
+	public JsonTrueHub trueValue() {
 		return SingletonHolder.trueValue;
 	}
 	
 	/**
 	 * 
-	 * @return JsonFalseValue
+	 * @return JsonFalseHub
 	 */
-	public JsonFalseValue falseValue() {
+	public JsonFalseHub falseValue() {
 		return SingletonHolder.falseValue;
 	}
 	
-	public JsonNumberValue build(int v) {
+	public JsonNumberHub build(int v) {
 		return number(v);
 	}
 	
-	public JsonNumberValue build(long v) {
+	public JsonNumberHub build(long v) {
 		return number(v);
 	}
 	
-	public JsonNumberValue build(float v) {
+	public JsonNumberHub build(float v) {
 		return number(v);
 	}
 	
-	public JsonNumberValue build(double v) {
+	public JsonNumberHub build(double v) {
 		return number(v);
 	}
 	
-	public JsonValue build(boolean v) {
+	public JsonHub build(boolean v) {
 		if ( v ) {
 			return trueValue();
 		} else {
@@ -85,7 +85,7 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return NULL, TRUE, FALSE, STRING, NUMBER
 	 */
-	public JsonValue build(Object v) {
+	public JsonHub build(Object v) {
 		
 		if ( v == null ) {
 			
@@ -109,7 +109,7 @@ public class JsonValueBuilder {
 				return number((Number)v);
 			}
 			
-			throw new JsonValueBuildException("build failed \"" + v.toString() + "\"");
+			throw new JsonHubBuildException("build failed \"" + v.toString() + "\"");
 		}
 	}
 	
@@ -117,29 +117,29 @@ public class JsonValueBuilder {
 	/**
 	 * 
 	 * @param cs
-	 * @return JsonNumberValue
+	 * @return JsonNumberHub
 	 */
-	public JsonNumberValue number(CharSequence cs) {
-		return new JsonNumberValue(cs);
+	public JsonNumberHub number(CharSequence cs) {
+		return new JsonNumberHub(cs);
 	}
 	
-	public JsonNumberValue number(Number n) {
-		return new JsonNumberValue(n);
+	public JsonNumberHub number(Number n) {
+		return new JsonNumberHub(n);
 	}
 	
-	public JsonNumberValue number(int n) {
+	public JsonNumberHub number(int n) {
 		return number(Integer.valueOf(n));
 	}
 	
-	public JsonNumberValue number(long n) {
+	public JsonNumberHub number(long n) {
 		return number(Long.valueOf(n));
 	}
 	
-	public JsonNumberValue number(float n) {
+	public JsonNumberHub number(float n) {
 		return number(Float.valueOf(n));
 	}
 	
-	public JsonNumberValue number(double n) {
+	public JsonNumberHub number(double n) {
 		return number(Double.valueOf(n));
 	}
 	
@@ -149,7 +149,7 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return STRING
 	 */
-	public JsonStringValue string(CharSequence v) {
+	public JsonStringHub string(CharSequence v) {
 		if ( Objects.requireNonNull(v).toString().isEmpty() ) {
 			return SingletonHolder.emptyStringValue;
 		} else {
@@ -162,15 +162,15 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return STRING
 	 */
-	public JsonStringValue string(JsonString v) {
-		return new JsonStringValue(v);
+	public JsonStringHub string(JsonString v) {
+		return new JsonStringHub(v);
 	}
 	
 	/**
 	 * 
 	 * @return blank ARRAY
 	 */
-	public JsonArrayValue array() {
+	public JsonArrayHub array() {
 		return SingletonHolder.emptyArrayValue;
 	}
 	
@@ -179,8 +179,8 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return ARRAY
 	 */
-	public JsonArrayValue array(JsonValue... v) {
-		return new JsonArrayValue(Arrays.asList(v));
+	public JsonArrayHub array(JsonHub... v) {
+		return new JsonArrayHub(Arrays.asList(v));
 	}
 	
 	/**
@@ -188,11 +188,11 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return ARRAY
 	 */
-	public JsonArrayValue array(List<? extends JsonValue> v) {
+	public JsonArrayHub array(List<? extends JsonHub> v) {
 		if ( v.isEmpty() ) {
 			return array();
 		} else {
-			return new JsonArrayValue(v);
+			return new JsonArrayHub(v);
 		}
 	}
 	
@@ -201,7 +201,7 @@ public class JsonValueBuilder {
 	 * 
 	 * @return blank OBJECT
 	 */
-	public JsonObjectValue object() {
+	public JsonObjectHub object() {
 		return SingletonHolder.emptyObjectValue;
 	}
 	
@@ -210,7 +210,7 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return OBJECT
 	 */
-	public JsonObjectValue object(JsonObjectPair... v) {
+	public JsonObjectHub object(JsonObjectPair... v) {
 		return object(Arrays.asList(v));
 	}
 
@@ -219,11 +219,11 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return OBJECT
 	 */
-	public JsonObjectValue object(Collection<? extends JsonObjectPair> v) {
-		if ( v.isEmpty() ) {
+	public JsonObjectHub object(Collection<? extends JsonObjectPair> v) {
+		if ( Objects.requireNonNull(v).isEmpty() ) {
 			return object();
 		} else {
-			return new JsonObjectValue(v);
+			return new JsonObjectHub(v);
 		}
 	}
 	
@@ -232,7 +232,7 @@ public class JsonValueBuilder {
 	 * @param v
 	 * @return OBJECT
 	 */
-	public JsonObjectValue object(Map<? extends JsonString, ? extends JsonValue> v) {
+	public JsonObjectHub object(Map<? extends JsonString, ? extends JsonHub> v) {
 		
 		final Collection<JsonObjectPair> pairs = new ArrayList<>();
 		
@@ -248,11 +248,11 @@ public class JsonValueBuilder {
 	 * @param name
 	 * @param value
 	 * @return JsonObjectPair
-	 * @throws JsonValueBuildException
+	 * @throws JsonHubBuildException
 	 */
 	public JsonObjectPair pair(JsonString name, Object v) {
-		if ((v != null) && (v instanceof JsonValue)) {
-			return new JsonObjectPair(name, (JsonValue)v);
+		if ((v != null) && (v instanceof JsonHub)) {
+			return new JsonObjectPair(name, (JsonHub)v);
 		} else {
 			return new JsonObjectPair(name, build(v));
 		}
@@ -283,7 +283,7 @@ public class JsonValueBuilder {
 	 * @param name
 	 * @param v
 	 * @return JsonObjectPair
-	 * @throws JsonValueBuildException
+	 * @throws JsonHubBuildException
 	 */
 	public JsonObjectPair pair(CharSequence name, Object v) {
 		return pair(JsonString.unescaped(name), v);
@@ -313,22 +313,22 @@ public class JsonValueBuilder {
 	/**
 	 * 
 	 * @param json
-	 * @return JsonValue
-	 * @throws JsonValueParseException
+	 * @return JsonHub
+	 * @throws JsonHubParseException
 	 */
-	public JsonValue fromJson(CharSequence v) {
-		return JsonValueJsonParser.getInstance().parse(v);
+	public JsonHub fromJson(CharSequence v) {
+		return JsonHubJsonParser.getInstance().parse(v);
 	}
 	
 	/**
 	 * 
 	 * @param reader
-	 * @return JsonValue
+	 * @return JsonHub
 	 * @throws IOException
-	 * @throws JsonValueParseException
+	 * @throws JsonHubParseException
 	 */
-	public JsonValue fromJson(Reader reader) throws IOException {
-		return JsonValueJsonParser.getInstance().parse(reader);
+	public JsonHub fromJson(Reader reader) throws IOException {
+		return JsonHubJsonParser.getInstance().parse(reader);
 	}
 	
 }

@@ -1,6 +1,6 @@
-package jsonValue;
+package jsonHub;
 
-public enum JsonValueType {
+public enum JsonHubType {
 
 	STRING,
 	NUMBER,
@@ -11,7 +11,7 @@ public enum JsonValueType {
 	NULL,
 	;
 	
-	private JsonValueType() {
+	private JsonHubType() {
 		/* NOthing */
 	}
 	

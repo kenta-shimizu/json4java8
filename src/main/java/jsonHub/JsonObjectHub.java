@@ -1,4 +1,4 @@
-package jsonValue;
+package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -10,12 +10,12 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class JsonObjectValue extends JsonValue {
+public class JsonObjectHub extends JsonHub {
 	
 	private final Collection<JsonObjectPair> v;
 	private String toJsonProxy;
 	
-	protected JsonObjectValue(Collection<? extends JsonObjectPair> v) {
+	protected JsonObjectHub(Collection<? extends JsonObjectPair> v) {
 		super();
 		
 		this.v = Collections.unmodifiableCollection(Objects.requireNonNull(v));
@@ -23,8 +23,8 @@ public class JsonObjectValue extends JsonValue {
 	}
 
 	@Override
-	public JsonValueType type() {
-		return JsonValueType.OBJECT;
+	public JsonHubType type() {
+		return JsonHubType.OBJECT;
 	}
 	
 	@Override
@@ -38,12 +38,12 @@ public class JsonObjectValue extends JsonValue {
 	}
 	
 	@Override
-	public List<JsonValue> values() {
+	public List<JsonHub> values() {
 		return v.stream().map(x -> x.value()).collect(Collectors.toList());
 	}
 	
 	@Override
-	public void forEach(BiConsumer<JsonString, JsonValue> action) {
+	public void forEach(BiConsumer<JsonString, JsonHub> action) {
 		v.stream().forEach(x -> {
 			action.accept(x.name(), x.value());
 		});
@@ -58,12 +58,12 @@ public class JsonObjectValue extends JsonValue {
 	}
 	
 	@Override
-	public JsonValue get(CharSequence name) {
+	public JsonHub get(CharSequence name) {
 		return getOrDefault(name, null);
 	}
 	
 	@Override
-	public JsonValue getOrDefault(CharSequence name, JsonValue defaultValue) {
+	public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue) {
 		String s = name.toString();
 		return v.stream()
 				.filter(x -> x.name().unescaped().equals(s))
@@ -97,16 +97,16 @@ public class JsonObjectValue extends JsonValue {
 			if ( toJsonProxy == null ) {
 				toJsonProxy = v.stream()
 						.map(x -> {
-							return JsonStructuralChar.QUOT.str
+							return JsonStructuralChar.QUOT.str()
 									+ x.name().escaped()
-									+ JsonStructuralChar.QUOT.str
-									+ JsonStructuralChar.COLON.str
+									+ JsonStructuralChar.QUOT.str()
+									+ JsonStructuralChar.SEPARATOR_NAME.str()
 									+ x.value().toJson();
 						})
 						.collect(Collectors.joining(
-								JsonStructuralChar.COMMA.str,
-								JsonStructuralChar.OBJECT_LEFT.str,
-								JsonStructuralChar.OBJECT_RIGHT.str));
+								JsonStructuralChar.SEPARATOR_VALUE.str(),
+								JsonStructuralChar.OBJECT_BIGIN.str(),
+								JsonStructuralChar.OBJECT_END.str()));
 			}
 			
 			return toJsonProxy;
@@ -120,8 +120,8 @@ public class JsonObjectValue extends JsonValue {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonObjectValue)) {
-			return ((JsonObjectValue) o).toJson().equals(toJson());
+		if ((o != null) && (o instanceof JsonObjectHub)) {
+			return ((JsonObjectHub) o).toJson().equals(toJson());
 		} else {
 			return false;
 		}
