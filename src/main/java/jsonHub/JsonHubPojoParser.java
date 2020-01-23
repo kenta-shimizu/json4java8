@@ -33,23 +33,23 @@ public class JsonHubPojoParser {
 	private static JsonHub fromObjectPojo(Object pojo)
 			throws IllegalArgumentException, IllegalAccessException {
 		
-		final JsonHubBuilder jvb = JsonHubBuilder.getInstance();
+		final JsonHubBuilder jhb = JsonHubBuilder.getInstance();
 		
 		if ( pojo == null ) {
 			
-			return jvb.nullValue();
+			return jhb.nullValue();
 			
 		} else if ( pojo instanceof Boolean ) {
 			
-			return jvb.build(((Boolean)pojo).booleanValue());
+			return jhb.build(((Boolean)pojo).booleanValue());
 			
 		} else if ( pojo instanceof CharSequence ) {
 			
-			return jvb.string((CharSequence)pojo);
+			return jhb.string((CharSequence)pojo);
 			
 		} else if ( pojo instanceof Number ) {
 			
-			return jvb.number((Number)pojo);
+			return jhb.number((Number)pojo);
 			
 		} else if ( pojo instanceof List<?> ) {
 			
@@ -61,7 +61,7 @@ public class JsonHubPojoParser {
 				ll.add(fromObjectPojo(p));
 			}
 			
-			return jvb.array(ll);
+			return jhb.array(ll);
 		}
 		
 		
@@ -73,17 +73,21 @@ public class JsonHubPojoParser {
 			
 			int iMod = field.getModifiers();
 			
+			if ( ! Modifier.isPublic(iMod) ) {
+				continue;
+			}
+
 			if ( Modifier.isStatic(iMod) ) {
 				continue;
 			}
 			
 			pairs.add(
-					jvb.pair(
+					jhb.pair(
 							field.getName()
 							, fromObjectPojo(field.get(pojo))));
 		}
 		
-		return jvb.object(pairs);
+		return jhb.object(pairs);
 	}
 	
 	public <T> T toPojo(JsonHub jh, Class<T> classOfT) {
@@ -108,7 +112,8 @@ public class JsonHubPojoParser {
 		case TRUE:
 		case FALSE: {
 			
-			return classOfT.cast(jh.optionalBoolean().get());
+			Boolean f = jh.optionalBoolean().get();
+			return classOfT.cast(f);
 			/* break; */
 		}
 		case STRING: {
@@ -158,6 +163,10 @@ public class JsonHubPojoParser {
 				
 				{
 					int iMod = field.getModifiers();
+					
+					if ( ! Modifier.isPublic(iMod) ) {
+						continue;
+					}
 					
 					if ( Modifier.isStatic(iMod) ) {
 						continue;

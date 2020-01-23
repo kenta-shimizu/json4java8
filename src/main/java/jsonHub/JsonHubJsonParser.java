@@ -274,7 +274,7 @@ public class JsonHubJsonParser {
 	
 	private static SeekValueResult fromJsonObjectValue(String str, int fromIndex) {
 		
-		final JsonHubBuilder jvb = JsonHubBuilder.getInstance();
+		final JsonHubBuilder jhb = JsonHubBuilder.getInstance();
 		
 		final Collection<JsonObjectPair> pairs = new ArrayList<>();
 		
@@ -291,7 +291,7 @@ public class JsonHubJsonParser {
 				if ( JsonStructuralChar.OBJECT_END.match(r.c) ) {
 					
 					return new SeekValueResult(
-							jvb.object(pairs)
+							jhb.object(pairs)
 							, r.index + 1);
 				}
 				
@@ -311,19 +311,19 @@ public class JsonHubJsonParser {
 				if ( JsonStructuralChar.QUOT.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonStringValue(str, r.index);
-					pairs.add(jvb.pair(js, vr.value));
+					pairs.add(jhb.pair(js, vr.value));
 					i = vr.endIndex;
 					
 				} else if ( JsonStructuralChar.ARRAY_BIGIN.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonArrayValue(str, r.index);
-					pairs.add(jvb.pair(js, vr.value));
+					pairs.add(jhb.pair(js, vr.value));
 					i = vr.endIndex;
 					
 				} else if ( JsonStructuralChar.OBJECT_BIGIN.match(r.c) ) {
 					
 					SeekValueResult vr = fromJsonObjectValue(str, r.index);
-					pairs.add(jvb.pair(js, vr.value));
+					pairs.add(jhb.pair(js, vr.value));
 					i = vr.endIndex;
 					
 				} else if (JsonStructuralChar.SEPARATOR_NAME.match(r.c) || JsonStructuralChar.SEPARATOR_VALUE.match(r.c)) {
@@ -340,7 +340,7 @@ public class JsonHubJsonParser {
 						
 					} else {
 						
-						pairs.add(jvb.pair(js, vr.value));
+						pairs.add(jhb.pair(js, vr.value));
 						i = vr.endIndex;
 					}
 				}
@@ -356,7 +356,7 @@ public class JsonHubJsonParser {
 				} else if ( JsonStructuralChar.OBJECT_END.match(r.c) ) {
 					
 					return new SeekValueResult(
-							jvb.object(pairs)
+							jhb.object(pairs)
 							, r.index + 1);
 					
 				} else {

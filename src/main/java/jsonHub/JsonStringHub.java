@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public class JsonStringHub extends JsonHub {
 	
+	private static final long serialVersionUID = -873784938882289245L;
+
 	private final JsonString v;
 	
 	private String toJsonProxy;

@@ -1,9 +1,14 @@
 package jsonHub;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,10 +26,14 @@ import java.util.stream.Stream;
  * Immutable Object
  *
  */
-abstract public class JsonHub implements Iterable<JsonHub> {
+abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
+	
+	private static final long serialVersionUID = 3793174804475491315L;
+	
+	private byte[] toBytesProxy;
 	
 	public JsonHub() {
-		/* Nothing */
+		toBytesProxy = null;
 	}
 	
 	/**
@@ -80,12 +89,13 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	}
 	
 	/**
-	 * enable if type is OBJECT
+	 * enable if type is OBJECT or ARRAY.<br />
+	 * if type is ARRAY, NAME is null.
 	 * 
-	 * @param consumer<NAME, VALUE>
+	 * @param biConsumer<NAME, VALUE>
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	public void forEach(BiConsumer<JsonString, JsonHub> action) {
+	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
 	}
 	
@@ -282,11 +292,16 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	
 	/* builders */
 	
+	public static JsonHubBuilder getBuilder() {
+		return JsonHubBuilder.getInstance();
+	}
+	
 	/**
 	 * parse to JsonHub
 	 * 
 	 * @param json
 	 * @return JsonHub
+	 * @throws JsonHubParseException
 	 */
 	public static JsonHub fromJson(CharSequence json) {
 		return JsonHubJsonParser.getInstance().parse(json);
@@ -298,6 +313,7 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	 * @param reader
 	 * @return JsonHub
 	 * @throws IOException
+	 * @throws JsonHubParseException
 	 */
 	public static JsonHub fromJson(Reader reader) throws IOException {
 		return JsonHubJsonParser.getInstance().parse(reader);
@@ -367,6 +383,75 @@ abstract public class JsonHub implements Iterable<JsonHub> {
 	
 	public <T> T toPojo(Class<T> classOfT) {
 		return JsonHubPojoParser.getInstance().toPojo(this, classOfT);
+	}
+	
+	/**
+	 * 
+	 * @return UTF-8 encorded bytes
+	 */
+	public byte[] getBytes() {
+		byte[] bs = toBytesProxy();
+		return Arrays.copyOf(bs, bs.length);
+	}
+	
+	/**
+	 * write UTF-8 encorded bytes to OutputStream
+	 * 
+	 * @param OutputSteam
+	 * @throws IOException
+	 */
+	public void writeBytes(OutputStream strm) throws IOException {
+		strm.write(toBytesProxy());
+	}
+	
+	private byte[] toBytesProxy() {
+		
+		synchronized ( this ) {
+			
+			if ( toBytesProxy == null ) {
+				toBytesProxy = toJson().getBytes(StandardCharsets.UTF_8);;
+			}
+			
+			return toBytesProxy;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param bytes
+	 * @return JsonHub
+	 * @throws JsonHubParseException
+	 */
+	public static JsonHub fromBytes(byte[] bs) {
+		return fromJson(new String(bs, StandardCharsets.UTF_8));
+	}
+	
+	/**
+	 * 
+	 * @param strm
+	 * @return JsonHub
+	 * @throws IOException
+	 * @throws JsonHubParseException
+	 */
+	public static JsonHub fromBytes(InputStream strm) throws IOException {
+		
+		try (
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				){
+			
+			for ( ;; ) {
+				
+				int r = strm.read();
+				
+				if ( r < 0 ) {
+					break;
+				}
+				
+				os.write(r);
+			}
+			
+			return fromBytes(os.toByteArray());
+		}
 	}
 	
 }

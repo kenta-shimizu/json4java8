@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public class JsonTrueHub extends JsonHub {
 	
+	private static final long serialVersionUID = -788713372914256563L;
+	
 	protected JsonTrueHub() {
 		super();
 	}

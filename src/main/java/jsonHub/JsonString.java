@@ -1,13 +1,16 @@
 package jsonHub;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class JsonString {
+public class JsonString implements Serializable {
+	
+	private static final long serialVersionUID = -2222040816285239082L;
 	
 	private String escaped;
 	private String unescaped;
 	
-	private JsonString() {
+	protected JsonString() {
 		escaped = null;
 		unescaped = null;
 	}

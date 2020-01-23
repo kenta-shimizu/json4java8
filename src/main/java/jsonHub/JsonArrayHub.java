@@ -2,25 +2,29 @@ package jsonHub;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JsonArrayHub extends JsonHub {
 	
+	private static final long serialVersionUID = -9051930871585233794L;
+	
 	private final List<JsonHub> v;
 	private String toJsonProxy;
 	
-	public JsonArrayHub(List<? extends JsonHub> v) {
+	protected JsonArrayHub(List<? extends JsonHub> v) {
 		super();
 		
-		this.v = Collections.unmodifiableList(Objects.requireNonNull(v));
+		this.v = new ArrayList<>(Objects.requireNonNull(v));
 		this.toJsonProxy = null;
 	}
-
+	
 	@Override
 	public Iterator<JsonHub> iterator() {
 		return v.iterator();
@@ -39,6 +43,13 @@ public class JsonArrayHub extends JsonHub {
 	@Override
 	public List<JsonHub> values() {
 		return Collections.unmodifiableList(v);
+	}
+	
+	@Override
+	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
+		v.forEach(x -> {
+			action.accept(null, x);
+		});
 	}
 	
 	@Override

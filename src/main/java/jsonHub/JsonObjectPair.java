@@ -1,8 +1,11 @@
 package jsonHub;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class JsonObjectPair {
+public class JsonObjectPair implements Serializable {
+	
+	private static final long serialVersionUID = 5500254554321018084L;
 	
 	private final JsonString name;
 	private final JsonHub v;

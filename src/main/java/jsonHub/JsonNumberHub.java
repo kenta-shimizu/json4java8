@@ -10,6 +10,8 @@ import java.util.OptionalLong;
 
 public class JsonNumberHub extends JsonHub {
 	
+	private static final long serialVersionUID = -2924637446448005150L;
+	
 	private final Number num;
 	private final String str;
 	

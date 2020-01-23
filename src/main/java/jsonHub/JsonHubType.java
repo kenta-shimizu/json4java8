@@ -2,17 +2,17 @@ package jsonHub;
 
 public enum JsonHubType {
 
-	STRING,
-	NUMBER,
-	OBJECT,
-	ARRAY,
+	NULL,
 	TRUE,
 	FALSE,
-	NULL,
+	STRING,
+	NUMBER,
+	ARRAY,
+	OBJECT,
 	;
 	
 	private JsonHubType() {
-		/* NOthing */
+		/* Nothing */
 	}
 	
 }

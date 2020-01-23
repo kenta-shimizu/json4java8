@@ -1,4 +1,4 @@
-package example1;
+package example01;
 
 import java.util.List;
 
@@ -9,10 +9,15 @@ public class JsonStringParseToPojo {
 	public int num;
 	public String str;
 	public boolean bool;
+	public Object nul;
 	public List<String> list;
 	
+	protected float not_parse_because_not_public;
+	public static long not_parse_because_static = -1L;
+	
 	public JsonStringParseToPojo() {
-		/* Nothing */
+		
+		not_parse_because_not_public = -1.0F;
 	}
 	
 	@Override
@@ -22,6 +27,7 @@ public class JsonStringParseToPojo {
 				+ "num: " + num
 				+ ", str: \"" + str
 				+ "\", bool: " + bool
+				+ ", nul: " + nul
 				+ ", list.size(): "
 				+ (list == null ? -1 : list.size())
 				+ "}";
@@ -29,7 +35,7 @@ public class JsonStringParseToPojo {
 	
 	public static void main(String[] args) {
 		
-		String json = "{\"num\": 100, \"str\": \"string\", \"bool\": true, \"list\": [\"x\", \"y\", \"z\"]}";
+		String json = "{\"num\": 100, \"str\": \"string\", \"bool\": true, \"nul\": null, \"list\": [\"a\", \"b\", \"c\"]}";
 		
 		System.out.println("json: " + json);
 		

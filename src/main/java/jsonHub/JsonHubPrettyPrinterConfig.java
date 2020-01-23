@@ -1,14 +1,20 @@
 package jsonHub;
 
-public class JsonHubPrettyPrinterConfig {
+import java.io.Serializable;
+
+public class JsonHubPrettyPrinterConfig implements Serializable {
+	
+	private static final long serialVersionUID = -4805043719199515027L;
 	
 	private static final String defaultIndent = "  ";
 	private static final String defaultLineSeparator = System.lineSeparator();
 	private static final String defaultPrefixValueSeparator = "";
-	private static final String defaultSuffixValueSeparator = System.lineSeparator();
+	private static final String defaultSuffixValueSeparator = "";
 	private static final String defaultPrefixNameSeparator = "";
 	private static final String defaultSuffixNameSeparator = " ";
-	
+	private static final boolean defaultLineSeparateBeforeValueSeparator = false;
+	private static final boolean defaultLineSeparateAfterValueSeparator = true;
+	private static final boolean defaultLineSeparateIfBlank = false;
 	
 	private String indent;
 	private String lineSeparator;
@@ -16,6 +22,9 @@ public class JsonHubPrettyPrinterConfig {
 	private String suffixValueSeparator;
 	private String prefixNameSeparator;
 	private String suffixNameSeparator;
+	private boolean lineSeparateBeforeValueSeparator;
+	private boolean lineSeparateAfterValueSeparator;
+	private boolean lineSeparateIfBlank;
 	
 	public JsonHubPrettyPrinterConfig() {
 		this.indent = defaultIndent;
@@ -24,6 +33,9 @@ public class JsonHubPrettyPrinterConfig {
 		this.suffixValueSeparator = defaultSuffixValueSeparator;
 		this.prefixNameSeparator = defaultPrefixNameSeparator;
 		this.suffixNameSeparator = defaultSuffixNameSeparator;
+		this.lineSeparateBeforeValueSeparator = defaultLineSeparateBeforeValueSeparator;
+		this.lineSeparateAfterValueSeparator = defaultLineSeparateAfterValueSeparator;
+		this.lineSeparateIfBlank = defaultLineSeparateIfBlank;
 	}
 	
 	
@@ -98,5 +110,41 @@ public class JsonHubPrettyPrinterConfig {
 			return this.suffixNameSeparator;
 		}
 	}
-
+	
+	public void lineSeparateBeforeValueSeparator(boolean f) {
+		synchronized ( this ) {
+			this.lineSeparateBeforeValueSeparator = f;
+		}
+	}
+	
+	public boolean lineSeparateBeforeValueSeparator() {
+		synchronized ( this ) {
+			return this.lineSeparateBeforeValueSeparator;
+		}
+	}
+	
+	public void lineSeparateAfterValueSeparator(boolean f) {
+		synchronized ( this ) {
+			this.lineSeparateAfterValueSeparator = f;
+		}
+	}
+	
+	public boolean lineSeparateAfterValueSeparator() {
+		synchronized ( this ) {
+			return this.lineSeparateAfterValueSeparator;
+		}
+	}
+	
+	public void lineSeparateIfBlank(boolean f) {
+		synchronized ( this ) {
+			this.lineSeparateIfBlank = f;
+		}
+	}
+	
+	public boolean lineSeparateIfBlank() {
+		synchronized ( this ) {
+			return this.lineSeparateIfBlank;
+		}
+	}
+	
 }

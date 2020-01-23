@@ -86,28 +86,30 @@ public class JsonHubPrettyPrinter {
 		case STRING:
 		case NUMBER: {
 			
-			writeIndent(writer, level);
 			v.toJson(writer);
-			
 			break;
 		}
 		case ARRAY: {
 			
-			writeIndent(writer, level);
 			writer.write(JsonStructuralChar.ARRAY_BIGIN.str());
 			
-			if ( ! v.isEmpty() ) {
+			if ( v.isEmpty() ) {
 				
-				writeLineSeparator(writer);
+				writeLineSeparatorIfBlank(writer, level);
+				
+			} else {
 				
 				int deepLevel = level + 1;
+				
+				writeLineSeparator(writer);
+				writeIndent(writer, deepLevel);
 				
 				boolean f = false;
 				
 				for (JsonHub jh : v.values()) {
 					
 					if ( f ) {
-						writeValueSeparator(writer);
+						writeValueSeparator(writer, deepLevel);
 					} else {
 						f = true;
 					}
@@ -125,26 +127,33 @@ public class JsonHubPrettyPrinter {
 		}
 		case OBJECT: {
 			
-			writeIndent(writer, level);
 			writer.write(JsonStructuralChar.OBJECT_BIGIN.str());
 			
-			if ( ! v.isEmpty() ) {
+			if ( v.isEmpty() ) {
 				
-				writeLineSeparator(writer);
+				writeLineSeparatorIfBlank(writer, level);
+				
+			} else {
 				
 				int deepLevel = level + 1;
+				
+				writeLineSeparator(writer);
+				writeIndent(writer, deepLevel);
 				
 				boolean f = false;
 				
 				for ( JsonObjectPair pair : v.objectPairs() ) {
 					
 					if ( f ) {
-						writeValueSeparator(writer);
+						writeValueSeparator(writer, deepLevel);
 					} else {
 						f = true;
 					}
 					
-					printObjectPair(pair, writer, deepLevel);
+					writeObjectName(writer, pair);
+					writeNameSeparator(writer);
+					
+					print(pair.value(), writer, deepLevel);
 				}
 				
 				writeLineSeparator(writer);
@@ -153,90 +162,6 @@ public class JsonHubPrettyPrinter {
 			
 			writer.write(JsonStructuralChar.OBJECT_END.str());
 			
-			break;
-		}
-		}
-	}
-	
-	private void printObjectPair(JsonObjectPair pair, Writer writer, int level) throws IOException {
-		
-		JsonHub v = pair.value();
-		
-		writeIndent(writer, level);
-		writeObjectName(writer, pair);
-		writeNameSeparator(writer);
-		
-		switch ( v.type() ) {
-		case NULL:
-		case TRUE:
-		case FALSE:
-		case STRING:
-		case NUMBER: {
-			
-			v.toJson(writer);
-			
-			break;
-		}
-		case ARRAY: {
-			
-			writer.write(JsonStructuralChar.ARRAY_BIGIN.str());
-			
-			if ( ! v.isEmpty() ) {
-				
-				writeLineSeparator(writer);
-				
-				int deepLevel = level + 1;
-				
-				boolean f = false;
-				
-				for (JsonHub jh : v.values()) {
-					
-					if ( f ) {
-						writeValueSeparator(writer);
-					} else {
-						f = true;
-					}
-					
-					print(jh, writer, deepLevel);
-				}
-				
-				writeLineSeparator(writer);
-				writeIndent(writer, level);
-			}
-			
-			writer.write(JsonStructuralChar.ARRAY_END.str());
-
-			break;
-		}
-		case OBJECT: {
-			
-			writer.write(JsonStructuralChar.OBJECT_BIGIN.str());
-			
-			if ( ! v.isEmpty() ) {
-				
-				writeLineSeparator(writer);
-				
-				int deepLevel = level + 1;
-				
-				boolean f = false;
-				
-				for ( JsonObjectPair p : v.objectPairs() ) {
-					
-					if ( f ) {
-						writeValueSeparator(writer);
-					} else {
-						f = true;
-					}
-					
-					printObjectPair(p, writer, deepLevel);
-				}
-				
-				writeLineSeparator(writer);
-				writeIndent(writer, level);
-			}
-			
-			writer.write(JsonStructuralChar.OBJECT_END.str());
-
 			break;
 		}
 		}
@@ -252,10 +177,28 @@ public class JsonHubPrettyPrinter {
 		writer.write(config().lineSeparator());
 	}
 	
-	private void writeValueSeparator(Writer writer) throws IOException {
+	private void writeLineSeparatorIfBlank(Writer writer, int level) throws IOException {
+		if ( config().lineSeparateIfBlank() ) {
+			writeLineSeparator(writer);
+			writeIndent(writer, level);
+		}
+	}
+	
+	private void writeValueSeparator(Writer writer, int level) throws IOException {
+		
+		if ( config().lineSeparateBeforeValueSeparator() ) {
+			writeLineSeparator(writer);
+			writeIndent(writer, level);
+		}
+		
 		writer.write(config().prefixValueSeparator());
 		writer.write(JsonStructuralChar.SEPARATOR_VALUE.str());
 		writer.write(config().suffixValueSeparator());
+		
+		if ( config().lineSeparateAfterValueSeparator() ) {
+			writeLineSeparator(writer);
+			writeIndent(writer, level);
+		}
 	}
 	
 	private void writeNameSeparator(Writer writer) throws IOException {
