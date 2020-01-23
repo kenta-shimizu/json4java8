@@ -2,6 +2,7 @@ package example03;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,7 +40,7 @@ public class PojoWriteJsonToFile {
 		PojoWriteJsonToFile pojo = new PojoWriteJsonToFile();
 		
 		try (
-				BufferedWriter bw = Files.newBufferedWriter(path);
+				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
 				) {
 			
 			JsonHub.fromPojo(pojo).toJson(bw);
