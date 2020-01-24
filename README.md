@@ -1,10 +1,14 @@
 # json4java8
 
-## Intruduction
+## Introduction
 This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8.
 
 
 ## Convert
+
+1. Create JsonHub instance from `#fromPojo`, `#fromJson`, `#readFile`, `#fromBytes`.
+1. Convert using `#toPojo`, `#toJson`, `#writeFile`, `#getBytes`, `#writeBytes`.
+
 
 ### from POJO (Plain Old Java Objec) to JSON
 
@@ -37,7 +41,7 @@ Path path = Paths.get("path_of_file.json");
 Pojo pojo = JsonHub.readFile(path).toPojo(Pojo.class);
 ```
 
-### from POJO to bytes
+### from POJO to UTF-8 bytes
 
 ```
 /* to bytes */
@@ -48,7 +52,7 @@ OutputStream strm = new ByteArrayOutputStream();
 JsonHub.fromPojo(pojo).writeBytes(strm);
 ```
 
-### from bytes to POJO
+### from UTF-8 bytes to POJO
 ```
 /* from bytes */
 byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
@@ -61,6 +65,9 @@ Pojo pojo = JsonHub.fromBytes(strm).toPojo(Pojo.class);
 
 ## Pretty Print
 
+1. Create JsonHub instance from `#fromPojo`, ...
+1. PrettyPrint using `#prettyPrint`
+
 ```
 /* to String */
 String prettyPrintJson = JsonHub.fromPoso(pojo).prettyPrint();
@@ -69,7 +76,7 @@ String prettyPrintJson = JsonHub.fromPoso(pojo).prettyPrint();
 Path path = Paths.get("path_of_file.json");
 JsonHub.fromPojo(pojo).prettyPrint(path);
 
-/* write to writer */
+/* write to Writer */
 Writer writer = new StringWriter();
 JsonHub.fromPojo(pojo).prettyPrint(writer;
 ```
@@ -100,24 +107,30 @@ JsonHub jsonHub = JsonHub.fromJson(json);
 
 Matrix of type, funciton
 
+zz"○" is useable.
+
+zz "X" is throw JsonHubParseException.
+
 | Method | Object | Array | Number | String | true | false | null |
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |#get| x | y | x | z1|
 |#get| x | y | x | z|
-|#forEach(Consumer)| × | ○ | *1 | *2 |
+|#forEach(Consumer)| × | ○ | [^1] | [^2] |
 
 
 
 See also ["/src/examples/example1/ExampleHttpGeneralServer.java"](/src/examples/example1/)
 
-*1 : null
 
-*2 : number
+[^1]: Optional is empty
+
+[^2]: number
 
 
-## Build JsonHub instance to create JSON
 
-use JsonHubBuilder
+## Create JsonHub instance by Builder
+
+Use JsonHubBuilder
 
 ```
 JsonHubBuilder jhb = JsonHub.getBuilder();
