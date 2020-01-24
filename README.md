@@ -18,7 +18,7 @@ JsonHub.fromPojo(pojo).toJson(writer);
 
 /* to file */
 Path path = Paths.get("path_of_file.json");
-JsonHub.fromPojo(pojo).toJson(path);
+JsonHub.fromPojo(pojo).writeFile(path);
 ```
 
 ### from JSON to POJO
@@ -30,11 +30,22 @@ Pojo pojo = JsonHub.fromJson(json).toPojo(Pojo.class);
 
 /* from Reader */
 Reader reader = new StringReader(json);
-Pojo pojo = JsonHub.fromJson(json).toPojo(Pojo.class);
+Pojo pojo = JsonHub.fromJson(reader).toPojo(Pojo.class);
 
 /* from file */
 Path path = Paths.get("path_of_file.json");
 Pojo pojo = JsonHub.readFile(path).toPojo(Pojo.class);
+```
+
+### from POJO to bytes
+
+```
+/* to bytes */
+byte[] bytes = JsonHub.fromPojo(pojo).getBytes();
+
+/* to OutputStream */
+OutputStream strm = new ByteArrayOutputStream();
+JsonHub.fromPojo(pojo).writeBytes(strm);
 ```
 
 ### from bytes to POJO
@@ -44,7 +55,7 @@ byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
 Pojo pojo = JsonHub.fromBytes(bytes).toPojo(Pojo.class);
 
 /* from InputStream */
-InputStream strm = new ByteArrayInputStream();
+InputStream strm = new ByteArrayInputStream(bytes);
 Pojo pojo = JsonHub.fromBytes(strm).toPojo(Pojo.class);
 ```
 
