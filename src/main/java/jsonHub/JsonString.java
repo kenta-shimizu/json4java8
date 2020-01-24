@@ -52,6 +52,22 @@ public class JsonString implements Serializable {
 	}
 	
 	/**
+	 * 
+	 * @return unescaped().length()
+	 */
+	public int length() {
+		return unescaped().length();
+	}
+	
+	/**
+	 * 
+	 * @retur nunescaped().isEmpty()
+	 */
+	public boolean isEmpty() {
+		return unescaped().isEmpty();
+	}
+	
+	/**
 	 *  alias of unescaped()
 	 */
 	@Override

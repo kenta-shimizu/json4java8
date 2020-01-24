@@ -1,8 +1,13 @@
 package jsonHub;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
 
 public class JsonHubPrettyPrinter {
 	
@@ -52,6 +57,41 @@ public class JsonHubPrettyPrinter {
 		
 		synchronized ( this ) {
 			print(v, writer, 0);
+		}
+	}
+	
+	/**
+	 * write to File
+	 * 
+	 * @param v
+	 * @param path
+	 * @throws IOException
+	 */
+	public void print(JsonHub v, Path path) throws IOException {
+		
+		try (
+				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+				) {
+			
+			print(v, bw);
+		}
+	}
+	
+	/**
+	 * write to File
+	 * 
+	 * @param v
+	 * @param path
+	 * @param options
+	 * @throws IOException
+	 */
+	public void print(JsonHub v, Path path, OpenOption... options) throws IOException {
+		
+		try (
+				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8, options);
+				) {
+			
+			print(v, bw);
 		}
 	}
 	

@@ -49,6 +49,17 @@ public class ReadJsonFileParseToPojo {
 		
 		Path path = Paths.get("path_to_file.json");
 		
+		try {
+			
+			ReadJsonFileParseToPojo pojo = JsonHub.fromFile(path).toPojo(ReadJsonFileParseToPojo.class);
+			
+			System.out.println("pojo: " + pojo);
+		}
+		catch ( IOException e ) {
+			e.printStackTrace();
+		}
+		
+		
 		try (
 				BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8);
 				) {

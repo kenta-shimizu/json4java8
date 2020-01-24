@@ -32,12 +32,12 @@ public class JsonStringHub extends JsonHub {
 	
 	@Override
 	public int length() {
-		return toString().length();
+		return v.length();
 	}
 	
 	@Override
 	public boolean isEmpty() {
-		return toString().isEmpty();
+		return v.isEmpty();
 	}
 	
 	@Override

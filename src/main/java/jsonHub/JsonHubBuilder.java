@@ -168,10 +168,10 @@ public class JsonHubBuilder {
 	
 	/**
 	 * 
-	 * @return blank ARRAY
+	 * @return empty ARRAY
 	 */
 	public JsonArrayHub array() {
-		return SingletonHolder.emptyArrayValue;
+		return emptyArray();
 	}
 	
 	/**
@@ -190,19 +190,23 @@ public class JsonHubBuilder {
 	 */
 	public JsonArrayHub array(List<? extends JsonHub> v) {
 		if ( v.isEmpty() ) {
-			return array();
+			return emptyArray();
 		} else {
 			return new JsonArrayHub(v);
 		}
 	}
 	
+	public JsonArrayHub emptyArray() {
+		return SingletonHolder.emptyArrayValue;
+	}
+	
 	
 	/**
 	 * 
-	 * @return blank OBJECT
+	 * @return empty OBJECT
 	 */
 	public JsonObjectHub object() {
-		return SingletonHolder.emptyObjectValue;
+		return emptyObject();
 	}
 	
 	/**
@@ -221,7 +225,7 @@ public class JsonHubBuilder {
 	 */
 	public JsonObjectHub object(Collection<? extends JsonObjectPair> v) {
 		if ( Objects.requireNonNull(v).isEmpty() ) {
-			return object();
+			return emptyObject();
 		} else {
 			return new JsonObjectHub(v);
 		}
@@ -241,6 +245,10 @@ public class JsonHubBuilder {
 		});
 			
 		return object(pairs);
+	}
+	
+	public JsonObjectHub emptyObject() {
+		return SingletonHolder.emptyObjectValue;
 	}
 	
 	/**

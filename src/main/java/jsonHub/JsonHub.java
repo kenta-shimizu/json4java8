@@ -1,5 +1,7 @@
 package jsonHub;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +11,9 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,7 +24,9 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.Set;
+import java.util.Spliterator;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -37,7 +44,8 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 	}
 	
 	/**
-	 * enable if type is ARRAY
+	 * enable if type is ARRAY or OBJECT
+	 * if type is OBJECT, VALUE is JsonHub.
 	 * 
 	 * @throws JsonHubUnsupportedOperationException
 	 */
@@ -46,10 +54,46 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #iterator");
 	}
 	
+	/**
+	 * enable if type is ARRAY or OBJECT
+	 * if type is OBJECT, VALUE is JsonHub.
+	 * 
+	 * @throws JsonHubUnsupportedOperationException
+	 */
+	@Override
+	public Spliterator<JsonHub> spliterator() {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #spliterator");
+	}
+	
+	/**
+	 * enable if type is OBJECT or ARRAY.<br />
+	 * if type is OBJECT, VALUE is JsonHub.
+	 * 
+	 * @param Consumer<VALUE>
+	 * @throws JsonHubUnsupportedOperationException
+	 */
+	@Override
+	public void forEach(Consumer<? super JsonHub> action) {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
+	}
+	
+	/**
+	 * enable if type is OBJECT or ARRAY.<br />
+	 * if type is ARRAY, NAME is null.
+	 * 
+	 * @param BiConsumer<NAME, VALUE>
+	 * @throws JsonHubUnsupportedOperationException
+	 */
+	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
+		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
+	}
+	
+	
 	abstract public JsonHubType type();
 	
 	/**
-	 * enable if type is ARRAY
+	 * enable if type is OBJECT or ARRAY.<br />
+	 * if type is OBJECT, VALUE is JsonHub.
 	 * 
 	 * @return Array values stream
 	 * @throws JsonHubUnsupportedOperationException
@@ -89,17 +133,6 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 	}
 	
 	/**
-	 * enable if type is OBJECT or ARRAY.<br />
-	 * if type is ARRAY, NAME is null.
-	 * 
-	 * @param biConsumer<NAME, VALUE>
-	 * @throws JsonHubUnsupportedOperationException
-	 */
-	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
-	}
-	
-	/**
 	 * enable if type is ARRAY
 	 *  
 	 * @param index
@@ -130,6 +163,17 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 	 */
 	public JsonHub get(CharSequence name) {
 		throw new JsonHubUnsupportedOperationException(type() + "not support #get(\"" + name + "\")");
+	}
+	
+	/**
+	 * enable if type is OBJECT
+	 * 
+	 * @param name
+	 * @return emptyObject() if not exist
+	 * @throws JsonHubUnsupportedOperationException
+	 */
+	public JsonHub getOrDefault(CharSequence name) {
+		throw new JsonHubUnsupportedOperationException(type() + "not support #getOrDefault");
 	}
 	
 	/**
@@ -348,6 +392,58 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 	
 	
 	/**
+	 * read JSON file and parse to JsonHub
+	 * 
+	 * @param JSON-file-path
+	 * @return JsonHub
+	 * @throws IOException
+	 * @throws JsonHubParseException
+	 */
+	public static JsonHub fromFile(Path path) throws IOException {
+		
+		try (
+				BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+				){
+			
+			return fromJson(br);
+		}
+	}
+	
+	/**
+	 * write to file
+	 * 
+	 * @param file-path
+	 * @throws IOException
+	 */
+	public void writeFile(Path path) throws IOException {
+		
+		try (
+				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+				) {
+			
+			toJson(bw);
+		}
+	}
+	
+	/**
+	 * write to file
+	 * 
+	 * @param path
+	 * @param options
+	 * @throws IOException
+	 */
+	public void writeFile(Path path, OpenOption... options) throws IOException {
+		
+		try (
+				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8, options);
+				) {
+			
+			toJson(bw);
+		}
+	}
+	
+	
+	/**
 	 * 
 	 * @return Pretty-Print-JSON
 	 */
@@ -358,13 +454,14 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 	/**
 	 * 
 	 * @param config
-	 * @return Pretty-Print-JSON
+	 * @return Pretty-Print-JSON with config format
 	 */
 	public String prettyPrint(JsonHubPrettyPrinterConfig config) {
 		return new JsonHubPrettyPrinter(config).print(this);
 	}
 	
 	/**
+	 * write Pretty-Print-JSON to writer
 	 * 
 	 * @param writer
 	 * @throws IOException
@@ -373,14 +470,79 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 		JsonHubPrettyPrinter.getDefaultPrinter().print(this, writer);
 	}
 	
+	/**
+	 * write Pretty-Print-JSON to writer with config format
+	 * 
+	 * @param writer
+	 * @param config
+	 * @throws IOException
+	 */
 	public void prettyPrint(Writer writer, JsonHubPrettyPrinterConfig config) throws IOException {
 		new JsonHubPrettyPrinter(config).print(this, writer);
 	}
 	
+	/**
+	 * write Pretty-Print-JSON to File
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
+	public void prettyPrint(Path path) throws IOException {
+		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path);
+	}
+	
+	/**
+	 * write Pretty-Print-JSON to File
+	 * 
+	 * @param path
+	 * @param options
+	 * @throws IOException
+	 */
+	public void prettyPrint(Path path, OpenOption... options) throws IOException {
+		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path, options);
+	}
+	
+	/**
+	 * write Pretty-Print-JSON to File with config format
+	 * 
+	 * @param path
+	 * @param config
+	 * @throws IOException
+	 */
+	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config) throws IOException {
+		new JsonHubPrettyPrinter(config).print(this, path);
+	}
+	
+	/**
+	 * write Pretty-Print-JSON to File with config format
+	 * 
+	 * @param path
+	 * @param config
+	 * @param options
+	 * @throws IOException
+	 */
+	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config, OpenOption... options) throws IOException {
+		new JsonHubPrettyPrinter(config).print(this, path, options);
+	}
+	
+	
+	/**
+	 * 
+	 * @param pojo
+	 * @return
+	 * @throws JsonHubParseException
+	 */
 	public static JsonHub fromPojo(Object pojo) {
 		return JsonHubPojoParser.getInstance().fromPojo(pojo);
 	}
 	
+	/**
+	 * 
+	 * @param <T>
+	 * @param classOfT
+	 * @return Pojo
+	 * @throws JsonHubParseException
+	 */
 	public <T> T toPojo(Class<T> classOfT) {
 		return JsonHubPojoParser.getInstance().toPojo(this, classOfT);
 	}

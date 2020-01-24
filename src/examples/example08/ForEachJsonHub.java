@@ -73,12 +73,7 @@ public class ForEachJsonHub {
 			
 			echo(indent, typeTag, nameTag, "[");
 			
-			jh.forEach((JsonString n, JsonHub v) -> {
-				
-				/*
-				 * if type is ARRAY, JsonString is null
-				 */
-				
+			jh.forEach((JsonHub v) -> {
 				forEach(v, "", deepIndent);
 			});
 			

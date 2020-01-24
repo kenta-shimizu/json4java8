@@ -7,7 +7,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Spliterator;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,6 +33,23 @@ public class JsonArrayHub extends JsonHub {
 	}
 	
 	@Override
+	public Spliterator<JsonHub> spliterator() {
+		return v.spliterator();
+	}
+	
+	@Override
+	public void forEach(Consumer<? super JsonHub> action) {
+		v.forEach(action);
+	}
+	
+	@Override
+	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
+		v.forEach(x -> {
+			action.accept(null, x);
+		});
+	}
+	
+	@Override
 	public JsonHubType type() {
 		return JsonHubType.ARRAY;
 	}
@@ -43,13 +62,6 @@ public class JsonArrayHub extends JsonHub {
 	@Override
 	public List<JsonHub> values() {
 		return Collections.unmodifiableList(v);
-	}
-	
-	@Override
-	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
-		v.forEach(x -> {
-			action.accept(null, x);
-		});
 	}
 	
 	@Override

@@ -5,11 +5,15 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Spliterator;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JsonObjectHub extends JsonHub {
 	
@@ -26,8 +30,36 @@ public class JsonObjectHub extends JsonHub {
 	}
 	
 	@Override
+	public Iterator<JsonHub> iterator() {
+		return stream().iterator();
+	}
+	
+	@Override
+	public Spliterator<JsonHub> spliterator() {
+		return stream().spliterator();
+	}
+	
+	@Override
+	public void forEach(Consumer<? super JsonHub> action) {
+		stream().forEach(action);
+	}
+	
+	@Override
+	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
+		v.forEach(x -> {
+			action.accept(x.name(), x.value());
+		});
+	}
+	
+	
+	@Override
 	public JsonHubType type() {
 		return JsonHubType.OBJECT;
+	}
+	
+	@Override
+	public Stream<JsonHub> stream() {
+		return v.stream().map(x -> x.value());
 	}
 	
 	@Override
@@ -42,14 +74,7 @@ public class JsonObjectHub extends JsonHub {
 	
 	@Override
 	public List<JsonHub> values() {
-		return v.stream().map(x -> x.value()).collect(Collectors.toList());
-	}
-	
-	@Override
-	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
-		v.stream().forEach(x -> {
-			action.accept(x.name(), x.value());
-		});
+		return stream().collect(Collectors.toList());
 	}
 	
 	@Override
@@ -63,6 +88,11 @@ public class JsonObjectHub extends JsonHub {
 	@Override
 	public JsonHub get(CharSequence name) {
 		return getOrDefault(name, null);
+	}
+	
+	@Override
+	public JsonHub getOrDefault(CharSequence name) {
+		return getOrDefault(name, getBuilder().emptyObject());
 	}
 	
 	@Override
