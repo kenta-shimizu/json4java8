@@ -3,6 +3,31 @@
 ## Introduction
 This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8.
 
+```
+public class POJO {
+	
+	public int num;
+	public String str;
+	public boolean bool;
+	public List<String> array;
+	
+	public POJO() {
+		num = 100;
+		str = "STRING";
+		bool = true;
+		array = Arrays.asList("a", "b", "c");
+	}
+	
+	public static void main(String[] args) {
+
+		POJO pojo = new POJO();
+		String json = JsonHub.fromPojo(pojo).toJson();
+		System.out.println(json);
+		
+        /* {"num":100,"str":"STRING","bool":true,"array":["a","b","c"]} */
+	}
+}
+```
 
 ## Convert
 
@@ -24,6 +49,11 @@ JsonHub.fromPojo(pojo).toJson(writer);
 Path path = Paths.get("path_of_file.json");
 JsonHub.fromPojo(pojo).writeFile(path);
 ```
+
+See also ["/src/examples/example02/PojoParseToJsonString.java"](/src/examples/example02/PojoParseToJsonString.java)
+
+See also ["/src/examples/example03/PojoWriteJsonToFile.java"](/src/examples/example03/PojoWriteJsonToFile.java)
+
 
 ### from JSON to POJO
 
@@ -87,21 +117,20 @@ see also "example".
 ## Get value from JsonHub instance
 
 ```
-String json = "{
-            "  \"num\":    100,
-            "  \"str\":    \"STRING\",
-            "  \"bool\":   true,
-            "   \"array\":  [
-                                "a",
-                                "b",
-                                "c"
-                            ]
-            }";
+String json
+= "{                                 "
++ "  \"num\":   100,                 "
++ "  \"str\":   \"STRING\",          "
++ "  \"bool\":  true,                "
++ "  \"array\": [\"a\", \"b\", \"c\"]"
++ "}                                 ";
 
-JsonHub jsonHub = JsonHub.fromJson(json);
+JsonHub jh = JsonHub.fromJson(json);
 
-
-
+int num = jh.get("num").intValue();  /* 100 */
+String str = jh.get("str").toString();  /* "STRING" */
+boolean bool = jh.get("bool").booleanValue();  /* true */
+String array_0 = jh.get("array").get(0).toString();  /* "a" */
 ```
 
 ### Methods for seek value
@@ -164,14 +193,6 @@ JsonHub jsonHub = JsonHub.fromJson(json);
 |nonNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 
-See also ["/src/examples/example1/ExampleHttpGeneralServer.java"](/src/examples/example1/)
-
-
-[^1]: Optional is empty
-
-[^2]: number
-
-
 
 ## Create JsonHub instance by Builder
 
@@ -188,14 +209,14 @@ JsonHub jsonHub = jhb.object(
         jhb.build("a"),
         jhb.build("b"),
         jhb.build("c")
-    )
+    ))
 );
 
 String json = jsonHub.toJson();
 
 System.out.println(json);
 
-/* {} */
+/* {"num":100,"str":"STRING","bool":true,"array":["a","b","c"]} */
 ```
 
 
