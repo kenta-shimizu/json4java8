@@ -35,10 +35,10 @@ public class ForEachJsonHub {
 		
 		JsonHub jh = JsonHub.fromPojo(pojo);
 		
-		echo(jh, "", "");
+		forEachEcho(jh, "", "");
 	}
 	
-	private static void echo(JsonHub jh, String name, String indent) {
+	private static void forEachEcho(JsonHub jh, String name, String indent) {
 		
 		JsonHubType type = jh.type();
 		
@@ -74,7 +74,7 @@ public class ForEachJsonHub {
 			echo(indent, typeTag, nameTag, "[");
 			
 			jh.forEach((JsonHub v) -> {
-				echo(v, "", deepIndent);
+				forEachEcho(v, "", deepIndent);
 			});
 			
 			echo(indent, "]");
@@ -85,7 +85,7 @@ public class ForEachJsonHub {
 			echo(indent, typeTag, nameTag, "{");
 			
 			jh.forEach((JsonString n, JsonHub v) -> {
-				echo(v, n.toString(), deepIndent);
+				forEachEcho(v, n.toString(), deepIndent);
 			});
 			
 			echo(indent, "}");

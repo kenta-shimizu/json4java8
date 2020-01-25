@@ -203,7 +203,7 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 
 
 
-## Create JsonHub instance by Builder
+## Create JsonHub instance by builder
 
 Use JsonHubBuilder
 
