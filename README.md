@@ -84,7 +84,7 @@ JsonHub.fromPojo(pojo).prettyPrint(writer;
 see also "example".
 
 
-## Get Value
+## Get value JsonHub instance
 
 ```
 String json = "{
@@ -122,7 +122,7 @@ JsonHub jsonHub = JsonHub.fromJson(json);
 |forEach(BiConsumer<? super JsonString, ? super JsonHub)| ✓ | ✓ |  |  |  |  |  |
 |values() | ✓ | ✓ |  |  |  |  |  |
 |keySet() | ✓ | |  |  |  |  |  |
-|containsKey() | ✓ | |  |  |  |  |  |
+|containsKey(CharSequence) | ✓ | |  |  |  |  |  |
 |getOrDefault(CharSequence)| ✓ | |  |  |  |  |  |
 |getOrDefault(CharSequence, JsonHub)| ✓ | |  |  |  |  |  |
 
@@ -151,8 +151,6 @@ JsonHub jsonHub = JsonHub.fromJson(json);
 ### Methods for judge type
 
 ✓ is useable.
-
-"blank" is throw JsonHubUnsupportedOperationException.
 
 | Method | Object | Array | Number | String | true | false | null |
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
