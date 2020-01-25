@@ -105,18 +105,66 @@ JsonHub jsonHub = JsonHub.fromJson(json);
 
 ```
 
-Matrix of type, funciton
+### Methods for seek value
 
-zz"○" is useable.
+✓ is useable.
 
-zz "X" is throw JsonHubParseException.
+"blank" is throw JsonHubUnsupportedOperationException.
 
 | Method | Object | Array | Number | String | true | false | null |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|#get| x | y | x | z1|
-|#get| x | y | x | z|
-|#forEach(Consumer)| × | ○ | [^1] | [^2] |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|get(CharSequence) | ✓ |  |  |  |  |  |  |  |
+|get(String...)| ✓ |  |  |  |  |  |  |  |
+|get(int)|  | ✓ |  |  |  |  |  |  |  |
+|iterator() | ✓ | ✓ |  |  |  |  |  |
+|stream() | ✓ | ✓ |  |  |  |  |  |
+|forEach(Consumer<? super JsonHub)| ✓ | ✓ |  |  |  |  |  |
+|forEach(BiConsumer<? super JsonString, ? super JsonHub)| ✓ | ✓ |  |  |  |  |  |
+|values() | ✓ | ✓ |  |  |  |  |  |
+|keySet() | ✓ | |  |  |  |  |  |
+|containsKey() | ✓ | |  |  |  |  |  |
+|getOrDefault(CharSequence)| ✓ | |  |  |  |  |  |
+|getOrDefault(CharSequence, JsonHub)| ✓ | |  |  |  |  |  |
 
+### Methods for get value
+
+✓ is useable.
+
+"blank" is throw JsonHubUnsupportedOperationException.
+
+| Method | Object | Array | Number | String | true | false | null |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|intValue() |  |  | ✓ |  |  |  |  |
+|longValue() |  | | ✓ |  |  |  |  |
+|doubleValue() |  | | ✓ |  |  |  |  |
+|booleanValue() |  | |  |  | ✓ | ✓ |  |
+|optionalInt() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalLong() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalDouble() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalBoolean() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalNumber() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|length() | ✓ | ✓ |  | ✓ |  |  |  |
+|isEmpty() | ✓ | ✓ |  | ✓ |  |  |  |
+|toString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+### Methods for judge type
+
+✓ is useable.
+
+"blank" is throw JsonHubUnsupportedOperationException.
+
+| Method | Object | Array | Number | String | true | false | null |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|type() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isObject() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isArray() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isNumber() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isTrue() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isFalse() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|nonNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 
 See also ["/src/examples/example1/ExampleHttpGeneralServer.java"](/src/examples/example1/)

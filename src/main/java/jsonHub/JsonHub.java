@@ -241,7 +241,7 @@ abstract public class JsonHub implements Iterable<JsonHub>, Serializable {
 	 * 
 	 * @return true if value is not null
 	 */
-	public boolean notNull() {
+	public boolean nonNull() {
 		return ! isNull();
 	}
 	
