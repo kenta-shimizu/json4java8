@@ -84,7 +84,7 @@ JsonHub.fromPojo(pojo).prettyPrint(writer;
 see also "example".
 
 
-## Get value JsonHub instance
+## Get value from JsonHub instance
 
 ```
 String json = "{
@@ -96,8 +96,7 @@ String json = "{
                                 "b",
                                 "c"
                             ]
-                ]
-                }";
+            }";
 
 JsonHub jsonHub = JsonHub.fromJson(json);
 
