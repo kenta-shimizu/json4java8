@@ -144,7 +144,7 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 
 ### Methods for seek value
 
-✓ is useable.  
+✓ is available.  
 "blank" is throw JsonHubUnsupportedOperationException.
 
 | Method | Object | Array | Number | String | true | false | null |
@@ -164,7 +164,7 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 
 ### Methods for get value
 
-✓ is useable.  
+✓ is available.  
 "blank" is throw JsonHubUnsupportedOperationException.
 
 | Method | Object | Array | Number | String | true | false | null |
@@ -185,7 +185,7 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 
 ### Methods for judge type
 
-✓ is useable.
+✓ is available.
 
 | Method | Object | Array | Number | String | true | false | null |
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
