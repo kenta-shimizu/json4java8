@@ -1,5 +1,6 @@
 package jsonHub;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -38,6 +39,18 @@ public class JsonHubPojoParser {
 		if ( pojo == null ) {
 			
 			return jhb.nullValue();
+		
+		} else if ( pojo.getClass().isArray() ) {
+			
+			final List<JsonHub> ll = new ArrayList<>();
+			
+			int len = Array.getLength(pojo);
+			
+			for ( int i = 0 ; i < len; ++i ) {
+				ll.add(fromObjectPojo(Array.get(pojo, i)));
+			}
+			
+			return jhb.array(ll);
 			
 		} else if ( pojo instanceof Boolean ) {
 			
@@ -132,12 +145,21 @@ public class JsonHubPojoParser {
 		}
 		case ARRAY : {
 			
-			throw new JsonHubParseException("Top level [] is not supported");
+			if ( classOfT.isArray() ) {
+				
+				return toArrayPojo(jh, classOfT);
+				
+			} else {
+				
+				/* Not beautiful */
+				throw new JsonHubParseException("Top level [] is not supported");
+			}
+			
 			/* break; */
 		}
 		case OBJECT: {
 			
-			return classOfT.cast(toObjectPojo(jh, classOfT));
+			return toObjectPojo(jh, classOfT);
 			/* break */
 		}
 		default: {
@@ -204,15 +226,38 @@ public class JsonHubPojoParser {
 				}
 				case ARRAY: {
 					
+					Object o = field.get(inst);
+					
+					if ( o != null ) {
+						
+						Class<?> compClass = o.getClass();
+						
+						if ( compClass.isArray() ) {
+							
+							field.set(inst, toArrayPojo(
+									v
+									, compClass));
+							
+							break;
+						}
+					}
+					
 					Type type = field.getGenericType();
 					
 					Type ptype = ((ParameterizedType)type)
 							.getActualTypeArguments()[0];
 					
 					/* Not beautiful */
-					field.set(inst, toArrayPojo(
-							v
-							, Class.forName(ptype.getTypeName())));
+					try {
+						
+						field.set(inst, toUtilListPojo(
+								v
+								, Class.forName(ptype.getTypeName())));
+					}
+					catch ( ClassNotFoundException e ) {
+						throw new JsonHubParseException("Deep java.util.List is not support", e);
+					}
+					
 					break;
 				}
 				case OBJECT: {
@@ -229,7 +274,67 @@ public class JsonHubPojoParser {
 		return inst;
 	}
 	
-	private static <T> List<T> toArrayPojo(JsonHub jh, Class<T> classOfT)
+	private static <T> T toArrayPojo(JsonHub jh, Class<T> classOfT)
+			throws ReflectiveOperationException {
+		
+		Class<?> compClass = classOfT.getComponentType();
+		
+		int len = jh.length();
+		
+		Object array = Array.newInstance(compClass, len);
+		
+		for ( int i = 0; i < len; ++i ) {
+			
+			JsonHub v = jh.get(i);
+			
+			switch ( v.type() ) {
+			case NULL: {
+				
+				Array.set(array, i, null);
+				break;
+			}
+			case TRUE:
+			case FALSE: {
+				
+				Array.set(array, i, v.optionalBoolean().get());
+				break;
+			}
+			case STRING: {
+				
+				Array.set(array, i, v.toString());
+				break;
+			}
+			case NUMBER: {
+				
+				Number n = v.optionalNubmer().get();
+				Array.set(array, i, toNumberPojo(n, compClass));
+				break;
+			}
+			case ARRAY: {
+				
+				if ( compClass.isArray() ) {
+					
+					Array.set(array, i, toArrayPojo(v, compClass));
+					
+				} else {
+					
+					Array.set(array, i, toObjectPojo(v, compClass));
+				}
+				break;
+			}
+			case OBJECT: {
+				
+				Array.set(array, i, toObjectPojo(v, compClass));
+				break;
+			}
+
+			}
+		}
+		
+		return classOfT.cast(array);
+	}
+	
+	private static <T> List<T> toUtilListPojo(JsonHub jh, Class<T> classOfT)
 			throws ReflectiveOperationException {
 		
 		List<T> inst = new ArrayList<>();
@@ -261,7 +366,14 @@ public class JsonHubPojoParser {
 			}
 			case ARRAY: {
 				
-				inst.add(classOfT.cast(toArrayPojo(v, classOfT)));
+				if ( classOfT.isArray() ) {
+					
+					inst.add(toArrayPojo(v, classOfT));
+					
+				} else {
+					
+					inst.add(classOfT.cast(toObjectPojo(v, classOfT)));
+				}
 				break;
 			}
 			case OBJECT: {

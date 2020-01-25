@@ -1,9 +1,6 @@
 package example04;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -59,17 +56,5 @@ public class ReadJsonFileParseToPojo {
 			e.printStackTrace();
 		}
 		
-		
-		try (
-				BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-				) {
-			
-			ReadJsonFileParseToPojo pojo = JsonHub.fromJson(br).toPojo(ReadJsonFileParseToPojo.class);
-			
-			System.out.println("pojo: " + pojo);
-		}
-		catch ( IOException e ) {
-			e.printStackTrace();
-		}
 	}
 }
