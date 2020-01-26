@@ -69,7 +69,7 @@ Pojo pojo = JsonHub.fromJson(reader).toPojo(Pojo.class);
 
 /* from file */
 Path path = Paths.get("path_of_file.json");
-Pojo pojo = JsonHub.readFile(path).toPojo(Pojo.class);
+Pojo pojo = JsonHub.formFile(path).toPojo(Pojo.class);
 ```
 
 See also ["/src/examples/example01/JsonStringParseToPojo.java"](/src/examples/example01/JsonStringParseToPojo.java)  
