@@ -33,7 +33,7 @@ public class POJO {
 
 ## Convert
 
-1. Create JsonHub instance from `#fromPojo`, `#fromJson`, `#readFile`, `#fromBytes`.
+1. Create JsonHub instance from `#fromPojo`, `#fromJson`, `#fromFile`, `#fromBytes`.
 1. Convert using `#toPojo`, `#toJson`, `#writeFile`, `#getBytes`, `#writeBytes`.
 
 
