@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.Objects;
 import java.util.Optional;
 
-public class JsonStringHub extends JsonHub {
+public class StringJsonHub extends JsonHub {
 	
 	private static final long serialVersionUID = -873784938882289245L;
 
@@ -13,7 +13,7 @@ public class JsonStringHub extends JsonHub {
 	
 	private String toJsonProxy;
 	
-	protected JsonStringHub(JsonString v) {
+	protected StringJsonHub(JsonString v) {
 		super();
 		
 		this.v = Objects.requireNonNull(v);
@@ -71,8 +71,8 @@ public class JsonStringHub extends JsonHub {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonStringHub)) {
-			return ((JsonStringHub) o).toString().equals(toString());
+		if ((o != null) && (o instanceof StringJsonHub)) {
+			return ((StringJsonHub) o).toString().equals(toString());
 		} else {
 			return false;
 		}

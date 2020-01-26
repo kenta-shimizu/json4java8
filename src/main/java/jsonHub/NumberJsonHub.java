@@ -8,14 +8,14 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-public class JsonNumberHub extends JsonHub {
+public class NumberJsonHub extends JsonHub {
 	
 	private static final long serialVersionUID = -2924637446448005150L;
 	
 	private final Number num;
 	private final String str;
 	
-	protected JsonNumberHub(CharSequence cs) {
+	protected NumberJsonHub(CharSequence cs) {
 		super();
 		
 		this.str = Objects.requireNonNull(cs).toString();
@@ -32,7 +32,7 @@ public class JsonNumberHub extends JsonHub {
 		}
 	}
 	
-	protected JsonNumberHub(Number num) {
+	protected NumberJsonHub(Number num) {
 		super();
 		
 		this.num = Objects.requireNonNull(num);
@@ -81,8 +81,8 @@ public class JsonNumberHub extends JsonHub {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonNumberHub)) {
-			return ((JsonNumberHub) o).num.equals(num);
+		if ((o != null) && (o instanceof NumberJsonHub)) {
+			return ((NumberJsonHub) o).num.equals(num);
 		} else {
 			return false;
 		}

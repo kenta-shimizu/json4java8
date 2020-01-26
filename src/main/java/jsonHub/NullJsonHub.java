@@ -3,11 +3,11 @@ package jsonHub;
 import java.io.IOException;
 import java.io.Writer;
 
-public class JsonNullHub extends JsonHub {
+public class NullJsonHub extends JsonHub {
 
 	private static final long serialVersionUID = 4404413772323952148L;
 
-	protected JsonNullHub() {
+	protected NullJsonHub() {
 		super();
 	}
 	
@@ -28,7 +28,7 @@ public class JsonNullHub extends JsonHub {
 	
 	@Override
 	public boolean equals(Object o) {
-		return (o != null) && (o instanceof JsonNullHub);
+		return (o != null) && (o instanceof NullJsonHub);
 	}
 	
 	@Override

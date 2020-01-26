@@ -13,14 +13,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class JsonArrayHub extends JsonHub {
+public class ArrayJsonHub extends JsonHub {
 	
 	private static final long serialVersionUID = -9051930871585233794L;
 	
 	private final List<JsonHub> v;
 	private String toJsonProxy;
 	
-	protected JsonArrayHub(List<? extends JsonHub> v) {
+	protected ArrayJsonHub(List<? extends JsonHub> v) {
 		super();
 		
 		this.v = new ArrayList<>(Objects.requireNonNull(v));
@@ -117,8 +117,8 @@ public class JsonArrayHub extends JsonHub {
 	
 	@Override
 	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonArrayHub)) {
-			return ((JsonArrayHub) o).toJson().equals(toJson());
+		if ((o != null) && (o instanceof ArrayJsonHub)) {
+			return ((ArrayJsonHub) o).toJson().equals(toJson());
 		} else {
 			return false;
 		}

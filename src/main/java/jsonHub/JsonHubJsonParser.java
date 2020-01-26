@@ -369,7 +369,7 @@ public class JsonHubJsonParser {
 		throw new JsonHubParseException("Not found end-of-OBJECT. fromIndex: " + fromIndex + " \"" + str + "\"");
 	}
 	
-	private static JsonNumberHub fromJsonNumberValue(String str) {
+	private static NumberJsonHub fromJsonNumberValue(String str) {
 		return JsonHubBuilder.getInstance().number(str);
 	}
 	

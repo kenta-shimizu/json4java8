@@ -20,6 +20,8 @@ public class JsonHubPojoParser {
 	
 	public static JsonHubPojoParser getInstance() {
 		return SingletonHolder.inst;
+		
+		
 	}
 	
 	public JsonHub fromPojo(Object pojo) {
@@ -151,8 +153,10 @@ public class JsonHubPojoParser {
 				
 			} else {
 				
+				//TODO
+				
 				/* Not beautiful */
-				throw new JsonHubParseException("Top level [] is not supported");
+				throw new JsonHubUnsupportedParseException("Top level \"" + classOfT.toString() + "\" not supported");
 			}
 			
 			/* break; */
@@ -226,36 +230,35 @@ public class JsonHubPojoParser {
 				}
 				case ARRAY: {
 					
-					Object o = field.get(inst);
+					Type type = field.getGenericType();
 					
-					if ( o != null ) {
+					if ( type instanceof Class<?> ) {
 						
-						Class<?> compClass = o.getClass();
+						Class<?> fieldClass = (Class<?>)type;
 						
-						if ( compClass.isArray() ) {
+						if ( ! fieldClass.isArray() ) {
+							throw new JsonHubUnsupportedParseException("\"" +type.toString() + "\" is not support");
+						}
+						
+						try {
 							
 							field.set(inst, toArrayPojo(
 									v
-									, compClass));
-							
-							break;
+									, fieldClass));
 						}
-					}
-					
-					Type type = field.getGenericType();
-					
-					Type ptype = ((ParameterizedType)type)
-							.getActualTypeArguments()[0];
-					
-					/* Not beautiful */
-					try {
+						catch ( ClassNotFoundException e ) {
+							throw new JsonHubUnsupportedParseException("\"" +type.toString() + "\" is not support", e);
+						}
+						
+					} else if ( type instanceof ParameterizedType ) {
 						
 						field.set(inst, toUtilListPojo(
 								v
-								, Class.forName(ptype.getTypeName())));
-					}
-					catch ( ClassNotFoundException e ) {
-						throw new JsonHubParseException("Deep java.util.List is not support", e);
+								, (ParameterizedType)type));
+						
+					} else {
+						
+						throw new JsonHubUnsupportedParseException("\"" +type.toString() + "\" is not support");
 					}
 					
 					break;
@@ -318,7 +321,7 @@ public class JsonHubPojoParser {
 					
 				} else {
 					
-					Array.set(array, i, toObjectPojo(v, compClass));
+					throw new JsonHubUnsupportedParseException("Cannot create a generic Array");
 				}
 				break;
 			}
@@ -332,6 +335,40 @@ public class JsonHubPojoParser {
 		}
 		
 		return classOfT.cast(array);
+	}
+	
+	private static Object toUtilListPojo(JsonHub jh, ParameterizedType type)
+			throws ReflectiveOperationException {
+		
+		if ( ! jh.isArray() ) {
+			throw new JsonHubUnsupportedParseException("\"" +type.toString() + "\" is not support");
+		}
+		
+		Type ptype = type.getActualTypeArguments()[0];
+		
+		if ( ptype instanceof Class<?> ) {
+			
+			try {
+				return toUtilListPojo(jh, (Class<?>)ptype);
+			}
+			catch ( ClassNotFoundException e ) {
+				throw new JsonHubUnsupportedParseException("\"" +ptype.toString() + "\" is not support", e);
+			}
+			
+		} else if ( ptype instanceof ParameterizedType ) {
+			
+			List<Object> ll = new ArrayList<>();
+			
+			for ( JsonHub v : jh.values() ) {
+				ll.add(toUtilListPojo(v, (ParameterizedType)ptype));
+			}
+			
+			return ll;
+			
+		} else {
+			
+			throw new JsonHubUnsupportedParseException("\"" + ptype.toString() + "\" is not support");
+		}
 	}
 	
 	private static <T> List<T> toUtilListPojo(JsonHub jh, Class<T> classOfT)
@@ -372,7 +409,7 @@ public class JsonHubPojoParser {
 					
 				} else {
 					
-					inst.add(classOfT.cast(toObjectPojo(v, classOfT)));
+					throw new JsonHubUnsupportedParseException("Cannot create a generic Array");
 				}
 				break;
 			}
