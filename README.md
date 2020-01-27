@@ -52,6 +52,10 @@ Path path = Paths.get("path_of_file.json");
 JsonHub.fromPojo(pojo).writeFile(path);
 ```
 
+#### To JSON conditions
+- `public` field
+- not `static` field
+
 See also ["/src/examples/example02/PojoParseToJsonString.java"](/src/examples/example02/PojoParseToJsonString.java)  
 See also ["/src/examples/example03/PojoWriteJsonToFile.java"](/src/examples/example03/PojoWriteJsonToFile.java)
 
@@ -71,6 +75,11 @@ Pojo pojo = JsonHub.fromJson(reader).toPojo(Pojo.class);
 Path path = Paths.get("path_of_file.json");
 Pojo pojo = JsonHub.fromFile(path).toPojo(Pojo.class);
 ```
+
+#### To Pojo conditions
+- `public` field
+- not `static` field
+- not `final` field
 
 See also ["/src/examples/example01/JsonStringParseToPojo.java"](/src/examples/example01/JsonStringParseToPojo.java)  
 See also ["/src/examples/example04/ReadJsonFileParseToPojo.java"](/src/examples/example04/ReadJsonFileParseToPojo.java)

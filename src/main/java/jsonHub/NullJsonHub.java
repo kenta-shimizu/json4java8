@@ -3,7 +3,7 @@ package jsonHub;
 import java.io.IOException;
 import java.io.Writer;
 
-public class NullJsonHub extends JsonHub {
+public class NullJsonHub extends AbstractJsonHub {
 
 	private static final long serialVersionUID = 4404413772323952148L;
 

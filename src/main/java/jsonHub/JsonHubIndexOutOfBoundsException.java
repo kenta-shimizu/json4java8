@@ -2,9 +2,6 @@ package jsonHub;
 
 public class JsonHubIndexOutOfBoundsException extends IndexOutOfBoundsException {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3112716675173149316L;
 	
 	public JsonHubIndexOutOfBoundsException() {

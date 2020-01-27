@@ -27,7 +27,7 @@ public class JsonHubJsonParser {
 	 * @return
 	 * @thows JsonHubParseException
 	 */
-	public JsonHub parse(CharSequence cs) {
+	public AbstractJsonHub parse(CharSequence cs) {
 		
 		try {
 			return fromJson(cs.toString());
@@ -44,7 +44,7 @@ public class JsonHubJsonParser {
 	 * @throws JsonHubParseException
 	 * @throws IOException
 	 */
-	public JsonHub parse(Reader reader) throws IOException {
+	public AbstractJsonHub parse(Reader reader) throws IOException {
 		
 		try (
 				CharArrayWriter writer = new CharArrayWriter();
@@ -79,17 +79,17 @@ public class JsonHubJsonParser {
 	
 	private static class SeekValueResult {
 		
-		private final JsonHub value;
+		private final AbstractJsonHub value;
 		private final int endIndex;
 		
-		private SeekValueResult(JsonHub v, int index) {
+		private SeekValueResult(AbstractJsonHub v, int index) {
 			this.value = v;
 			this.endIndex = index;
 		}
 	}
 	
 	
-	private static JsonHub fromJson(String str) {
+	private static AbstractJsonHub fromJson(String str) {
 		
 		SeekCharResult r = seekNextChar(str, 0);
 		
@@ -189,7 +189,7 @@ public class JsonHubJsonParser {
 	
 	private static SeekValueResult fromJsonArrayValue(String str, int fromIndex) {
 		
-		final List<JsonHub> ll = new ArrayList<>();
+		final List<AbstractJsonHub> ll = new ArrayList<>();
 		
 		boolean first = true;
 		

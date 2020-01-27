@@ -72,7 +72,7 @@ public class JsonHubBuilder {
 		return number(v);
 	}
 	
-	public JsonHub build(boolean v) {
+	public AbstractJsonHub build(boolean v) {
 		if ( v ) {
 			return trueValue();
 		} else {

@@ -2,9 +2,6 @@ package jsonHub;
 
 public class JsonHubParseException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -715521949711541261L;
 	
 	public JsonHubParseException() {

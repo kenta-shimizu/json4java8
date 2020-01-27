@@ -8,7 +8,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-public class NumberJsonHub extends JsonHub {
+public class NumberJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = -2924637446448005150L;
 	

@@ -49,7 +49,7 @@ public class JsonHubPrettyPrinter {
 	/**
 	 * Pretty-Print-JSON
 	 * 
-	 * @param JsonHub
+	 * @param AbstractJsonHub
 	 * @param writer
 	 * @throws IOException
 	 */
@@ -97,7 +97,7 @@ public class JsonHubPrettyPrinter {
 	
 	/**
 	 * 
-	 * @param JsonHub
+	 * @param AbstractJsonHub
 	 * @return Pretty-Print-JSON
 	 */
 	public String print(JsonHub v) {
@@ -182,7 +182,7 @@ public class JsonHubPrettyPrinter {
 				
 				boolean f = false;
 				
-				for ( JsonObjectPair pair : v.objectPairs() ) {
+				for ( JsonObjectPair pair : ((ObjectJsonHub)v).objectPairs() ) {
 					
 					if ( f ) {
 						writeValueSeparator(writer, deepLevel);

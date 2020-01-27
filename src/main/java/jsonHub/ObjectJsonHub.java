@@ -3,9 +3,11 @@ package jsonHub;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ObjectJsonHub extends JsonHub {
+public class ObjectJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = 2239991330253566718L;
 	
@@ -67,7 +69,6 @@ public class ObjectJsonHub extends JsonHub {
 		return v.stream().map(x -> x.name()).collect(Collectors.toSet());
 	}
 	
-	@Override
 	protected Collection<JsonObjectPair> objectPairs() {
 		return Collections.unmodifiableCollection(v);
 	}
@@ -91,8 +92,33 @@ public class ObjectJsonHub extends JsonHub {
 	}
 	
 	@Override
+	public JsonHub get(String... names) {
+		return get(new LinkedList<>(Arrays.asList(names)));
+	}
+	
+	private ObjectJsonHub get(LinkedList<String> ll) {
+		
+		if ( ll.isEmpty() ) {
+			
+			return this;
+			
+		} else {
+			
+			String s = ll.removeFirst();
+			
+			JsonHub x = get(s);
+			
+			if ( x == null ) {
+				return null;
+			}
+			
+			return ((ObjectJsonHub)x).get(ll);
+		}
+	}
+	
+	@Override
 	public JsonHub getOrDefault(CharSequence name) {
-		return getOrDefault(name, getBuilder().emptyObject());
+		return getOrDefault(name, JsonHub.getBuilder().emptyObject());
 	}
 	
 	@Override
@@ -164,5 +190,5 @@ public class ObjectJsonHub extends JsonHub {
 	public int hashCode() {
 		return toJson().hashCode();
 	}
-
+	
 }

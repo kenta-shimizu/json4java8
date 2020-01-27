@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ArrayJsonHub extends JsonHub {
+public class ArrayJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = -9051930871585233794L;
 	

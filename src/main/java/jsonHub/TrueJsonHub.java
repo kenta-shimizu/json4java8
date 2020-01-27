@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Optional;
 
-public class TrueJsonHub extends JsonHub {
+public class TrueJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = -788713372914256563L;
 	

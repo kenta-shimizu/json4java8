@@ -2,9 +2,6 @@ package jsonHub;
 
 public class JsonHubUnsupportedOperationException extends UnsupportedOperationException {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4075658063031302010L;
 
 	public JsonHubUnsupportedOperationException() {
