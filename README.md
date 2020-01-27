@@ -52,7 +52,7 @@ Path path = Paths.get("path_of_file.json");
 JsonHub.fromPojo(pojo).writeFile(path);
 ```
 
-#### To JSON conditions
+#### From POJO conditions
 - `public` field
 - not `static` field
 
@@ -76,7 +76,7 @@ Path path = Paths.get("path_of_file.json");
 Pojo pojo = JsonHub.fromFile(path).toPojo(Pojo.class);
 ```
 
-#### To Pojo conditions
+#### To POJO conditions
 - `public` field
 - not `static` field
 - not `final` field
