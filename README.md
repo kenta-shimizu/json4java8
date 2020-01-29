@@ -77,6 +77,7 @@ Pojo pojo = JsonHub.fromFile(path).toPojo(Pojo.class);
 ```
 
 #### To POJO conditions
+- `Class` has `public new()` (arguments is 0)
 - `public` field
 - not `static` field
 - not `final` field
