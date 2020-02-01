@@ -53,8 +53,8 @@ JsonHub.fromPojo(pojo).writeFile(path);
 ```
 
 #### From POJO conditions
-- `public` field
-- not `static` field
+- Field is `public`
+- Field is not `static`
 
 See also ["/src/examples/example02/PojoParseToJsonString.java"](/src/examples/example02/PojoParseToJsonString.java)  
 See also ["/src/examples/example03/PojoWriteJsonToFile.java"](/src/examples/example03/PojoWriteJsonToFile.java)
@@ -77,10 +77,10 @@ Pojo pojo = JsonHub.fromFile(path).toPojo(Pojo.class);
 ```
 
 #### To POJO conditions
-- `Class` has `public new()` (arguments is 0)
-- `public` field
-- not `static` field
-- not `final` field
+- Class has `public new()` (arguments is 0)
+- Field is `public`
+- Field is not `static`
+- Field is not `final`
 
 See also ["/src/examples/example01/JsonStringParseToPojo.java"](/src/examples/example01/JsonStringParseToPojo.java)  
 See also ["/src/examples/example04/ReadJsonFileParseToPojo.java"](/src/examples/example04/ReadJsonFileParseToPojo.java)
