@@ -3,8 +3,8 @@ package example09;
 import java.util.Arrays;
 import java.util.List;
 
-import jsonHub.JsonHub;
-import jsonHub.JsonHubPrettyPrinterConfig;
+import com.shimizukenta.jsonhub.JsonHub;
+import com.shimizukenta.jsonhub.JsonHubPrettyPrinterConfig;
 
 public class ChangePrettyPrintFormat {
 	

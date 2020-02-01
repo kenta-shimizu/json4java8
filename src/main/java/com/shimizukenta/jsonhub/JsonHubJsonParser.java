@@ -1,4 +1,4 @@
-package jsonHub;
+package com.shimizukenta.jsonhub;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;

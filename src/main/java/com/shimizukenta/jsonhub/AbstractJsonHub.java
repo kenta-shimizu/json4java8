@@ -1,4 +1,4 @@
-package jsonHub;
+package com.shimizukenta.jsonhub;
 
 import java.io.IOException;
 import java.io.OutputStream;

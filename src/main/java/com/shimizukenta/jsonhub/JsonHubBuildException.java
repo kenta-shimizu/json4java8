@@ -1,4 +1,4 @@
-package jsonHub;
+package com.shimizukenta.jsonhub;
 
 public class JsonHubBuildException extends RuntimeException {
 	

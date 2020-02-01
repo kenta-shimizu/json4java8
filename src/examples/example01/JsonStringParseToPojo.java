@@ -2,7 +2,7 @@ package example01;
 
 import java.util.List;
 
-import jsonHub.JsonHub;
+import com.shimizukenta.jsonhub.JsonHub;
 
 public class JsonStringParseToPojo {
 	
@@ -37,11 +37,11 @@ public class JsonStringParseToPojo {
 		
 		String json = "{\"num\": 100, \"str\": \"string\", \"bool\": true, \"nul\": null, \"list\": [\"a\", \"b\", \"c\"]}";
 		
-		System.out.println("json: " + json);
+		System.out.println(json);
 		
 		JsonStringParseToPojo pojo = JsonHub.fromJson(json).toPojo(JsonStringParseToPojo.class);
 		
-		System.out.println("pojo: " + pojo);
+		System.out.println(pojo);
 	}
 
 }

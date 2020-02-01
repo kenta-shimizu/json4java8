@@ -3,7 +3,7 @@ package example02;
 import java.util.Arrays;
 import java.util.List;
 
-import jsonHub.JsonHub;
+import com.shimizukenta.jsonhub.JsonHub;
 
 public class PojoParseToJsonString {
 	
@@ -33,7 +33,7 @@ public class PojoParseToJsonString {
 		
 		String json = JsonHub.fromPojo(pojo).toJson();
 		
-		System.out.println("json: " + json);
+		System.out.println(json);
 	}
 
 }

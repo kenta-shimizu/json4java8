@@ -1,7 +1,7 @@
 package example07;
 
-import jsonHub.JsonHub;
-import jsonHub.JsonHubBuilder;
+import com.shimizukenta.jsonhub.JsonHub;
+import com.shimizukenta.jsonhub.JsonHubBuilder;
 
 public class CreateJsonStringByBuilder {
 

@@ -3,9 +3,9 @@ package example08;
 import java.util.Arrays;
 import java.util.List;
 
-import jsonHub.JsonHub;
-import jsonHub.JsonHubType;
-import jsonHub.JsonString;
+import com.shimizukenta.jsonhub.JsonHub;
+import com.shimizukenta.jsonhub.JsonHubType;
+import com.shimizukenta.jsonhub.JsonString;
 
 public class ForEachJsonHub {
 	

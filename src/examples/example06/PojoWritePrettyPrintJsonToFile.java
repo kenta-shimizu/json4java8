@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import jsonHub.JsonHub;
+import com.shimizukenta.jsonhub.JsonHub;
 
 public class PojoWritePrettyPrintJsonToFile {
 	public int num;

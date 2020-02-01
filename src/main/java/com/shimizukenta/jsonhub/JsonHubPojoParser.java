@@ -1,4 +1,4 @@
-package jsonHub;
+package com.shimizukenta.jsonhub;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
