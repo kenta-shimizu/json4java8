@@ -17,8 +17,23 @@ public class NullJsonHub extends AbstractJsonHub {
 	}
 	
 	@Override
+	public String toJson() {
+		return JsonLiteral.NULL.toString();
+	}
+	
+	@Override
 	public void toJson(Writer writer) throws IOException {
-		writer.write(JsonLiteral.NULL.toString());
+		writer.write(toJson());
+	}
+	
+	@Override
+	public String toJsonExcludedNullValueInObject() {
+		return toJson();
+	}
+	
+	@Override
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		toJson(writer);
 	}
 	
 	@Override

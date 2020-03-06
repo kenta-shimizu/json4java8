@@ -19,16 +19,18 @@ import java.util.stream.Stream;
 
 public class ObjectJsonHub extends AbstractJsonHub {
 	
-	private static final long serialVersionUID = 2239991330253566718L;
+	private static final long serialVersionUID = 6707336078321312442L;
 	
 	private final Collection<JsonObjectPair> v;
-	private String toJsonProxy;
+	private String toJsonCache;
+	private String toJsonExcludedNullValueInObjectCache;
 	
 	protected ObjectJsonHub(Collection<? extends JsonObjectPair> v) {
 		super();
 		
 		this.v = new ArrayList<>(Objects.requireNonNull(v));
-		this.toJsonProxy = null;
+		this.toJsonCache = null;
+		this.toJsonExcludedNullValueInObjectCache = null;
 	}
 	
 	@Override
@@ -143,32 +145,41 @@ public class ObjectJsonHub extends AbstractJsonHub {
 	
 	@Override
 	public String toJson() {
-		return toJsonProxy();
+		return toJsonCache();
 	}
 	
 	@Override
 	public void toJson(Writer writer) throws IOException {
-		writer.write(toJsonProxy());
+		writer.write(toJsonCache());
 	}
 	
-	private String toJsonProxy() {
+	@Override
+	public String toJsonExcludedNullValueInObject() {
+		return toJsonExcludedNullValueInObjectCache();
+	}
+	
+	@Override
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		writer.write(toJsonExcludedNullValueInObjectCache());
+	}
+	
+	private String toJsonCache() {
 		synchronized ( this ) {
-			if ( toJsonProxy == null ) {
-				toJsonProxy = v.stream()
-						.map(x -> {
-							return JsonStructuralChar.QUOT.str()
-									+ x.name().escaped()
-									+ JsonStructuralChar.QUOT.str()
-									+ JsonStructuralChar.SEPARATOR_NAME.str()
-									+ x.value().toJson();
-						})
-						.collect(Collectors.joining(
-								JsonStructuralChar.SEPARATOR_VALUE.str(),
-								JsonStructuralChar.OBJECT_BIGIN.str(),
-								JsonStructuralChar.OBJECT_END.str()));
+			if ( toJsonCache == null ) {
+				toJsonCache = super.toJson();
 			}
 			
-			return toJsonProxy;
+			return toJsonCache;
+		}
+	}
+	
+	private String toJsonExcludedNullValueInObjectCache() {
+		synchronized ( this ) {
+			if ( toJsonExcludedNullValueInObjectCache == null ) {
+				toJsonExcludedNullValueInObjectCache = super.toJsonExcludedNullValueInObject();
+			}
+			
+			return toJsonExcludedNullValueInObjectCache;
 		}
 	}
 	

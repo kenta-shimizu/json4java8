@@ -44,6 +44,7 @@ public class ChangePrettyPrintFormat {
 		{
 			JsonHubPrettyPrinterConfig config = new JsonHubPrettyPrinterConfig();
 			
+			config.noneNullInObject(true);
 			config.indent("\t");
 			config.lineSeparator(System.lineSeparator());
 			config.prefixValueSeparator("");

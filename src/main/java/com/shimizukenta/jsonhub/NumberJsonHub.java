@@ -75,6 +75,16 @@ public class NumberJsonHub extends AbstractJsonHub {
 	}
 	
 	@Override
+	public String toJsonExcludedNullValueInObject() {
+		return toJson();
+	}
+	
+	@Override
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		toJson(writer);
+	}
+	
+	@Override
 	public String toString() {
 		return str;
 	}

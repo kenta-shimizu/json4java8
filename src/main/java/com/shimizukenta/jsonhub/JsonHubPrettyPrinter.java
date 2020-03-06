@@ -8,56 +8,43 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JsonHubPrettyPrinter {
 	
 	private JsonHubPrettyPrinterConfig config;
 	
-	public JsonHubPrettyPrinter() {
-		this(new JsonHubPrettyPrinterConfig());
-	}
-	
 	public JsonHubPrettyPrinter(JsonHubPrettyPrinterConfig config) {
 		this.config = config;
 	}
 	
-	/**
-	 * set-config
-	 * 
-	 * @param config
-	 */
-	public void config(JsonHubPrettyPrinterConfig config) {
-		synchronized ( this ) {
-			this.config = config;
-		}
-	}
-	
 	private JsonHubPrettyPrinterConfig config() {
-		synchronized ( this ) {
-			return config;
-		}
+		return config;
 	}
 	
 	private static class SingletonHolder {
-		private static final JsonHubPrettyPrinter inst = new JsonHubPrettyPrinter();
+		private static final JsonHubPrettyPrinter defaultPrinter = new JsonHubPrettyPrinter(JsonHubPrettyPrinterConfig.defaultConfig());
 	}
 	
+	/**
+	 * Singleton-JsonHubPrettyPrinter
+	 * 
+	 * @return default-JsonHubPrettyPrinter
+	 */
 	public static JsonHubPrettyPrinter getDefaultPrinter() {
-		return SingletonHolder.inst;
+		return SingletonHolder.defaultPrinter;
 	}
 	
 	/**
 	 * Pretty-Print-JSON
 	 * 
-	 * @param AbstractJsonHub
+	 * @param v
 	 * @param writer
 	 * @throws IOException
 	 */
 	public void print(JsonHub v, Writer writer) throws IOException {
-		
-		synchronized ( this ) {
-			print(v, writer, 0);
-		}
+		print(v, writer, 0);
 	}
 	
 	/**
@@ -97,7 +84,7 @@ public class JsonHubPrettyPrinter {
 	
 	/**
 	 * 
-	 * @param AbstractJsonHub
+	 * @param v
 	 * @return Pretty-Print-JSON
 	 */
 	public String print(JsonHub v) {
@@ -169,7 +156,21 @@ public class JsonHubPrettyPrinter {
 			
 			writer.write(JsonStructuralChar.OBJECT_BIGIN.str());
 			
-			if ( v.isEmpty() ) {
+			final List<JsonObjectPair> pairs;
+			
+			if ( config.noneNullValueInObject() ) {
+				
+				pairs = ((ObjectJsonHub)v).objectPairs().stream()
+						.filter(p -> p.value().nonNull())
+						.collect(Collectors.toList());
+				
+			} else {
+				
+				pairs = ((ObjectJsonHub)v).objectPairs().stream()
+						.collect(Collectors.toList());
+			}
+			
+			if ( pairs.isEmpty() ) {
 				
 				writeLineSeparatorIfBlank(writer, level);
 				
@@ -182,7 +183,7 @@ public class JsonHubPrettyPrinter {
 				
 				boolean f = false;
 				
-				for ( JsonObjectPair pair : ((ObjectJsonHub)v).objectPairs() ) {
+				for ( JsonObjectPair pair : pairs ) {
 					
 					if ( f ) {
 						writeValueSeparator(writer, deepLevel);

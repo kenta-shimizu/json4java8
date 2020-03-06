@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonHubToPojoParser {
-
+	
 	protected JsonHubToPojoParser() {
 		/* Nothing */
 	}
@@ -69,8 +69,6 @@ public class JsonHubToPojoParser {
 				return toArrayPojo(jh, classOfT);
 				
 			} else {
-				
-				/* Not beautiful */
 				
 				throw new JsonHubUnsupportedParseException("Top level \"" + classOfT.toGenericString() + "\" is not support");
 			}

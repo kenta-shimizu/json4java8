@@ -50,6 +50,16 @@ public class StringJsonHub extends AbstractJsonHub {
 		writer.write(toJsonProxy());
 	}
 	
+	@Override
+	public String toJsonExcludedNullValueInObject() {
+		return toJson();
+	}
+	
+	@Override
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		toJson(writer);
+	}
+	
 	private String toJsonProxy() {
 		
 		synchronized ( this ) {

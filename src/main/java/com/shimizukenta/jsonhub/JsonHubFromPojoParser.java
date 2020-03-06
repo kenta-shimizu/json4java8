@@ -85,13 +85,12 @@ public class JsonHubFromPojoParser {
 				
 				pairs.add(
 						jhb.pair(
-								(CharSequence)key
+								key.toString()
 								, fromObjectPojo(mm.get(key))));
 			}
 			
 			return jhb.object(pairs);
 		}
-		
 		
 		final List<JsonObjectPair> pairs = new ArrayList<>();
 		

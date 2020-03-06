@@ -23,8 +23,23 @@ public class FalseJsonHub extends AbstractJsonHub {
 	}
 	
 	@Override
+	public String toJson() {
+		return JsonLiteral.FALSE.toString();
+	}
+	
+	@Override
 	public void toJson(Writer writer) throws IOException {
-		writer.write(JsonLiteral.FALSE.toString());
+		writer.write(toJson());
+	}
+	
+	@Override
+	public String toJsonExcludedNullValueInObject() {
+		return toJson();
+	}
+	
+	@Override
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		toJson(writer);
 	}
 	
 	@Override

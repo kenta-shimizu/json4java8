@@ -10,21 +10,22 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ArrayJsonHub extends AbstractJsonHub {
 	
-	private static final long serialVersionUID = -9051930871585233794L;
+	private static final long serialVersionUID = -2012262422136607091L;
 	
 	private final List<JsonHub> v;
-	private String toJsonProxy;
+	private String toJsonCache;
+	private String toJsonExcludedNullValueInObjectCache;
 	
 	protected ArrayJsonHub(List<? extends JsonHub> v) {
 		super();
 		
 		this.v = new ArrayList<>(Objects.requireNonNull(v));
-		this.toJsonProxy = null;
+		this.toJsonCache = null;
+		this.toJsonExcludedNullValueInObjectCache = null;
 	}
 	
 	@Override
@@ -87,26 +88,41 @@ public class ArrayJsonHub extends AbstractJsonHub {
 	
 	@Override
 	public String toJson() {
-		return toJsonProxy();
+		return toJsonCache();
 	}
 	
 	@Override
 	public void toJson(Writer writer) throws IOException {
-		writer.write(toJsonProxy());
+		writer.write(toJsonCache());
 	}
 	
-	private String toJsonProxy() {
+	@Override
+	public String toJsonExcludedNullValueInObject() {
+		return toJsonExcludedNullValueInObjectCache();
+	}
+	
+	@Override
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		writer.write(toJsonExcludedNullValueInObjectCache());
+	}
+	
+	private String toJsonCache() {
 		synchronized ( this ) {
-			if ( toJsonProxy == null ) {
-				toJsonProxy = v.stream()
-						.map(x -> x.toJson())
-						.collect(Collectors.joining(
-								JsonStructuralChar.SEPARATOR_VALUE.str(),
-								JsonStructuralChar.ARRAY_BIGIN.str(),
-								JsonStructuralChar.ARRAY_END.str()));
+			if ( toJsonCache == null ) {
+				toJsonCache = super.toJson();
 			}
 			
-			return toJsonProxy;
+			return toJsonCache;
+		}
+	}
+	
+	public String toJsonExcludedNullValueInObjectCache() {
+		synchronized ( this ) {
+			if ( toJsonExcludedNullValueInObjectCache == null ) {
+				toJsonExcludedNullValueInObjectCache = super.toJsonExcludedNullValueInObject();
+			}
+			
+			return toJsonExcludedNullValueInObjectCache;
 		}
 	}
 	

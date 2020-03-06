@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 public class JsonHubPrettyPrinterConfig implements Serializable {
 	
-	private static final long serialVersionUID = -4805043719199515027L;
+	private static final long serialVersionUID = 5214359701545372403L;
 	
+	private static final boolean defaultNoneNullValueInObject = false;
 	private static final String defaultIndent = "  ";
 	private static final String defaultLineSeparator = System.lineSeparator();
 	private static final String defaultPrefixValueSeparator = "";
@@ -16,6 +17,7 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 	private static final boolean defaultLineSeparateAfterValueSeparator = true;
 	private static final boolean defaultLineSeparateIfBlank = false;
 	
+	private boolean noneNullValueInObject;
 	private String indent;
 	private String lineSeparator;
 	private String prefixValueSeparator;
@@ -27,6 +29,7 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 	private boolean lineSeparateIfBlank;
 	
 	public JsonHubPrettyPrinterConfig() {
+		this.noneNullValueInObject = defaultNoneNullValueInObject;
 		this.indent = defaultIndent;
 		this.lineSeparator = defaultLineSeparator;
 		this.prefixValueSeparator = defaultPrefixValueSeparator;
@@ -38,6 +41,21 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 		this.lineSeparateIfBlank = defaultLineSeparateIfBlank;
 	}
 	
+	public static JsonHubPrettyPrinterConfig defaultConfig() {
+		return new JsonHubPrettyPrinterConfig();
+	}
+	
+	public void noneNullInObject(boolean f) {
+		synchronized ( this ) {
+			this.noneNullValueInObject = f;
+		}
+	}
+	
+	public boolean noneNullValueInObject() {
+		synchronized ( this ) {
+			return this.noneNullValueInObject;
+		}
+	}
 	
 	public void indent(CharSequence cs) {
 		synchronized ( this ) {

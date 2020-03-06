@@ -12,34 +12,59 @@ import java.util.Arrays;
  */
 abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	
-	private static final long serialVersionUID = 3793174804475491315L;
+	private static final long serialVersionUID = -8854276210327173340L;
 	
-	private byte[] toBytesProxy;
+	private byte[] toBytesCache;
+	private byte[] toBytesExcludeNullValueInObjectCache;
 	
 	public AbstractJsonHub() {
-		toBytesProxy = null;
+		toBytesCache = null;
+		toBytesExcludeNullValueInObjectCache = null;
 	}
 	
 	@Override
 	public byte[] getBytes() {
-		byte[] bs = toBytesProxy();
+		byte[] bs = toBytesCache();
 		return Arrays.copyOf(bs, bs.length);
 	}
 	
 	@Override
 	public void writeBytes(OutputStream strm) throws IOException {
-		strm.write(toBytesProxy());
+		strm.write(toBytesCache());
 	}
 	
-	private byte[] toBytesProxy() {
+	@Override
+	public byte[] getBytesExcludedNullValueInObject() {
+		byte[] bs = this.toBytesExcludeNullValueInObjectCache();
+		return Arrays.copyOf(bs, bs.length);
+	}
+	
+	@Override
+	public void writeBytesExcludedNullValueInObject(OutputStream strm) throws IOException {
+		strm.write(toBytesExcludeNullValueInObjectCache());
+	}
+	
+	private byte[] toBytesCache() {
 		
 		synchronized ( this ) {
 			
-			if ( toBytesProxy == null ) {
-				toBytesProxy = toJson().getBytes(StandardCharsets.UTF_8);;
+			if ( toBytesCache == null ) {
+				toBytesCache = toJson().getBytes(StandardCharsets.UTF_8);;
 			}
 			
-			return toBytesProxy;
+			return toBytesCache;
+		}
+	}
+	
+	private byte[] toBytesExcludeNullValueInObjectCache() {
+		
+		synchronized ( this ) {
+			
+			if ( toBytesExcludeNullValueInObjectCache == null ) {
+				toBytesExcludeNullValueInObjectCache = toJsonExcludedNullValueInObject().getBytes(StandardCharsets.UTF_8);
+			}
+			
+			return toBytesExcludeNullValueInObjectCache;
 		}
 	}
 	

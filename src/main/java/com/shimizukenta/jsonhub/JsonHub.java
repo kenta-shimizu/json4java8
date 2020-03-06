@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -333,17 +332,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return json
 	 */
 	default public String toJson() {
-		
-		try (
-				StringWriter sw = new StringWriter();
-				) {
-			
-			toJson(sw);
-			return sw.toString();
-		}
-		catch (IOException notHappen) {
-			throw new RuntimeException(notHappen);
-		}
+		return JsonHubCompactPrettyPrinter.getInstance().print(this);
 	}
 	
 	/**
@@ -352,7 +341,28 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param writer
 	 * @throws IOException
 	 */
-	public void toJson(Writer writer) throws IOException;
+	default public void toJson(Writer writer) throws IOException {
+		JsonHubCompactPrettyPrinter.getInstance().print(this, writer);
+	}
+	
+	/**
+	 * parse to compact-JSON-String exclued null value in Object;
+	 * 
+	 * @return json of excluded null value in Object.
+	 */
+	default public String toJsonExcludedNullValueInObject() {
+		return JsonHubNoneNullValueInObjectCompactPrettyPrinter.getInstance().print(this);
+	}
+	
+	/**
+	 * parse to compact-JSON-String exclued null value in Object;
+	 * 
+	 * @param writer
+	 * @throws IOException
+	 */
+	default public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
+		JsonHubNoneNullValueInObjectCompactPrettyPrinter.getInstance().print(this, writer);
+	}
 	
 	/**
 	 * read JSON file and parse to JsonHub
@@ -514,7 +524,9 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * 
 	 * @return UTF-8 encorded bytes
 	 */
-	public byte[] getBytes();
+	default public byte[] getBytes() {
+		return toJson().getBytes(StandardCharsets.UTF_8);
+	}
 	
 	/**
 	 * write UTF-8 encorded bytes to OutputStream
@@ -522,7 +534,27 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param OutputSteam
 	 * @throws IOException
 	 */
-	public void writeBytes(OutputStream strm) throws IOException;
+	default public void writeBytes(OutputStream strm) throws IOException {
+		strm.write(getBytes());
+	}
+	
+	/**
+	 * 
+	 * @return UTF-8 encorded bytes excluded null value in Object.
+	 */
+	default public byte[] getBytesExcludedNullValueInObject() {
+		return toJsonExcludedNullValueInObject().getBytes(StandardCharsets.UTF_8);
+	}
+	
+	/**
+	 * write UTF-8 encorded bytes exclued null value in Object to OutputStream
+	 * 
+	 * @param strm
+	 * @throws IOException
+	 */
+	default public void writeBytesExcludedNullValueInObject(OutputStream strm) throws IOException {
+		strm.write(getBytesExcludedNullValueInObject());
+	}
 	
 	/**
 	 * 
