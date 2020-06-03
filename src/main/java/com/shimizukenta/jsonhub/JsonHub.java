@@ -27,7 +27,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	
 	/**
 	 * available if type is ARRAY or OBJECT
-	 * if type is OBJECT, VALUE is JsonHub.
+	 * if type is OBJECT, value is JsonHub.
 	 * 
 	 * @throws JsonHubUnsupportedOperationException
 	 */
@@ -36,7 +36,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	
 	/**
 	 * available if type is ARRAY or OBJECT
-	 * if type is OBJECT, VALUE is JsonHub.
+	 * if type is OBJECT, value is JsonHub.
 	 * 
 	 * @throws JsonHubUnsupportedOperationException
 	 */
@@ -45,9 +45,9 @@ public interface JsonHub extends Iterable<JsonHub> {
 	
 	/**
 	 * available if type is OBJECT or ARRAY.<br />
-	 * if type is OBJECT, VALUE is JsonHub.
+	 * if type is OBJECT, value is JsonHub.
 	 * 
-	 * @param Consumer<VALUE>
+	 * @param Consumer<JsonHub>
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	@Override
@@ -57,7 +57,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * available if type is OBJECT or ARRAY.<br />
 	 * if type is ARRAY, NAME is null.
 	 * 
-	 * @param BiConsumer<NAME, VALUE>
+	 * @param BiConsumer<JsonString, JsonHub>
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action);
@@ -71,7 +71,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	
 	/**
 	 * available if type is OBJECT or ARRAY.<br />
-	 * if type is OBJECT, VALUE is JsonHub.
+	 * if type is OBJECT, value is JsonHub.
 	 * 
 	 * @return Array values stream
 	 * @throws JsonHubUnsupportedOperationException
@@ -135,7 +135,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * 
 	 * @param name
 	 * @param defaultValue
-	 * @return JsonHub
+	 * @return defaultValue if not exist
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue);
@@ -167,85 +167,85 @@ public interface JsonHub extends Iterable<JsonHub> {
 	
 	/**
 	 * 
-	 * @return true if value is null
+	 * @return true if type is NULL
 	 */
 	public boolean isNull();
 	
 	/**
 	 * 
-	 * @return true if value is not null
+	 * @return true if type is not NULL
 	 */
 	public boolean nonNull();
 	
 	/**
 	 * 
-	 * @return true if value is true
+	 * @return true if type is TRUE
 	 */
 	public boolean isTrue();
 	
 	/**
 	 * 
-	 * @return true if value is false
+	 * @return true if type is FALSE
 	 */
 	public boolean isFalse();
 	
 	/**
 	 * 
-	 * @return true is value is string
+	 * @return true is type is STRING
 	 */
 	public boolean isString();
 	
 	/**
 	 * 
-	 * @return true if value is number
+	 * @return true if type is NUMBER
 	 */
 	public boolean isNumber();
 	
 	/**
 	 * 
-	 * @return true if value is array
+	 * @return true if type is ARRAY
 	 */
 	public boolean isArray();
 	
 	/**
 	 * 
-	 * @return true if value is object
+	 * @return true if type is OBJECT
 	 */
 	public boolean isObject();
 	
 	/**
 	 * 
-	 * @return Optional has value if value is true or false
+	 * @return Optional has value if type is TRUE or FALSE
 	 */
 	public Optional<Boolean> optionalBoolean();
 	
 	/**
 	 * 
-	 * @return Optional has value if value is number
+	 * @return Optional has value if type is NUMBER
 	 */
 	public OptionalInt optionalInt();
 	
 	/**
 	 * 
-	 * @return Optional has value if value is number
+	 * @return Optional has value if type is NUMBER
 	 */
 	public OptionalLong optionalLong();
 	
 	/**
 	 * 
-	 * @return Optional has value if value is number
+	 * @return Optional has value if type is NUMBER
 	 */
 	public OptionalDouble optionalDouble();
 	
 	/**
 	 * 
-	 * @return Optional has value if value is string
+	 * @return Optional has value if type is STRING
 	 */
 	public Optional<String> optionalString();
 	
 	/**
 	 * 
-	 * @return Optional has value if value is number
+	 * @return Optional has value if type is NUMBER
 	 */
 	public Optional<Number> optionalNubmer();
 	
