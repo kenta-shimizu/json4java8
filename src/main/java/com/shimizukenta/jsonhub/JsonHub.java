@@ -1,7 +1,6 @@
 package com.shimizukenta.jsonhub;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,9 +32,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	@Override
-	default public Iterator<JsonHub> iterator() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #iterator");
-	}
+	public Iterator<JsonHub> iterator();
 	
 	/**
 	 * available if type is ARRAY or OBJECT
@@ -44,9 +41,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	@Override
-	default public Spliterator<JsonHub> spliterator() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #spliterator");
-	}
+	public Spliterator<JsonHub> spliterator();
 	
 	/**
 	 * available if type is OBJECT or ARRAY.<br />
@@ -56,9 +51,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubUnsupportedOperationException
 	 */
 	@Override
-	default public void forEach(Consumer<? super JsonHub> action) {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
-	}
+	public void forEach(Consumer<? super JsonHub> action);
 	
 	/**
 	 * available if type is OBJECT or ARRAY.<br />
@@ -67,11 +60,13 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param BiConsumer<NAME, VALUE>
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action) {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #forEach");
-	}
+	public void forEach(BiConsumer<? super JsonString, ? super JsonHub> action);
 	
 	
+	/**
+	 * 
+	 * @return JsonHubType
+	 */
 	public JsonHubType type();
 	
 	/**
@@ -81,9 +76,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return Array values stream
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public Stream<JsonHub> stream() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #stream");
-	}
+	public Stream<JsonHub> stream();
 	
 	/**
 	 * available if type is OBJECT
@@ -91,9 +84,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return names
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public Set<JsonString> keySet() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #keySet");
-	}
+	public Set<JsonString> keySet();
 	
 	/**
 	 * available if type is OBJECT or ARRAY
@@ -101,9 +92,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return values
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public List<JsonHub> values() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #values");
-	}
+	public List<JsonHub> values();
 	
 	/**
 	 * available if type is ARRAY
@@ -112,9 +101,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return value
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public JsonHub get(int index) {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #get(" + index + ")");
-	}
+	public JsonHub get(int index);
 	
 	/**
 	 * available if type is OBJECT
@@ -123,9 +110,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return true if has name
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public boolean containsKey(CharSequence name) {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #containsKey(\"" + name + "\")");
-	}
+	public boolean containsKey(CharSequence name);
 	
 	/**
 	 * available if type is OBJECT
@@ -134,9 +119,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return value. null if not has name.
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public JsonHub get(CharSequence name) {
-		throw new JsonHubUnsupportedOperationException(type() + "not support #get(\"" + name + "\")");
-	}
+	public JsonHub get(CharSequence name);
 	
 	/**
 	 * available if type is OBJECT
@@ -145,9 +128,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return emptyObject() if not exist
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public JsonHub getOrDefault(CharSequence name) {
-		throw new JsonHubUnsupportedOperationException(type() + "not support #getOrDefault");
-	}
+	public JsonHub getOrDefault(CharSequence name);
 	
 	/**
 	 * available if type is OBJECT
@@ -157,9 +138,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return JsonHub
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue) {
-		throw new JsonHubUnsupportedOperationException(type() + "not support #getOrDefault");
-	}
+	public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue);
 	
 	/**
 	 * available if type is OBJECT-chains
@@ -168,9 +147,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return value
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public JsonHub get(String... names) {
-		throw new JsonHubUnsupportedOperationException(type() + "not support #get(\"name\"...)");
-	}
+	public JsonHub get(String... names);
 	
 	/**
 	 * available if STRING or ARRAY or OBJECT
@@ -178,9 +155,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return length
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public int length() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #length");
-	}
+	public int length();
 	
 	/**
 	 * available if STRING or ARRAY or OBJECT
@@ -188,73 +163,91 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return true if empty
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public boolean isEmpty() {
-		throw new JsonHubUnsupportedOperationException(type() + " not support #isEmpty");
-	}
+	public boolean isEmpty();
 	
 	/**
 	 * 
 	 * @return true if value is null
 	 */
-	default public boolean isNull() {
-		return type() == JsonHubType.NULL;
-	}
+	public boolean isNull();
 	
 	/**
 	 * 
 	 * @return true if value is not null
 	 */
-	default public boolean nonNull() {
-		return ! isNull();
-	}
+	public boolean nonNull();
 	
-	default public boolean isTrue() {
-		return type() == JsonHubType.TRUE;
-	}
+	/**
+	 * 
+	 * @return true if value is true
+	 */
+	public boolean isTrue();
 	
-	default public boolean isFalse() {
-		return type() == JsonHubType.FALSE;
-	}
+	/**
+	 * 
+	 * @return true if value is false
+	 */
+	public boolean isFalse();
 	
-	default public boolean isString() {
-		return type() == JsonHubType.STRING;
-	}
+	/**
+	 * 
+	 * @return true is value is string
+	 */
+	public boolean isString();
 	
-	default public boolean isNumber() {
-		return type() == JsonHubType.NUMBER;
-	}
+	/**
+	 * 
+	 * @return true if value is number
+	 */
+	public boolean isNumber();
 	
-	default public boolean isArray() {
-		return type() == JsonHubType.ARRAY;
-	}
+	/**
+	 * 
+	 * @return true if value is array
+	 */
+	public boolean isArray();
 	
-	default public boolean isObject() {
-		return type() == JsonHubType.OBJECT;
-	}
+	/**
+	 * 
+	 * @return true if value is object
+	 */
+	public boolean isObject();
 	
-	default public Optional<Boolean> optionalBoolean() {
-		return Optional.empty();
-	}
+	/**
+	 * 
+	 * @return Optional has value if value is true or false
+	 */
+	public Optional<Boolean> optionalBoolean();
 	
-	default public OptionalInt optionalInt() {
-		return OptionalInt.empty();
-	}
+	/**
+	 * 
+	 * @return Optional has value if value is number
+	 */
+	public OptionalInt optionalInt();
 	
-	default public OptionalLong optionalLong() {
-		return OptionalLong.empty();
-	}
+	/**
+	 * 
+	 * @return Optional has value if value is number
+	 */
+	public OptionalLong optionalLong();
 	
-	default public OptionalDouble optionalDouble() {
-		return OptionalDouble.empty();
-	}
+	/**
+	 * 
+	 * @return Optional has value if value is number
+	 */
+	public OptionalDouble optionalDouble();
 	
-	default public Optional<String> optionalString() {
-		return Optional.empty();
-	}
+	/**
+	 * 
+	 * @return Optional has value if value is string
+	 */
+	public Optional<String> optionalString();
 	
-	default public Optional<Number> optionalNubmer() {
-		return Optional.empty();
-	}
+	/**
+	 * 
+	 * @return Optional has value if value is number
+	 */
+	public Optional<Number> optionalNubmer();
 	
 	/**
 	 * available if type is TRUE or FALSE
@@ -262,9 +255,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return boolean
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public boolean booleanValue() {
-		return optionalBoolean().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #booleanValue"));
-	}
+	public boolean booleanValue();
 	
 	/**
 	 * available if type is NUMBER
@@ -272,9 +263,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return value
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public int intValue() {
-		return optionalInt().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #intValue"));
-	}
+	public int intValue();
 	
 	/**
 	 * available if type is NUMBER
@@ -282,9 +271,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return value
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public long longValue() {
-		return optionalLong().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #longValue"));
-	}
+	public long longValue();
 	
 	/**
 	 * available if type is NUMBER
@@ -292,9 +279,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return value
 	 * @throws JsonHubUnsupportedOperationException
 	 */
-	default public double doubleValue() {
-		return optionalDouble().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #doubleValue"));
-	}
+	public double doubleValue();
 	
 	
 	/* builders */
@@ -331,9 +316,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * 
 	 * @return json
 	 */
-	default public String toJson() {
-		return JsonHubCompactPrettyPrinter.getInstance().print(this);
-	}
+	public String toJson();
 	
 	/**
 	 * compact-JSON-String to writer
@@ -341,18 +324,14 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param writer
 	 * @throws IOException
 	 */
-	default public void toJson(Writer writer) throws IOException {
-		JsonHubCompactPrettyPrinter.getInstance().print(this, writer);
-	}
+	public void toJson(Writer writer) throws IOException;
 	
 	/**
 	 * parse to compact-JSON-String exclued null value in Object;
 	 * 
 	 * @return json of excluded null value in Object.
 	 */
-	default public String toJsonExcludedNullValueInObject() {
-		return JsonHubNoneNullValueInObjectCompactPrettyPrinter.getInstance().print(this);
-	}
+	public String toJsonExcludedNullValueInObject();
 	
 	/**
 	 * parse to compact-JSON-String exclued null value in Object;
@@ -360,9 +339,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param writer
 	 * @throws IOException
 	 */
-	default public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
-		JsonHubNoneNullValueInObjectCompactPrettyPrinter.getInstance().print(this, writer);
-	}
+	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException;
 	
 	/**
 	 * read JSON file and parse to JsonHub
@@ -388,15 +365,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param file-path
 	 * @throws IOException
 	 */
-	default public void writeFile(Path path) throws IOException {
-		
-		try (
-				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
-				) {
-			
-			toJson(bw);
-		}
-	}
+	public void writeFile(Path path) throws IOException;
 	
 	/**
 	 * write to file
@@ -405,33 +374,21 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param options
 	 * @throws IOException
 	 */
-	default public void writeFile(Path path, OpenOption... options) throws IOException {
-		
-		try (
-				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8, options);
-				) {
-			
-			toJson(bw);
-		}
-	}
+	public void writeFile(Path path, OpenOption... options) throws IOException;
 	
 	
 	/**
 	 * 
 	 * @return Pretty-Print-JSON
 	 */
-	default public String prettyPrint() {
-		return JsonHubPrettyPrinter.getDefaultPrinter().print(this);
-	}
+	public String prettyPrint();
 	
 	/**
 	 * 
 	 * @param config
 	 * @return Pretty-Print-JSON with config format
 	 */
-	default public String prettyPrint(JsonHubPrettyPrinterConfig config) {
-		return new JsonHubPrettyPrinter(config).print(this);
-	}
+	public String prettyPrint(JsonHubPrettyPrinterConfig config);
 	
 	/**
 	 * write Pretty-Print-JSON to writer
@@ -439,9 +396,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param writer
 	 * @throws IOException
 	 */
-	default public void prettyPrint(Writer writer) throws IOException {
-		JsonHubPrettyPrinter.getDefaultPrinter().print(this, writer);
-	}
+	public void prettyPrint(Writer writer) throws IOException;
 	
 	/**
 	 * write Pretty-Print-JSON to writer with config format
@@ -450,9 +405,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param config
 	 * @throws IOException
 	 */
-	default public void prettyPrint(Writer writer, JsonHubPrettyPrinterConfig config) throws IOException {
-		new JsonHubPrettyPrinter(config).print(this, writer);
-	}
+	public void prettyPrint(Writer writer, JsonHubPrettyPrinterConfig config) throws IOException;
 	
 	/**
 	 * write Pretty-Print-JSON to File
@@ -460,9 +413,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param path
 	 * @throws IOException
 	 */
-	default public void prettyPrint(Path path) throws IOException {
-		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path);
-	}
+	public void prettyPrint(Path path) throws IOException;
 	
 	/**
 	 * write Pretty-Print-JSON to File
@@ -471,9 +422,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param options
 	 * @throws IOException
 	 */
-	default public void prettyPrint(Path path, OpenOption... options) throws IOException {
-		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path, options);
-	}
+	public void prettyPrint(Path path, OpenOption... options) throws IOException;
 	
 	/**
 	 * write Pretty-Print-JSON to File with config format
@@ -482,9 +431,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param config
 	 * @throws IOException
 	 */
-	default public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config) throws IOException {
-		new JsonHubPrettyPrinter(config).print(this, path);
-	}
+	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config) throws IOException;
 	
 	/**
 	 * write Pretty-Print-JSON to File with config format
@@ -494,9 +441,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param options
 	 * @throws IOException
 	 */
-	default public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config, OpenOption... options) throws IOException {
-		new JsonHubPrettyPrinter(config).print(this, path, options);
-	}
+	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config, OpenOption... options) throws IOException;
 	
 	
 	/**
@@ -516,17 +461,13 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @return Pojo
 	 * @throws JsonHubParseException
 	 */
-	default public <T> T toPojo(Class<T> classOfT) {
-		return JsonHubToPojoParser.getInstance().toPojo(this, classOfT);
-	}
+	public <T> T toPojo(Class<T> classOfT);
 	
 	/**
 	 * 
 	 * @return UTF-8 encorded bytes
 	 */
-	default public byte[] getBytes() {
-		return toJson().getBytes(StandardCharsets.UTF_8);
-	}
+	public byte[] getBytes();
 	
 	/**
 	 * write UTF-8 encorded bytes to OutputStream
@@ -534,17 +475,13 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param OutputSteam
 	 * @throws IOException
 	 */
-	default public void writeBytes(OutputStream strm) throws IOException {
-		strm.write(getBytes());
-	}
+	public void writeBytes(OutputStream strm) throws IOException;
 	
 	/**
 	 * 
 	 * @return UTF-8 encorded bytes excluded null value in Object.
 	 */
-	default public byte[] getBytesExcludedNullValueInObject() {
-		return toJsonExcludedNullValueInObject().getBytes(StandardCharsets.UTF_8);
-	}
+	public byte[] getBytesExcludedNullValueInObject();
 	
 	/**
 	 * write UTF-8 encorded bytes exclued null value in Object to OutputStream
@@ -552,9 +489,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @param strm
 	 * @throws IOException
 	 */
-	default public void writeBytesExcludedNullValueInObject(OutputStream strm) throws IOException {
-		strm.write(getBytesExcludedNullValueInObject());
-	}
+	public void writeBytesExcludedNullValueInObject(OutputStream strm) throws IOException;
 	
 	/**
 	 * 
