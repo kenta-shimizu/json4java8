@@ -97,242 +97,157 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #values");
 	}
 	
-	/**
-	 * available if type is ARRAY
-	 *  
-	 * @param index
-	 * @return value
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public JsonHub get(int index) {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #get(" + index + ")");
 	}
 	
-	/**
-	 * available if type is OBJECT
-	 * 
-	 * @param name
-	 * @return true if has name
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public boolean containsKey(CharSequence name) {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #containsKey(\"" + name + "\")");
 	}
 	
-	/**
-	 * available if type is OBJECT
-	 * 
-	 * @param name
-	 * @return value. null if not has name.
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public JsonHub get(CharSequence name) {
 		throw new JsonHubUnsupportedOperationException(type() + "not support #get(\"" + name + "\")");
 	}
 	
-	/**
-	 * available if type is OBJECT
-	 * 
-	 * @param name
-	 * @return emptyObject() if not exist
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public JsonHub getOrDefault(CharSequence name) {
 		throw new JsonHubUnsupportedOperationException(type() + "not support #getOrDefault");
 	}
 	
-	/**
-	 * available if type is OBJECT
-	 * 
-	 * @param name
-	 * @param defaultValue
-	 * @return JsonHub
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue) {
 		throw new JsonHubUnsupportedOperationException(type() + "not support #getOrDefault");
 	}
 	
-	/**
-	 * available if type is OBJECT-chains
-	 * 
-	 * @param names
-	 * @return value
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public JsonHub get(String... names) {
 		throw new JsonHubUnsupportedOperationException(type() + "not support #get(\"name\"...)");
 	}
 	
-	/**
-	 * available if STRING or ARRAY or OBJECT
-	 * 
-	 * @return length
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public int length() {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #length");
 	}
 	
-	/**
-	 * available if STRING or ARRAY or OBJECT
-	 * 
-	 * @return true if empty
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public boolean isEmpty() {
 		throw new JsonHubUnsupportedOperationException(type() + " not support #isEmpty");
 	}
 	
-	/**
-	 * 
-	 * @return true if value is null
-	 */
+	@Override
 	public boolean isNull() {
 		return type() == JsonHubType.NULL;
 	}
 	
-	/**
-	 * 
-	 * @return true if value is not null
-	 */
+	@Override
 	public boolean nonNull() {
 		return ! isNull();
 	}
 	
+	@Override
 	public boolean isTrue() {
 		return type() == JsonHubType.TRUE;
 	}
 	
+	@Override
 	public boolean isFalse() {
 		return type() == JsonHubType.FALSE;
 	}
 	
+	@Override
 	public boolean isString() {
 		return type() == JsonHubType.STRING;
 	}
 	
+	@Override
 	public boolean isNumber() {
 		return type() == JsonHubType.NUMBER;
 	}
 	
+	@Override
 	public boolean isArray() {
 		return type() == JsonHubType.ARRAY;
 	}
 	
+	@Override
 	public boolean isObject() {
 		return type() == JsonHubType.OBJECT;
 	}
 	
+	@Override
 	public Optional<Boolean> optionalBoolean() {
 		return Optional.empty();
 	}
 	
+	@Override
 	public OptionalInt optionalInt() {
 		return OptionalInt.empty();
 	}
 	
+	@Override
 	public OptionalLong optionalLong() {
 		return OptionalLong.empty();
 	}
 	
+	@Override
 	public OptionalDouble optionalDouble() {
 		return OptionalDouble.empty();
 	}
 	
+	@Override
 	public Optional<String> optionalString() {
 		return Optional.empty();
 	}
 	
+	@Override
 	public Optional<Number> optionalNubmer() {
 		return Optional.empty();
 	}
 	
-	/**
-	 * available if type is TRUE or FALSE
-	 * 
-	 * @return boolean
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public boolean booleanValue() {
 		return optionalBoolean().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #booleanValue"));
 	}
 	
-	/**
-	 * available if type is NUMBER
-	 * 
-	 * @return value
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public int intValue() {
 		return optionalInt().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #intValue"));
 	}
 	
-	/**
-	 * available if type is NUMBER
-	 * 
-	 * @return value
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public long longValue() {
 		return optionalLong().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #longValue"));
 	}
 	
-	/**
-	 * available if type is NUMBER
-	 * 
-	 * @return value
-	 * @throws JsonHubUnsupportedOperationException
-	 */
+	@Override
 	public double doubleValue() {
 		return optionalDouble().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #doubleValue"));
 	}
 	
-	
-	/**
-	 * parse to compact-JSON-String
-	 * 
-	 * @return json
-	 */
+	@Override
 	public String toJson() {
 		return JsonHubCompactPrettyPrinter.getInstance().print(this);
 	}
 	
-	/**
-	 * compact-JSON-String to writer
-	 * 
-	 * @param writer
-	 * @throws IOException
-	 */
+	@Override
 	public void toJson(Writer writer) throws IOException {
 		JsonHubCompactPrettyPrinter.getInstance().print(this, writer);
 	}
 	
-	/**
-	 * parse to compact-JSON-String exclued null value in Object;
-	 * 
-	 * @return json of excluded null value in Object.
-	 */
+	@Override
 	public String toJsonExcludedNullValueInObject() {
 		return JsonHubNoneNullValueInObjectCompactPrettyPrinter.getInstance().print(this);
 	}
 	
-	/**
-	 * parse to compact-JSON-String exclued null value in Object;
-	 * 
-	 * @param writer
-	 * @throws IOException
-	 */
+	@Override
 	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
 		JsonHubNoneNullValueInObjectCompactPrettyPrinter.getInstance().print(this, writer);
 	}
 	
-	/**
-	 * write to file
-	 * 
-	 * @param file-path
-	 * @throws IOException
-	 */
+	@Override
 	public void writeFile(Path path) throws IOException {
 		
 		try (
@@ -343,13 +258,7 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 		}
 	}
 	
-	/**
-	 * write to file
-	 * 
-	 * @param path
-	 * @param options
-	 * @throws IOException
-	 */
+	@Override
 	public void writeFile(Path path, OpenOption... options) throws IOException {
 		
 		try (
@@ -360,97 +269,47 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 		}
 	}
 	
-	
-	/**
-	 * 
-	 * @return Pretty-Print-JSON
-	 */
+	@Override
 	public String prettyPrint() {
 		return JsonHubPrettyPrinter.getDefaultPrinter().print(this);
 	}
 	
-	/**
-	 * 
-	 * @param config
-	 * @return Pretty-Print-JSON with config format
-	 */
+	@Override
 	public String prettyPrint(JsonHubPrettyPrinterConfig config) {
 		return new JsonHubPrettyPrinter(config).print(this);
 	}
 	
-	/**
-	 * write Pretty-Print-JSON to writer
-	 * 
-	 * @param writer
-	 * @throws IOException
-	 */
+	@Override
 	public void prettyPrint(Writer writer) throws IOException {
 		JsonHubPrettyPrinter.getDefaultPrinter().print(this, writer);
 	}
 	
-	/**
-	 * write Pretty-Print-JSON to writer with config format
-	 * 
-	 * @param writer
-	 * @param config
-	 * @throws IOException
-	 */
+	@Override
 	public void prettyPrint(Writer writer, JsonHubPrettyPrinterConfig config) throws IOException {
 		new JsonHubPrettyPrinter(config).print(this, writer);
 	}
 	
-	/**
-	 * write Pretty-Print-JSON to File
-	 * 
-	 * @param path
-	 * @throws IOException
-	 */
+	@Override
 	public void prettyPrint(Path path) throws IOException {
 		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path);
 	}
 	
-	/**
-	 * write Pretty-Print-JSON to File
-	 * 
-	 * @param path
-	 * @param options
-	 * @throws IOException
-	 */
+	@Override
 	public void prettyPrint(Path path, OpenOption... options) throws IOException {
 		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path, options);
 	}
 	
-	/**
-	 * write Pretty-Print-JSON to File with config format
-	 * 
-	 * @param path
-	 * @param config
-	 * @throws IOException
-	 */
+	@Override
 	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config) throws IOException {
 		new JsonHubPrettyPrinter(config).print(this, path);
 	}
 	
-	/**
-	 * write Pretty-Print-JSON to File with config format
-	 * 
-	 * @param path
-	 * @param config
-	 * @param options
-	 * @throws IOException
-	 */
+	@Override
 	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config, OpenOption... options) throws IOException {
 		new JsonHubPrettyPrinter(config).print(this, path, options);
 	}
 	
-	
-	/**
-	 * 
-	 * @param <T>
-	 * @param classOfT
-	 * @return Pojo
-	 * @throws JsonHubParseException
-	 */
+	@Override
 	public <T> T toPojo(Class<T> classOfT) {
 		return JsonHubToPojoParser.getInstance().toPojo(this, classOfT);
 	}
@@ -476,7 +335,5 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	public void writeBytesExcludedNullValueInObject(OutputStream strm) throws IOException {
 		strm.write(toBytesExcludeNullValueInObjectCache());
 	}
-	
-
 	
 }
