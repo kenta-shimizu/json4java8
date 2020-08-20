@@ -139,7 +139,14 @@ public class JsonHubJsonParser {
 		
 		if ( r.index < 0 ) {
 			
-			s = str.substring(fromIndex).trim();
+			if ( fromIndex >= 0 ) {
+				
+				s = str.substring(fromIndex).trim();
+			
+			} else {
+				
+				throw new JsonHubIndexOutOfBoundsException();
+			}
 			
 		} else {
 			
