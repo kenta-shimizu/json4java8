@@ -30,6 +30,13 @@ public class JsonHubJsonParser {
 	public AbstractJsonHub parse(CharSequence cs) {
 		
 		try {
+			
+			String s = cs.toString();
+			
+			if ( s.trim().isEmpty() ) {
+				new JsonHubParseException("JSON is empty");
+			}
+			
 			return fromJson(cs.toString());
 		}
 		catch ( JsonHubIndexOutOfBoundsException | JsonHubNumberFormatException e ) {
