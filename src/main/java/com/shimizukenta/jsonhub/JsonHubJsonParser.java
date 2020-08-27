@@ -34,10 +34,10 @@ public class JsonHubJsonParser {
 			String s = cs.toString();
 			
 			if ( s.trim().isEmpty() ) {
-				new JsonHubParseException("JSON is empty");
+				throw new JsonHubParseException("JSON is empty");
 			}
 			
-			return fromJson(cs.toString());
+			return fromJson(s);
 		}
 		catch ( JsonHubIndexOutOfBoundsException | JsonHubNumberFormatException e ) {
 			throw new JsonHubParseException(e);
