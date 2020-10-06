@@ -7,6 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is parser, from POJO (Plain-Old-Java-Object) to JsonHub instance.
+ * 
+ * <p>
+ * To get instance, {@link #getInstance()}.<br />
+ * To parse, {@link #parse(Object)}.<br />
+ * </p>
+ * 
+ * @author kenta-shimizu
+ *
+ */
 public class JsonHubFromPojoParser {
 	
 	protected final JsonHubBuilder jhb = JsonHubBuilder.getInstance();
@@ -19,11 +30,26 @@ public class JsonHubFromPojoParser {
 		private static final JsonHubFromPojoParser inst = new JsonHubFromPojoParser();
 	}
 	
+	/**
+	 * Parser getter.
+	 * 
+	 * <p>
+	 * This class is Singleton-pattern.
+	 * </p>
+	 * 
+	 * @return JsonHubFromPojoParser instance
+	 */
 	public static JsonHubFromPojoParser getInstance() {
 		return SingletonHolder.inst;
 	}
 	
-	public AbstractJsonHub fromPojo(Object pojo) {
+	/**
+	 * Parse to JsonHub instance.
+	 * 
+	 * @param pojo (Plain-Old-Java-Object)
+	 * @return AbstractJsonHub instance
+	 */
+	public AbstractJsonHub parse(Object pojo) {
 		try {
 			return fromObjectPojo(pojo);
 		}
@@ -32,6 +58,15 @@ public class JsonHubFromPojoParser {
 		}
 	}
 	
+	/**
+	 * Parse from POJO to JsonHub instance.
+	 * 
+	 * @param pojo (Plain-Old-Java-Object)
+	 * @return AbstractJsonHub instance
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws ClassCastException
+	 */
 	protected AbstractJsonHub fromObjectPojo(Object pojo)
 			throws IllegalArgumentException, IllegalAccessException, ClassCastException {
 		

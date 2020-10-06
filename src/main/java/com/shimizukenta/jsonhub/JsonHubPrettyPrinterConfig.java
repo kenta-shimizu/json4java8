@@ -28,7 +28,7 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 	private boolean lineSeparateAfterValueSeparator;
 	private boolean lineSeparateIfBlank;
 	
-	public JsonHubPrettyPrinterConfig() {
+	protected JsonHubPrettyPrinterConfig() {
 		this.noneNullValueInObject = defaultNoneNullValueInObject;
 		this.indent = defaultIndent;
 		this.lineSeparator = defaultLineSeparator;

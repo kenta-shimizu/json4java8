@@ -7,6 +7,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This class is parser, from JSON-String to JsonHub instance.
+ * 
+ * <p>
+ * To get parser instance, {@link #getInstance()}.<br />
+ * To parse from JSON-String to JsonHub, {@link #parse(CharSequence)}
+ * or {@link #parse(Reader)}.<br />
+ * </p>
+ * 
+ * @author kenta-shimizu
+ *
+ */
 public class JsonHubJsonParser {
 
 	private JsonHubJsonParser() {
@@ -17,15 +29,25 @@ public class JsonHubJsonParser {
 		private static final JsonHubJsonParser inst = new JsonHubJsonParser();
 	}
 	
+	/**
+	 * Parser getter
+	 * 
+	 * <p>
+	 * This class is Singleton-pattern.<br />
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public static JsonHubJsonParser getInstance() {
 		return SingletonHolder.inst;
 	}
 	
 	/**
+	 * Parse from JSON-String to JsonHub instance.
 	 * 
-	 * @param json
-	 * @return
-	 * @thows JsonHubParseException
+	 * @param cs JSON-String
+	 * @return parsed JsonHub
+	 * @throws JsonHubParseException if parse failed
 	 */
 	public AbstractJsonHub parse(CharSequence cs) {
 		
@@ -45,10 +67,11 @@ public class JsonHubJsonParser {
 	}
 	
 	/**
+	 * Parse from reader includes JSON-String to JsonHub instance.
 	 * 
-	 * @param reader
-	 * @return jsonHub
-	 * @throws JsonHubParseException
+	 * @param reader includes JSON-String
+	 * @return parsed JsonHub
+	 * @throws JsonHubParseException if parse failed
 	 * @throws IOException
 	 */
 	public AbstractJsonHub parse(Reader reader) throws IOException {

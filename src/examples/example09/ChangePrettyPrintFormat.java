@@ -42,7 +42,7 @@ public class ChangePrettyPrintFormat {
 		System.out.println();
 		
 		{
-			JsonHubPrettyPrinterConfig config = new JsonHubPrettyPrinterConfig();
+			JsonHubPrettyPrinterConfig config = JsonHubPrettyPrinterConfig.defaultConfig();
 			
 			config.noneNullInObject(true);
 			config.indent("\t");

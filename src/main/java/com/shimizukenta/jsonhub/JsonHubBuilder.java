@@ -28,6 +28,15 @@ public class JsonHubBuilder {
 		private static final StringJsonHub emptyStringValue = new StringJsonHub(emptyString);
 	}
 	
+	/**
+	 * Builder instance getter.
+	 * 
+	 * <p>
+	 * This class is Singleton-pattern.
+	 * </p>
+	 * 
+	 * @return builder instance
+	 */
 	public static JsonHubBuilder getInstance() {
 		return SingletonHolder.inst;
 	}

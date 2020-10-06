@@ -8,6 +8,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is parser, from JsonHub instance to POJO(Plain-Old-Java-Object).
+ * 
+ * <p>
+ * To get instance, {@link #getInstance()}.<br />
+ * To parse, {@link #parse(JsonHub, Class)}.<br />
+ * </p>
+ * 
+ * @author kenta-shimizu
+ *
+ */
 public class JsonHubToPojoParser {
 	
 	protected JsonHubToPojoParser() {
@@ -18,11 +29,28 @@ public class JsonHubToPojoParser {
 		private static final JsonHubToPojoParser inst = new JsonHubToPojoParser();
 	}
 	
+	/**
+	 * parser getter.
+	 * 
+	 * <p>
+	 * This class is Singleton-pattern.<br />
+	 * </p>
+	 * 
+	 * @return JsonHubToPojoParser instance
+	 */
 	public static JsonHubToPojoParser getInstance() {
 		return SingletonHolder.inst;
 	}
 	
-	public <T> T toPojo(JsonHub jh, Class<T> classOfT) {
+	/**
+	 * Parse JsonHub instance to POJO of classOfT.
+	 * 
+	 * @param <T>
+	 * @param jh
+	 * @param classOfT
+	 * @return parsed POJO
+	 */
+	public <T> T parse(JsonHub jh, Class<T> classOfT) {
 		
 		try {
 			return toTopLevelPojo(jh, classOfT);
