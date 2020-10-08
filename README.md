@@ -154,61 +154,60 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 
 ### Methods for seek value in OBJECT or ARRAY
 
-? is available.  
+✓ is available.  
 "blank" is throw `JsonHubUnsupportedOperationException`.
 
 | Method | Object | Array | Number | String | true | false | null |
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|get(CharSequence) | ? |  |  |  |  |  |  |  |
-|get(String...)| ? |  |  |  |  |  |  |  |
-|get(int)|  | ? |  |  |  |  |  |  |  |
-|iterator() | ? | ? |  |  |  |  |  |
-|stream() | ? | ? |  |  |  |  |  |
-|forEach(Consumer<? super JsonHub)| ? | ? |  |  |  |  |  |
-|forEach(BiConsumer<? super JsonString, ? super JsonHub)| ? | ? |  |  |  |  |  |
-|values() | ? | ? |  |  |  |  |  |
-|keySet() | ? | |  |  |  |  |  |
-|containsKey(CharSequence) | ? | |  |  |  |  |  |
-|getOrDefault(CharSequence)| ? | |  |  |  |  |  |
-|getOrDefault(CharSequence, JsonHub)| ? | |  |  |  |  |  |
+|get(CharSequence) | ✓ |  |  |  |  |  |  |  |
+|get(String...)| ✓ |  |  |  |  |  |  |  |
+|get(int)|  | ✓ |  |  |  |  |  |  |  |
+|iterator() | ✓ | ✓ |  |  |  |  |  |
+|stream() | ✓ | ✓ |  |  |  |  |  |
+|forEach(Consumer<? super JsonHub)| ✓ | ✓ |  |  |  |  |  |
+|forEach(BiConsumer<? super JsonString, ? super JsonHub)| ✓ | ✓ |  |  |  |  |  |
+|values() | ✓ | ✓ |  |  |  |  |  |
+|keySet() | ✓ | |  |  |  |  |  |
+|containsKey(CharSequence) | ✓ | |  |  |  |  |  |
+|getOrDefault(CharSequence)| ✓ | |  |  |  |  |  |
+|getOrDefault(CharSequence, JsonHub)| ✓ | |  |  |  |  |  |
 
 ### Methods for get value
 
-? is available.  
+✓ is available.  
 "blank" is throw `JsonHubUnsupportedOperationException`.
 
 | Method | Object | Array | Number | String | true | false | null |
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|intValue() |  |  | ? |  |  |  |  |
-|longValue() |  | | ? |  |  |  |  |
-|doubleValue() |  | | ? |  |  |  |  |
-|booleanValue() |  | |  |  | ? | ? |  |
-|optionalInt() | ? | ? | ? | ? | ? | ? | ? |
-|optionalLong() | ? | ? | ? | ? | ? | ? | ? |
-|optionalDouble() | ? | ? | ? | ? | ? | ? | ? |
-|optionalBoolean() | ? | ? | ? | ? | ? | ? | ? |
-|optionalNumber() | ? | ? | ? | ? | ? | ? | ? |
-|optionalString() | ? | ? | ? | ? | ? | ? | ? |
-|length() | ? | ? |  | ? |  |  |  |
-|isEmpty() | ? | ? |  | ? |  |  |  |
-|toString() | ? | ? | ? | ? | ? | ? | ? |
+|intValue() |  |  | ✓ |  |  |  |  |
+|longValue() |  | | ✓ |  |  |  |  |
+|doubleValue() |  | | ✓ |  |  |  |  |
+|booleanValue() |  | |  |  | ✓ | ✓ |  |
+|optionalInt() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalLong() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalDouble() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalBoolean() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalNumber() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|optionalString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|length() | ✓ | ✓ |  | ✓ |  |  |  |
+|isEmpty() | ✓ | ✓ |  | ✓ |  |  |  |
+|toString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 ### Methods for check type
 
-? is available.
+✓ is available.
 
 | Method | Object | Array | Number | String | true | false | null |
 |:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|type() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isObject() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isArray() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isNumber() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isString() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isTrue() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isFalse() | ? | ? | ? | ? | ? | ? | ? | ? |
-|isNull() | ? | ? | ? | ? | ? | ? | ? | ? |
-|nonNull() | ? | ? | ? | ? | ? | ? | ? | ? |
-
+|type() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isObject() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isArray() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isNumber() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isTrue() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isFalse() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|nonNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 
 ## Create JsonHub instance by builder
