@@ -14,6 +14,13 @@ import java.util.Map;
  * To get instance, {@link #getInstance()}.<br />
  * To parse, {@link #parse(Object)}.<br />
  * </p>
+ * <p>
+ * From POJO Conditions.<br />
+ * <ul>
+ * <li>Field is {@code public}</li>
+ * <li>Field is <i>not</i> {@code static}</li>
+ * </ul>
+ * </p>
  * 
  * @author kenta-shimizu
  *
@@ -31,7 +38,7 @@ public class JsonHubFromPojoParser {
 	}
 	
 	/**
-	 * Parser getter.
+	 * Returns parser instance.
 	 * 
 	 * <p>
 	 * This class is Singleton-pattern.
@@ -44,7 +51,18 @@ public class JsonHubFromPojoParser {
 	}
 	
 	/**
-	 * Parse to JsonHub instance.
+	 * Parse from POJO to JsonHub instance.
+	 * 
+	 * <p>
+	 * From POJO Conditions.<br />
+	 * <ul>
+	 * <li>Field is {@code public}</li>
+	 * <li>Field is <i>not</i> {@code static}</li>
+	 * </ul>
+	 * </p>
+	 * <p>
+	 * Not accept {@code null}.<br />
+	 * </p>
 	 * 
 	 * @param pojo (Plain-Old-Java-Object)
 	 * @return AbstractJsonHub instance

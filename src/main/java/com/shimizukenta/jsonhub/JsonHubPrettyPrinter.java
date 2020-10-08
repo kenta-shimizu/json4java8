@@ -55,7 +55,7 @@ public interface JsonHubPrettyPrinter {
 	public void print(JsonHub v, Path path, OpenOption... options) throws IOException;
 	
 	/**
-	 * Pritty-JSON-String getter
+	 * Returns Pritty-JSON-String.
 	 * 
 	 * @param v
 	 * @return Pretty-JSON-String
@@ -64,7 +64,7 @@ public interface JsonHubPrettyPrinter {
 	
 	
 	/**
-	 * Default-pretty-printer instance getter.
+	 * Returns Default-pretty-printer instance
 	 * 
 	 * @return Default-pretty-printer instance
 	 */
@@ -73,7 +73,7 @@ public interface JsonHubPrettyPrinter {
 	}
 	
 	/**
-	 * Customized-pretty-printer instance getter.
+	 * Returns Customized-pretty-printer instance.
 	 * 
 	 * @param config
 	 * @return Customized-pretty-printer instance
@@ -83,7 +83,7 @@ public interface JsonHubPrettyPrinter {
 	}
 	
 	/**
-	 * Compact-pretty-printer instance getter
+	 * Returns Compact-pretty-printer instance.
 	 * 
 	 * @return Compact-JSON-pretty-printer instance
 	 */
@@ -92,7 +92,7 @@ public interface JsonHubPrettyPrinter {
 	}
 	
 	/**
-	 * Compact-and-exclude-null-value-in-object-pretty-printer instance getter.
+	 * Returns Compact-and-exclude-null-value-in-object-pretty-printer instance.
 	 * 
 	 * @return Compact-and-exclude-null-value-in-object-pretty-printer instance
 	 */

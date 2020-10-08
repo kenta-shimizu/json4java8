@@ -21,7 +21,7 @@ public class JsonHubNoneNullValueInObjectCompactPrettyPrinter extends JsonHubCom
 	}
 	
 	/**
-	 * Compact and exclude-null-value-pair-in-Object JSON pretty-printer instance getter.
+	 * Returns Compact and exclude-null-value-pair-in-Object JSON pretty-printer instance.
 	 * 
 	 * <p>
 	 * This class is Singleton-pattern.<br />

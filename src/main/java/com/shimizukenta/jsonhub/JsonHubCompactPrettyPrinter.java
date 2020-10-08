@@ -22,7 +22,7 @@ public class JsonHubCompactPrettyPrinter extends AbstractJsonHubPrettyPrinter {
 	}
 	
 	/**
-	 * Compact-JSON-pretty-printer instance getter.
+	 * Returns Compact-JSON-pretty-printer instance.
 	 * 
 	 * <p>
 	 * This class is Singleton-pattern.<br />

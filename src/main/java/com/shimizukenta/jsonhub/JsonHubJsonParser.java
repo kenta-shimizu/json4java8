@@ -28,9 +28,9 @@ public class JsonHubJsonParser {
 	private static class SingletonHolder {
 		private static final JsonHubJsonParser inst = new JsonHubJsonParser();
 	}
-	
+
 	/**
-	 * Parser getter
+	 * Returns Parser instance.
 	 * 
 	 * <p>
 	 * This class is Singleton-pattern.<br />
@@ -43,7 +43,11 @@ public class JsonHubJsonParser {
 	}
 	
 	/**
-	 * Parse from JSON-String to JsonHub instance.
+	 * Returns JsonHub instance parsing from JSON-String.
+	 * 
+	 * <p>
+	 * Not accept {@code null}.<br />
+	 * </p>
 	 * 
 	 * @param cs JSON-String
 	 * @return parsed JsonHub
@@ -67,7 +71,7 @@ public class JsonHubJsonParser {
 	}
 	
 	/**
-	 * Parse from reader includes JSON-String to JsonHub instance.
+	 * Returns parsed JsonHub instance from reader includes JSON-String.
 	 * 
 	 * @param reader includes JSON-String
 	 * @return parsed JsonHub

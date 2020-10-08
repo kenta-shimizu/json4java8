@@ -15,6 +15,15 @@ import java.util.List;
  * To get instance, {@link #getInstance()}.<br />
  * To parse, {@link #parse(JsonHub, Class)}.<br />
  * </p>
+ * <p>
+ * To POJO Conditions.<br />
+ * <ul>
+ * <li>Class has {@code public new()} (arguments is 0)</li>
+ * <li>Field is {@code public}</li>
+ * <li>Field is <i>not</i> {@code static}</li>
+ * <li>Field is <i>not</i> {@code final}</li>
+ * </ul>
+ * </p>
  * 
  * @author kenta-shimizu
  *
@@ -30,7 +39,7 @@ public class JsonHubToPojoParser {
 	}
 	
 	/**
-	 * parser getter.
+	 * Returns parser instance.
 	 * 
 	 * <p>
 	 * This class is Singleton-pattern.<br />
@@ -43,10 +52,20 @@ public class JsonHubToPojoParser {
 	}
 	
 	/**
-	 * Parse JsonHub instance to POJO of classOfT.
+	 * Returns parsed POJO of classOfT from JsonHub instance.
+	 * 
+	 * <p>
+	 * To POJO Conditions.<br />
+	 * <ul>
+	 * <li>Class has {@code public new()} (arguments is 0)</li>
+	 * <li>Field is {@code public}</li>
+	 * <li>Field is <i>not</i> {@code static}</li>
+	 * <li>Field is <i>not</i> {@code final}</li>
+	 * </ul>
+	 * </p>
 	 * 
 	 * @param <T>
-	 * @param jh
+	 * @param jh JsonHub instance
 	 * @param classOfT
 	 * @return parsed POJO
 	 */

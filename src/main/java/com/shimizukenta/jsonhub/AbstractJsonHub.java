@@ -25,10 +25,8 @@ import java.util.stream.Stream;
 /**
  * This abstract class is implementation of JsonHub.
  * 
- * <p>
- * Immutable Object.
- * </p>
- *
+ * @author kenta-shimizu
+ * 
  */
 abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	

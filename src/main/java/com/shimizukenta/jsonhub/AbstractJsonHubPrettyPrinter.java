@@ -30,7 +30,7 @@ public abstract class AbstractJsonHubPrettyPrinter implements JsonHubPrettyPrint
 	}
 	
 	/**
-	 * AbstractJsonHubPrettyPrinter default instance getter.
+	 * Returns AbstractJsonHubPrettyPrinter default instance.
 	 * 
 	 * <p>
 	 * This class is Singleton-pattern.
@@ -43,7 +43,7 @@ public abstract class AbstractJsonHubPrettyPrinter implements JsonHubPrettyPrint
 	}
 	
 	/**
-	 * Create custom-pretty-printer instance.
+	 * Returns custom-pretty-printer instance.
 	 * 
 	 * @param config
 	 * @return customized-pretty-printer instance

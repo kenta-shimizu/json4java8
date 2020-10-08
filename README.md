@@ -152,7 +152,7 @@ String array_0 = jh.get("array").get(0).toString();  /* "a" */
 See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08/ForEachJsonHub.java)
 
 
-### Methods for seek value
+### Methods for seek value in OBJECT or ARRAY
 
 ? is available.  
 "blank" is throw `JsonHubUnsupportedOperationException`.
