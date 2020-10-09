@@ -361,7 +361,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	public OptionalLong optionalLong();
 	
 	/**
-	 * Returns OptionalDouble, OptionalDobule has value if type is NUMBER, and {@code OptionalDouble.empty()} otherwise.
+	 * Returns OptionalDouble, OptionalDouble has value if type is NUMBER, and {@code OptionalDouble.empty()} otherwise.
 	 * 
 	 * @return OptionalDouble has value if type is NUMBER, and {@code OptionalDouble.empty()} otherwise
 	 */
@@ -482,14 +482,14 @@ public interface JsonHub extends Iterable<JsonHub> {
 	public void toJson(Writer writer) throws IOException;
 	
 	/**
-	 * Returns parsed compact-JSON-String exclued null value pair in Object;
+	 * Returns parsed compact-JSON-String exclude null value pair in Object;
 	 * 
 	 * @return json of excluded null value pair in Object.
 	 */
 	public String toJsonExcludedNullValueInObject();
 	
 	/**
-	 * Returns parsed compact-JSON-String exclued null value pair in Object;
+	 * Returns parsed compact-JSON-String exclude null value pair in Object;
 	 * 
 	 * @param writer
 	 * @throws IOException

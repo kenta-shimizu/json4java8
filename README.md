@@ -118,7 +118,7 @@ Pojo pojo = JsonHub.fromBytes(strm).toPojo(Pojo.class);
 
 ```java
 /* to String */
-String prettyPrintJson = JsonHub.fromPoso(pojo).prettyPrint();
+String prettyPrintJson = JsonHub.fromPojo(pojo).prettyPrint();
 
 /* write to file */
 Path path = Paths.get("path/of/file.json");
