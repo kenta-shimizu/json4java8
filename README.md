@@ -1,11 +1,12 @@
 # json4java8
 
 ## Introduction
+
 This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8.
 
 ## Example of use
 
-```
+```java
 public class POJO {
 	
 	public int num;
@@ -39,7 +40,7 @@ public class POJO {
 
 ### From POJO (Plain Old Java Objec) to JSON
 
-```
+```java
 /* to String */
 String json = JsonHub.fromPojo(pojo).toJson();
 
@@ -48,13 +49,14 @@ Writer writer = new StringWriter()
 JsonHub.fromPojo(pojo).toJson(writer);
 
 /* to file */
-Path path = Paths.get("path_of_file.json");
+Path path = Paths.get("path/of/file.json");
 JsonHub.fromPojo(pojo).writeFile(path);
 ```
 
 #### From POJO conditions
+
 - Field is `public`
-- Field is not `static`
+- Field is *not* `static`
 
 See also ["/src/examples/example02/PojoParseToJsonString.java"](/src/examples/example02/PojoParseToJsonString.java)  
 See also ["/src/examples/example03/PojoWriteJsonToFile.java"](/src/examples/example03/PojoWriteJsonToFile.java)
@@ -62,7 +64,7 @@ See also ["/src/examples/example03/PojoWriteJsonToFile.java"](/src/examples/exam
 
 ### From JSON to POJO
 
-```
+```java
 /* from JSON String */
 String json = "{\"num\": 100, \"str\": \"STRING\", \"bool\": true}";
 Pojo pojo = JsonHub.fromJson(json).toPojo(Pojo.class);
@@ -72,22 +74,23 @@ Reader reader = new StringReader(json);
 Pojo pojo = JsonHub.fromJson(reader).toPojo(Pojo.class);
 
 /* from file */
-Path path = Paths.get("path_of_file.json");
+Path path = Paths.get("path/of/file.json");
 Pojo pojo = JsonHub.fromFile(path).toPojo(Pojo.class);
 ```
 
 #### To POJO conditions
+
 - Class has `public new()` (arguments is 0)
 - Field is `public`
-- Field is not `static`
-- Field is not `final`
+- Field is *not* `static`
+- Field is *not* `final`
 
 See also ["/src/examples/example01/JsonStringParseToPojo.java"](/src/examples/example01/JsonStringParseToPojo.java)  
 See also ["/src/examples/example04/ReadJsonFileParseToPojo.java"](/src/examples/example04/ReadJsonFileParseToPojo.java)
 
 ### From POJO to UTF-8 bytes
 
-```
+```java
 /* to bytes */
 byte[] bytes = JsonHub.fromPojo(pojo).getBytes();
 
@@ -98,7 +101,7 @@ JsonHub.fromPojo(pojo).writeBytes(strm);
 
 ### From UTF-8 bytes to POJO
 
-```
+```java
 /* from bytes */
 byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
 Pojo pojo = JsonHub.fromBytes(bytes).toPojo(Pojo.class);
@@ -113,12 +116,12 @@ Pojo pojo = JsonHub.fromBytes(strm).toPojo(Pojo.class);
 1. Create JsonHub instance from `#fromPojo`, ...
 1. PrettyPrint using `#prettyPrint`
 
-```
+```java
 /* to String */
 String prettyPrintJson = JsonHub.fromPoso(pojo).prettyPrint();
 
 /* write to file */
-Path path = Paths.get("path_of_file.json");
+Path path = Paths.get("path/of/file.json");
 JsonHub.fromPojo(pojo).prettyPrint(path);
 
 /* write to Writer */
@@ -132,7 +135,7 @@ See also ["/src/examples/example09/ChangePrettyPrintFormat.java"](/src/examples/
 
 ## Get value from JsonHub instance
 
-```
+```java
 String json
 = "{                                 "
 + "  \"num\":   100,                 "
@@ -150,7 +153,6 @@ String array_0 = jh.get("array").get(0).toString();  /* "a" */
 ```
 
 See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08/ForEachJsonHub.java)
-
 
 ### Methods for seek value in OBJECT or ARRAY
 
@@ -209,12 +211,11 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 |isNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 |nonNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
-
 ## Create JsonHub instance by builder
 
 Use JsonHubBuilder
 
-```
+```java
 JsonHubBuilder jhb = JsonHub.getBuilder();
 
 JsonHub jsonHub = jhb.object(
@@ -236,4 +237,3 @@ System.out.println(json);
 ```
 
 See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/examples/example07/CreateJsonStringByBuilder.java)
-

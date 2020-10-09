@@ -11,7 +11,7 @@ import java.util.Map;
  * This class is parser, from POJO (Plain-Old-Java-Object) to JsonHub instance.
  * 
  * <p>
- * To get instance, {@link #getInstance()}.<br />
+ * To get parser instance, {@link #getInstance()}.<br />
  * To parse, {@link #parse(Object)}.<br />
  * </p>
  * <p>
@@ -66,6 +66,7 @@ public class JsonHubFromPojoParser {
 	 * 
 	 * @param pojo (Plain-Old-Java-Object)
 	 * @return AbstractJsonHub instance
+	 * @throws JsonHubParseException if parse failed
 	 */
 	public AbstractJsonHub parse(Object pojo) {
 		try {

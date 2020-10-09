@@ -289,7 +289,7 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 	/**
 	 * Setter of Line-Separate in blank ARRAY or OBJECT.
 	 * 
-	 * @param f set true if line-separate in blank ARRAY or OBJECT
+	 * @param f set {@code true} if line-separate in blank ARRAY or OBJECT
 	 */
 	public void lineSeparateIfBlank(boolean f) {
 		synchronized ( this ) {
@@ -300,7 +300,7 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 	/**
 	 * Line-Separate in blank ARRAY or OBJECT getter.
 	 * 
-	 * @return true if line-separate in blank ARRAY or OBJECT
+	 * @return {@code true} if line-separate in blank ARRAY or OBJECT
 	 */
 	public boolean lineSeparateIfBlank() {
 		synchronized ( this ) {

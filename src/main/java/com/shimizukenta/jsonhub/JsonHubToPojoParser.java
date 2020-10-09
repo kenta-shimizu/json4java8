@@ -12,7 +12,7 @@ import java.util.List;
  * This class is parser, from JsonHub instance to POJO(Plain-Old-Java-Object).
  * 
  * <p>
- * To get instance, {@link #getInstance()}.<br />
+ * To get parser instance, {@link #getInstance()}.<br />
  * To parse, {@link #parse(JsonHub, Class)}.<br />
  * </p>
  * <p>
@@ -68,6 +68,7 @@ public class JsonHubToPojoParser {
 	 * @param jh JsonHub instance
 	 * @param classOfT
 	 * @return parsed POJO
+	 * @throws JsonHubParseException if parse failed
 	 */
 	public <T> T parse(JsonHub jh, Class<T> classOfT) {
 		

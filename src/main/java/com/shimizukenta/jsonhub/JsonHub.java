@@ -237,7 +237,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	public JsonHub getOrDefault(CharSequence name, JsonHub defaultValue);
 	
 	/**
-	 * Returns JsonHub instance, seek deeply in Object by names, If seek failed, return {@code null}.
+	 * Returns JsonHub instance, seek chains in Object by names, If seek failed, return {@code null}.
 	 * 
 	 * <p>
 	 * Available if type is OBJECT-chains
@@ -253,7 +253,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * Returns length if type is STRING or OBJECT or ARRAY.
 	 * 
 	 * <p>
-	 * Available if STRING or ARRAY or OBJECT
+	 * Available if type is STRING or ARRAY or OBJECT
 	 * </p>
 	 * <p>
 	 * If type is STRING return length of String.<br />
@@ -270,7 +270,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * Returns {@code true} if empty.
 	 * 
 	 * <p>
-	 * Available if STRING or ARRAY or OBJECT.<br />
+	 * Available if type is STRING or ARRAY or OBJECT.<br />
 	 * <p>
 	 * <p>
 	 * If type is STRING, return {@code true} if length is 0.<br />
