@@ -14,7 +14,7 @@ import java.util.Objects;
  * This class is implements of building JsonHub instance.
  * 
  * <p>
- * This class is used in {@link JsonHubJsonParser}, {@link JsonHubFromPojoParser}.<br />
+ * This class is used in {@link JsonHubJsonReader}, {@link JsonHubFromPojoParser}.<br />
  * </p>
  * <p>
  * To build NullJsonHub instance, {@link #nullValue()}, {@link #build(Object)}.<br />
@@ -586,7 +586,7 @@ public class JsonHubBuilder {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public JsonHub fromJson(CharSequence v) {
-		return JsonHubJsonParser.getInstance().parse(v);
+		return JsonHubJsonReader.getInstance().parse(v);
 	}
 	
 	/**
@@ -598,7 +598,7 @@ public class JsonHubBuilder {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public JsonHub fromJson(Reader reader) throws IOException {
-		return JsonHubJsonParser.getInstance().parse(reader);
+		return JsonHubJsonReader.getInstance().parse(reader);
 	}
 	
 }

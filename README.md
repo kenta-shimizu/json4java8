@@ -237,3 +237,18 @@ System.out.println(json);
 ```
 
 See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/examples/example07/CreateJsonStringByBuilder.java)
+
+## JSONC Reader
+
+JSONC (JSON with Comment) support.
+
+- /* comment... */
+- //comment...
+- Array trailing comma.
+- Object trailing comma.
+
+```java
+Path path = Paths.get("path/of/file.jsonc");
+JsonHub jh = JsoncReader.fromFile(path);
+
+```

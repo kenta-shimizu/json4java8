@@ -45,7 +45,7 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 		synchronized ( this ) {
 			
 			if ( toBytesCache == null ) {
-				toBytesCache = toJson().getBytes(StandardCharsets.UTF_8);;
+				toBytesCache = toJson().getBytes(StandardCharsets.UTF_8);
 			}
 			
 			return toBytesCache;

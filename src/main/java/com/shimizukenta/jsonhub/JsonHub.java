@@ -451,7 +451,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromJson(CharSequence json) {
-		return JsonHubJsonParser.getInstance().parse(json);
+		return JsonHubJsonReader.getInstance().parse(json);
 	}
 	
 	/**
@@ -463,7 +463,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromJson(Reader reader) throws IOException {
-		return JsonHubJsonParser.getInstance().parse(reader);
+		return JsonHubJsonReader.getInstance().parse(reader);
 	}
 	
 	/**

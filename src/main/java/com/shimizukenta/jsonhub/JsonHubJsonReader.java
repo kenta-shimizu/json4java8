@@ -19,14 +19,14 @@ import java.util.List;
  * @author kenta-shimizu
  *
  */
-public class JsonHubJsonParser {
+public class JsonHubJsonReader {
 
-	private JsonHubJsonParser() {
+	private JsonHubJsonReader() {
 		/* Nothing */
 	}
 	
 	private static class SingletonHolder {
-		private static final JsonHubJsonParser inst = new JsonHubJsonParser();
+		private static final JsonHubJsonReader inst = new JsonHubJsonReader();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class JsonHubJsonParser {
 	 * 
 	 * @return
 	 */
-	public static JsonHubJsonParser getInstance() {
+	public static JsonHubJsonReader getInstance() {
 		return SingletonHolder.inst;
 	}
 	
