@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8.
+This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8. Also supports JSONC reading.
 
 ## Example of use
 
@@ -238,12 +238,12 @@ System.out.println(json);
 
 See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/examples/example07/CreateJsonStringByBuilder.java)
 
-## JSONC Reader
+## JSONC Reading
 
-JSONC (JSON with Comment) support.
+JSONC (JSON with comments) support.
 
 - /* comment... */
-- //comment...
+- // comment...
 - Array trailing comma.
 - Object trailing comma.
 

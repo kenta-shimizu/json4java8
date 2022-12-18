@@ -1,14 +1,10 @@
 package com.shimizukenta.jsonhub;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -451,7 +447,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromJson(CharSequence json) {
-		return JsonHubJsonReader.getInstance().parse(json);
+		return JsonReader.fromJson(json);
 	}
 	
 	/**
@@ -463,7 +459,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromJson(Reader reader) throws IOException {
-		return JsonHubJsonReader.getInstance().parse(reader);
+		return JsonReader.fromJson(reader);
 	}
 	
 	/**
@@ -499,19 +495,13 @@ public interface JsonHub extends Iterable<JsonHub> {
 	/**
 	 * Returns parsed JsonHub instance from read file.
 	 * 
-	 * @param JSON-file-path
+	 * @param path of JSON file
 	 * @return parsed JsonHub instance
 	 * @throws IOException
 	 * @throws JsonHubParseException
 	 */
 	public static JsonHub fromFile(Path path) throws IOException {
-		
-		try (
-				BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-				){
-			
-			return fromJson(br);
-		}
+		return JsonReader.fromFile(path);
 	}
 	
 	/**
@@ -660,7 +650,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromBytes(byte[] bs) {
-		return fromJson(new String(bs, StandardCharsets.UTF_8));
+		return JsonReader.fromBytes(bs);
 	}
 	
 	/**
@@ -672,24 +662,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromBytes(InputStream strm) throws IOException {
-		
-		try (
-				ByteArrayOutputStream os = new ByteArrayOutputStream();
-				){
-			
-			for ( ;; ) {
-				
-				int r = strm.read();
-				
-				if ( r < 0 ) {
-					break;
-				}
-				
-				os.write(r);
-			}
-			
-			return fromBytes(os.toByteArray());
-		}
+		return JsonReader.fromBytes(strm);
 	}
 	
 }

@@ -586,7 +586,9 @@ public class JsonHubBuilder {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public JsonHub fromJson(CharSequence v) {
-		return JsonHubJsonReader.getInstance().parse(v);
+		return JsonReader.fromJson(v);
+		//TODO
+//		return JsonHubJsonReader.getInstance().parse(v);
 	}
 	
 	/**
@@ -598,7 +600,9 @@ public class JsonHubBuilder {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public JsonHub fromJson(Reader reader) throws IOException {
-		return JsonHubJsonReader.getInstance().parse(reader);
+		return JsonReader.fromJson(reader);
+		//TODO
+		//return JsonHubJsonReader.getInstance().parse(reader);
 	}
 	
 }

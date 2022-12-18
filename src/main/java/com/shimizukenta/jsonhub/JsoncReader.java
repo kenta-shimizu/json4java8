@@ -12,11 +12,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * JSONC reader
+ * JSONC reader to JsonHub.
  * 
  * <p>
  * Read JSONC and parse to JsonHub.<br />
  * </p>
+ * <ul>
+ * <li>Comments. (// and /* ...)</li>
+ * <li>Trailing Comma(,) in Array and Object.</li>
+ * </ul>
  * 
  * @author kenta-shimizu
  *
@@ -26,14 +30,39 @@ public final class JsoncReader {
 	private JsoncReader() {
 	}
 	
+	/**
+	 * Returns parsed JsonHub instance from JSONC String.
+	 * 
+	 * @param line of JSONC String.
+	 * @return parsed JsonHub.
+	 * @throws JsonHubParseException if parse failed
+	 * @throws JsoncReaderException if parse failed
+	 */
 	public static JsonHub fromLine(CharSequence line) {
 		return fromLines(Collections.singletonList(line));
 	}
 	
+	/**
+	 * Returns parsed JsonHub instance from JSONC lines.
+	 * 
+	 * @param lines of JSONC String 
+	 * @return parsed JsonHub.
+	 * @throws JsonHubParseException if parse failed
+	 * @throws JsoncReaderException if parse failed
+	 */
 	public static JsonHub fromLines(List<? extends CharSequence> lines) {
 		return parse(lines);
 	}
 	
+	/**
+	 * Returns parsed JsonHub instance from JSONC reader.
+	 * 
+	 * @param reader of JSONC
+	 * @return parsed JsonHub.
+	 * @throws IOException
+	 * @throws JsonHubParseException if parse failed
+	 * @throws JsoncReaderException if parse failed
+	 */
 	public static JsonHub fromReader(Reader reader) throws IOException {
 		try (
 				BufferedReader br = new BufferedReader(reader);
@@ -48,18 +77,27 @@ public final class JsoncReader {
 		}
 	}
 	
+	/**
+	 * Returns parsed JsonHub instance from JSONC file.
+	 * 
+	 * @param path of JSONC file
+	 * @return parsed JsonHub.
+	 * @throws IOException
+	 * @throws JsonHubParseException if parse failed
+	 * @throws JsoncReaderException if parse failed
+	 */
 	public static JsonHub fromFile(Path path) throws IOException {
 		return fromLines(Files.readAllLines(path, StandardCharsets.UTF_8));
 	}
 	
-	private static class JsoncLines {
+	private static class JsoncLinePack {
 		
 		private final List<String> lines;
-		private final int lineSize;
+		private final int size;
 		
-		private JsoncLines(List<? extends CharSequence> lines) {
+		private JsoncLinePack(List<? extends CharSequence> lines) {
 			this.lines = lines.stream().map(CharSequence::toString).collect(Collectors.toList());
-			this.lineSize = this.lines.size();
+			this.size = this.lines.size();
 		}
 		
 		private String getLine(int line) {
@@ -87,13 +125,6 @@ public final class JsoncReader {
 	private static final char CHAR_APO = '*';
 	private static final char CHAR_WS = ' ';
 	
-	//TODO
-	private static final char CHAR_DQ = '"';
-	private static final char CHAR_BS = '\\';
-	private static final char CHAR_COMMA = ',';
-	private static final char CHAR_ARRAY = ']';
-	private static final char CHAR_OBJECT = '}';
-	
 	private static class SeekResult {
 		
 		private final SeekSymbol symbol;
@@ -105,7 +136,7 @@ public final class JsoncReader {
 		}
 	}
 	
-	private static SeekResult seekNextDoubleQuoteOrComment(JsoncLines jl, int line, int pos) {
+	private static SeekResult seekNextQuotOrComment(JsoncLinePack jl, int line, int pos) {
 		
 		final String s = jl.getLine(line);
 		final int m = s.length();
@@ -114,7 +145,7 @@ public final class JsoncReader {
 			
 			final char c = s.charAt(p);
 			
-			if ( c == CHAR_DQ ) {
+			if (JsonStructuralChar.QUOT.match(c)) {
 				
 				return new SeekResult(SeekSymbol.DQ, p);
 				
@@ -139,7 +170,7 @@ public final class JsoncReader {
 		return new SeekResult(SeekSymbol.NOT_FOUND, -1);
 	}
 	
-	private static SeekResult seekNextEndDoubleQuote(JsoncLines jl, int line, int pos) {
+	private static SeekResult seekNextEndQuot(JsoncLinePack jl, int line, int pos) {
 		
 		final String s = jl.getLine(line);
 		final int m = s.length();
@@ -148,11 +179,11 @@ public final class JsoncReader {
 			
 			final char c = s.charAt(p);
 			
-			if ( c == CHAR_BS ) {
+			if (JsonStructuralChar.ESCAPE.match(c)) {
 				
 				++p;
 				
-			} else if ( c == CHAR_DQ ) {
+			} else if (JsonStructuralChar.QUOT.match(c)) {
 				
 				return new SeekResult(SeekSymbol.DQ, p);
 			}
@@ -161,7 +192,7 @@ public final class JsoncReader {
 		return new SeekResult(SeekSymbol.NOT_FOUND, -1);
 	}
 	
-	private static SeekResult seekNextEndComment(JsoncLines jl, int line, int pos) {
+	private static SeekResult seekNextEndComment(JsoncLinePack jl, int line, int pos) {
 		
 		final String s = jl.getLine(line);
 		final int m = s.length();
@@ -187,9 +218,9 @@ public final class JsoncReader {
 			
 			char c = cs.charAt(pos);
 			
-			if ( c == CHAR_ARRAY ) {
+			if (JsonStructuralChar.ARRAY_END.match(c)) {
 				return new SeekResult(SeekSymbol.ARRAY, pos);
-			} else if ( c == CHAR_OBJECT ) {
+			} else if (JsonStructuralChar.OBJECT_END.match(c)) {
 				return new SeekResult(SeekSymbol.OBJECT, pos);
 			}
 		}
@@ -203,7 +234,7 @@ public final class JsoncReader {
 			
 			char c = cs.charAt(pos);
 			
-			if ( c == CHAR_COMMA ) {
+			if (JsonStructuralChar.SEPARATOR_VALUE.match(c)) {
 				return new SeekResult(SeekSymbol.COMMA, pos);
 			} else if ( c > CHAR_WS ) {
 				return new SeekResult(SeekSymbol.OTHERS, pos);
@@ -217,18 +248,18 @@ public final class JsoncReader {
 		
 		final StringBuilder sb = new StringBuilder();
 		
-		final JsoncLines jl = new JsoncLines(lines);
+		final JsoncLinePack jl = new JsoncLinePack(lines);
 		
 		/* remove comment */
 		
-		for (int pos = 0, line = 0; line < jl.lineSize; ) {
+		for (int pos = 0, line = 0; line < jl.size; ) {
 			
-			SeekResult r = seekNextDoubleQuoteOrComment(jl, line, pos);
+			SeekResult r = seekNextQuotOrComment(jl, line, pos);
 			
 			switch ( r.symbol ) {
 			case DQ: {
 				
-				SeekResult rr = seekNextEndDoubleQuote(jl, line, (r.pos + 1));
+				SeekResult rr = seekNextEndQuot(jl, line, (r.pos + 1));
 				
 				if ( rr.symbol == SeekSymbol.DQ ) {
 					
@@ -264,7 +295,7 @@ public final class JsoncReader {
 						++ line;
 						pos = 0;
 						
-						if ( line >= jl.lineSize ) {
+						if ( line >= jl.size ) {
 							throw new JsoncReaderException("Not found end of /*, line: " + expline + ", pos: " + exppos);
 						}
 					}
@@ -326,7 +357,7 @@ public final class JsoncReader {
 			}
 		}
 		
-		return JsonHubJsonReader.getInstance().parse(sb);
+		return JsonReader.fromJson(sb);
 	}
 	
 }
