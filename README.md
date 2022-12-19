@@ -218,9 +218,9 @@ Use JsonHubBuilder
 ```java
 JsonHubBuilder jhb = JsonHub.getBuilder();
 
-JsonHub jsonHub = jhb.object(
-    jhb.pair("num", 100),
+JsonHub jh = jhb.object(
     jhb.pair("str", "STRING"),
+    jhb.pair("num", 100),
     jhb.pair("bool", true),
     jhb.pair("array", jhb.array(
         jhb.build("a"),
@@ -229,7 +229,7 @@ JsonHub jsonHub = jhb.object(
     ))
 );
 
-String json = jsonHub.toJson();
+String json = jh.toJson();
 
 System.out.println(json);
 
@@ -244,11 +244,13 @@ JSONC (JSON with comments) support.
 
 - /* comment... */
 - // comment...
-- Array trailing comma.
-- Object trailing comma.
+- Array trailing comma(,).
+- Object trailing comma(,).
 
 ```java
 Path path = Paths.get("path/of/file.jsonc");
 JsonHub jh = JsoncReader.fromFile(path);
-
+System.out.println(jh.prettyPrint());
 ```
+
+See also ["/src/examples/example10/ReadJsoncFile.java"](/src/examples/example10/ReadJsoncFile.java)
