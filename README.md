@@ -208,6 +208,7 @@ See also ["/src/examples/example08/ForEachJsonHub.java"](/src/examples/example08
 |isString() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 |isTrue() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 |isFalse() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+|isBoolean() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 |isNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 |nonNull() | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 

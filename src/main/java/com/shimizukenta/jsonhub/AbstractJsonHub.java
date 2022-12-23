@@ -1,14 +1,10 @@
 package com.shimizukenta.jsonhub;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -140,46 +136,6 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	}
 	
 	@Override
-	public boolean isNull() {
-		return type() == JsonHubType.NULL;
-	}
-	
-	@Override
-	public boolean nonNull() {
-		return ! isNull();
-	}
-	
-	@Override
-	public boolean isTrue() {
-		return type() == JsonHubType.TRUE;
-	}
-	
-	@Override
-	public boolean isFalse() {
-		return type() == JsonHubType.FALSE;
-	}
-	
-	@Override
-	public boolean isString() {
-		return type() == JsonHubType.STRING;
-	}
-	
-	@Override
-	public boolean isNumber() {
-		return type() == JsonHubType.NUMBER;
-	}
-	
-	@Override
-	public boolean isArray() {
-		return type() == JsonHubType.ARRAY;
-	}
-	
-	@Override
-	public boolean isObject() {
-		return type() == JsonHubType.OBJECT;
-	}
-	
-	@Override
 	public Optional<Boolean> optionalBoolean() {
 		return Optional.empty();
 	}
@@ -210,26 +166,6 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	}
 	
 	@Override
-	public boolean booleanValue() {
-		return optionalBoolean().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #booleanValue"));
-	}
-	
-	@Override
-	public int intValue() {
-		return optionalInt().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #intValue"));
-	}
-	
-	@Override
-	public long longValue() {
-		return optionalLong().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #longValue"));
-	}
-	
-	@Override
-	public double doubleValue() {
-		return optionalDouble().orElseThrow(() -> new JsonHubUnsupportedOperationException(type() + " not support #doubleValue"));
-	}
-	
-	@Override
 	public String toJson() {
 		return JsonHubPrettyPrinter.getCompactPrinter().print(this);
 	}
@@ -247,73 +183,6 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	@Override
 	public void toJsonExcludedNullValueInObject(Writer writer) throws IOException {
 		JsonHubPrettyPrinter.getNoneNullValueInObjectCompactPrinter().print(this, writer);
-	}
-	
-	@Override
-	public void writeFile(Path path) throws IOException {
-		
-		try (
-				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
-				) {
-			
-			toJson(bw);
-		}
-	}
-	
-	@Override
-	public void writeFile(Path path, OpenOption... options) throws IOException {
-		
-		try (
-				BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8, options);
-				) {
-			
-			toJson(bw);
-		}
-	}
-	
-	@Override
-	public String prettyPrint() {
-		return JsonHubPrettyPrinter.getDefaultPrinter().print(this);
-	}
-	
-	@Override
-	public String prettyPrint(JsonHubPrettyPrinterConfig config) {
-		return JsonHubPrettyPrinter.newPrinter(config).print(this);
-	}
-	
-	@Override
-	public void prettyPrint(Writer writer) throws IOException {
-		JsonHubPrettyPrinter.getDefaultPrinter().print(this, writer);
-	}
-	
-	@Override
-	public void prettyPrint(Writer writer, JsonHubPrettyPrinterConfig config) throws IOException {
-		JsonHubPrettyPrinter.newPrinter(config).print(this, writer);
-	}
-	
-	@Override
-	public void prettyPrint(Path path) throws IOException {
-		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path);
-	}
-	
-	@Override
-	public void prettyPrint(Path path, OpenOption... options) throws IOException {
-		JsonHubPrettyPrinter.getDefaultPrinter().print(this, path, options);
-	}
-	
-	@Override
-	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config) throws IOException {
-		JsonHubPrettyPrinter.newPrinter(config).print(this, path);
-	}
-	
-	@Override
-	public void prettyPrint(Path path, JsonHubPrettyPrinterConfig config, OpenOption... options) throws IOException {
-		JsonHubPrettyPrinter.newPrinter(config).print(this, path, options);
-	}
-	
-	@Override
-	public <T> T toPojo(Class<T> classOfT) {
-		return JsonHubToPojoParser.getInstance().parse(this, classOfT);
 	}
 	
 	@Override
