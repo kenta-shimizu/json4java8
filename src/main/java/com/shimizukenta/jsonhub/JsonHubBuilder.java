@@ -2,19 +2,15 @@ package com.shimizukenta.jsonhub;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
- * This class is implements of building JsonHub instance.
+ * This interface is implements of building JsonHub instance.
  * 
  * <p>
- * This class is used in {@link JsonHubJsonReader}, {@link JsonHubFromPojoParser}.<br />
+ * This class is used in {@link JsonReader}, {@link JsonHubFromPojoParser}.<br />
  * </p>
  * <p>
  * To build NullJsonHub instance, {@link #nullValue()}, {@link #build(Object)}.<br />
@@ -41,35 +37,19 @@ import java.util.Objects;
  * @author kenta-shimizu
  *
  */
-public class JsonHubBuilder {
-	
-	protected JsonHubBuilder() {
-		/* Nothing */
-	}
-	
-	private static class SingletonHolder {
-		private static final JsonHubBuilder inst = new JsonHubBuilder();
-		
-		private static final JsonString emptyString = JsonString.escaped("");
-		private static final NullJsonHub nullValue = new NullJsonHub();
-		private static final TrueJsonHub trueValue = new TrueJsonHub();
-		private static final FalseJsonHub falseValue = new FalseJsonHub();
-		private static final ArrayJsonHub emptyArrayValue = new ArrayJsonHub(Collections.emptyList());
-		private static final ObjectJsonHub emptyObjectValue = new ObjectJsonHub(Collections.emptyList());
-		private static final StringJsonHub emptyStringValue = new StringJsonHub(emptyString);
-	}
+public interface JsonHubBuilder {
 	
 	/**
-	 * Returns Builder instance.
+	 * Returns JsonHubBuilder instance.
 	 * 
 	 * <p>
-	 * This class is Singleton-pattern.
+	 * This builder is Singleton pattern.
 	 * </p>
 	 * 
-	 * @return builder instance
+	 * @return JsonHubBuilder instance.
 	 */
 	public static JsonHubBuilder getInstance() {
-		return SingletonHolder.inst;
+		return AbstractJsonHubBuilder.getInstance();
 	}
 	
 	/**
@@ -82,10 +62,8 @@ public class JsonHubBuilder {
 	 * 
 	 * @return NullJsonHub instance
 	 */
-	public NullJsonHub nullValue() {
-		return SingletonHolder.nullValue;
-	}
-	
+	public NullJsonHub nullValue();
+
 	/**
 	 * Returns TrueJsonHub instance.
 	 * 
@@ -96,10 +74,8 @@ public class JsonHubBuilder {
 	 * 
 	 * @return TrueJsonHub instance
 	 */
-	public TrueJsonHub trueValue() {
-		return SingletonHolder.trueValue;
-	}
-	
+	public TrueJsonHub trueValue();
+
 	/**
 	 * Returns FalseJsonHub instance.
 	 * 
@@ -110,64 +86,48 @@ public class JsonHubBuilder {
 	 * 
 	 * @return FalseJsonHub instance
 	 */
-	public FalseJsonHub falseValue() {
-		return SingletonHolder.falseValue;
-	}
-	
+	public FalseJsonHub falseValue();
+
 	/**
 	 * Returns NumberJsonHub instance of int-value.
 	 * 
 	 * @param v
 	 * @return NumberJsonHub instance of int-value
 	 */
-	public NumberJsonHub build(int v) {
-		return number(v);
-	}
-	
+	public NumberJsonHub build(int v);
+
 	/**
 	 * Returns NumberJsonHub instance of long-value.
 	 * 
 	 * @param v
 	 * @return NumberJsonHub instance of long-value
 	 */
-	public NumberJsonHub build(long v) {
-		return number(v);
-	}
-	
+	public NumberJsonHub build(long v);
+
 	/**
 	 * Returns NumberJsonHub instance of float-value.
 	 * 
 	 * @param v
 	 * @return NumberJsonHub instance of float-value
 	 */
-	public NumberJsonHub build(float v) {
-		return number(v);
-	}
-	
+	public NumberJsonHub build(float v);
+
 	/**
 	 * Returns NumberJsonHub instance of double-value.
 	 * 
 	 * @param v
 	 * @return NumberJsonHub instance of double-value
 	 */
-	public NumberJsonHub build(double v) {
-		return number(v);
-	}
-	
+	public NumberJsonHub build(double v);
+
 	/**
 	 * Returns TrueJsonHub or FalseJsonHub instance.
 	 * 
 	 * @param v
 	 * @return TrueJsonHub instance if true, and FalseJsonHub instance otherwise
 	 */
-	public AbstractJsonHub build(boolean v) {
-		if ( v ) {
-			return trueValue();
-		} else {
-			return falseValue();
-		}
-	}
-	
+	public AbstractJsonHub build(boolean v);
+
 	/**
 	 * Returns AbstractJsonHub instance (NULL, TRUE, FALSE, STRING or NUMBER).
 	 * 
@@ -183,35 +143,8 @@ public class JsonHubBuilder {
 	 * @return AbstractJsonHub (NULL, TRUE, FALSE, STRING or NUMBER)
 	 * @throws JsonHubBuildException if type is unsupported
 	 */
-	public AbstractJsonHub build(Object v) {
-		
-		if ( v == null ) {
-			
-			return nullValue();
-			
-		} else {
-			
-			if ( v instanceof Boolean ) {
-				return build(((Boolean) v).booleanValue());
-			}
-			
-			if ( v instanceof CharSequence ) {
-				return string((CharSequence)v);
-			}
-			
-			if ( v instanceof JsonString ) {
-				return string((JsonString)v);
-			}
-			
-			if ( v instanceof Number ) {
-				return number((Number)v);
-			}
-			
-			throw new JsonHubBuildException("build failed \"" + v.toString() + "\"");
-		}
-	}
-	
-	
+	public AbstractJsonHub build(Object v);
+
 	/**
 	 * Returns NumberJsonHub instance from JSON-String.
 	 * 
@@ -223,10 +156,8 @@ public class JsonHubBuilder {
 	 * @return NumberJsonHub
 	 * @throws JsonHubNumberFormatException
 	 */
-	public NumberJsonHub number(CharSequence cs) {
-		return new NumberJsonHub(cs);
-	}
-	
+	public NumberJsonHub number(CharSequence cs);
+
 	/**
 	 * Returns NumberJsonHub instance.
 	 * 
@@ -237,51 +168,40 @@ public class JsonHubBuilder {
 	 * @param n
 	 * @return NumberJsonHub instance
 	 */
-	public NumberJsonHub number(Number n) {
-		return new NumberJsonHub(n);
-	}
-	
+	public NumberJsonHub number(Number n);
+
 	/**
 	 * Returns NumberJsonHub instance of int-value.
 	 * 
 	 * @param n
 	 * @return NumberJsonHub instance of int-value
 	 */
-	public NumberJsonHub number(int n) {
-		return number(Integer.valueOf(n));
-	}
-	
+	public NumberJsonHub number(int n);
+
 	/**
 	 * Returns NumberJsonHub instance of long-value.
 	 * 
 	 * @param n
 	 * @return NumberJsonHub instance of long-value
 	 */
-	public NumberJsonHub number(long n) {
-		return number(Long.valueOf(n));
-	}
-	
+	public NumberJsonHub number(long n);
+
 	/**
 	 * Returns NumberJsonHub instance of float-value.
 	 * 
 	 * @param n
 	 * @return NumberJsonHub instance of float-value
 	 */
-	public NumberJsonHub number(float n) {
-		return number(Float.valueOf(n));
-	}
-	
+	public NumberJsonHub number(float n);
+
 	/**
 	 * Returns NumberJsonHub instance of double-value.
 	 * 
 	 * @param n
 	 * @return NumberJsonHub instance of double-value
 	 */
-	public NumberJsonHub number(double n) {
-		return number(Double.valueOf(n));
-	}
-	
-	
+	public NumberJsonHub number(double n);
+
 	/**
 	 * Returns StringJsonHub from JSON-String.
 	 * 
@@ -292,14 +212,8 @@ public class JsonHubBuilder {
 	 * @param v
 	 * @return StringJsonHub
 	 */
-	public StringJsonHub string(CharSequence v) {
-		if ( Objects.requireNonNull(v).toString().isEmpty() ) {
-			return SingletonHolder.emptyStringValue;
-		} else {
-			return string(JsonString.unescaped(v));
-		}
-	}
-	
+	public StringJsonHub string(CharSequence v);
+
 	/**
 	 * Returns StringJsonHub from JsonString.
 	 * 
@@ -310,10 +224,8 @@ public class JsonHubBuilder {
 	 * @param v
 	 * @return StringJsonHub
 	 */
-	public StringJsonHub string(JsonString v) {
-		return new StringJsonHub(v);
-	}
-	
+	public StringJsonHub string(JsonString v);
+
 	/**
 	 * Returns ArrayJsonHub instance, values is empty.
 	 * 
@@ -324,34 +236,24 @@ public class JsonHubBuilder {
 	 * 
 	 * @return empty-ArrayJsonHub instance
 	 */
-	public ArrayJsonHub array() {
-		return emptyArray();
-	}
-	
+	public ArrayJsonHub array();
+
 	/**
 	 * Returns ArrayJsonHub instance.
 	 * 
 	 * @param values
 	 * @return ArrayJsonHub instance
 	 */
-	public ArrayJsonHub array(JsonHub... values) {
-		return new ArrayJsonHub(Arrays.asList(values));
-	}
-	
+	public ArrayJsonHub array(JsonHub... values);
+
 	/**
 	 * Returns ArrayJsonHub instance.
 	 * 
 	 * @param values
 	 * @return ArrayJsonHub instance
 	 */
-	public ArrayJsonHub array(List<? extends JsonHub> values) {
-		if ( Objects.requireNonNull(values).isEmpty() ) {
-			return emptyArray();
-		} else {
-			return new ArrayJsonHub(values);
-		}
-	}
-	
+	public ArrayJsonHub array(List<? extends JsonHub> values);
+
 	/**
 	 * Returns ArrayJsonHub instance, values is empty.
 	 * 
@@ -362,11 +264,8 @@ public class JsonHubBuilder {
 	 * 
 	 * @return empty-ArrayJsonHub instance
 	 */
-	public ArrayJsonHub emptyArray() {
-		return SingletonHolder.emptyArrayValue;
-	}
-	
-	
+	public ArrayJsonHub emptyArray();
+
 	/**
 	 * Returns ObjectJsonHub instance, Object pairs is empty.
 	 * 
@@ -377,19 +276,7 @@ public class JsonHubBuilder {
 	 * 
 	 * @return empty-ObjectJsonHub instance
 	 */
-	public ObjectJsonHub object() {
-		return emptyObject();
-	}
-	
-	/**
-	 * Returns ObjectJsonHub instance.
-	 * 
-	 * @param pairs
-	 * @return ObjectJsonHub instance
-	 */
-	public ObjectJsonHub object(JsonObjectPair... pairs) {
-		return object(Arrays.asList(pairs));
-	}
+	public ObjectJsonHub object();
 
 	/**
 	 * Returns ObjectJsonHub instance.
@@ -397,31 +284,24 @@ public class JsonHubBuilder {
 	 * @param pairs
 	 * @return ObjectJsonHub instance
 	 */
-	public ObjectJsonHub object(Collection<? extends JsonObjectPair> pairs) {
-		if ( Objects.requireNonNull(pairs).isEmpty() ) {
-			return emptyObject();
-		} else {
-			return new ObjectJsonHub(pairs);
-		}
-	}
-	
+	public ObjectJsonHub object(JsonObjectPair... pairs);
+
+	/**
+	 * Returns ObjectJsonHub instance.
+	 * 
+	 * @param pairs
+	 * @return ObjectJsonHub instance
+	 */
+	public ObjectJsonHub object(Collection<? extends JsonObjectPair> pairs);
+
 	/**
 	 * Returns ObjectJsonHub instance.
 	 * 
 	 * @param map
 	 * @return ObjectJsonHub instance
 	 */
-	public ObjectJsonHub object(Map<? extends JsonString, ? extends JsonHub> map) {
-		
-		final Collection<JsonObjectPair> pairs = new ArrayList<>();
-		
-		Objects.requireNonNull(map).forEach((name, value) -> {
-			pairs.add(pair(name, value));
-		});
-			
-		return object(pairs);
-	}
-	
+	public ObjectJsonHub object(Map<? extends JsonString, ? extends JsonHub> map);
+
 	/**
 	 * Returns ObjectJsonHub instance, Object pairs is empty.
 	 * 
@@ -432,10 +312,8 @@ public class JsonHubBuilder {
 	 * 
 	 * @return empty-ObjectJsonHub instance
 	 */
-	public ObjectJsonHub emptyObject() {
-		return SingletonHolder.emptyObjectValue;
-	}
-	
+	public ObjectJsonHub emptyObject();
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -444,14 +322,8 @@ public class JsonHubBuilder {
 	 * @return JsonObjectPair
 	 * @throws JsonHubBuildException if unsupported Object type
 	 */
-	public JsonObjectPair pair(JsonString name, Object value) {
-		if ((value != null) && (value instanceof JsonHub)) {
-			return new JsonObjectPair(name, (JsonHub)value);
-		} else {
-			return new JsonObjectPair(name, build(value));
-		}
-	}
-	
+	public JsonObjectPair pair(JsonString name, Object value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -459,10 +331,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(JsonString name, int value) {
-		return new JsonObjectPair(name, number(value));
-	}
-	
+	public JsonObjectPair pair(JsonString name, int value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -470,10 +340,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(JsonString name, long value) {
-		return new JsonObjectPair(name, number(value));
-	}
-	
+	public JsonObjectPair pair(JsonString name, long value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -481,10 +349,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(JsonString name, float value) {
-		return new JsonObjectPair(name, number(value));
-	}
-	
+	public JsonObjectPair pair(JsonString name, float value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -492,10 +358,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(JsonString name, double value) {
-		return new JsonObjectPair(name, number(value));
-	}
-	
+	public JsonObjectPair pair(JsonString name, double value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -503,10 +367,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(JsonString name, boolean value) {
-		return new JsonObjectPair(name, build(value));
-	}
-	
+	public JsonObjectPair pair(JsonString name, boolean value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -515,10 +377,8 @@ public class JsonHubBuilder {
 	 * @return JsonObjectPair
 	 * @throws JsonHubBuildException if unsupported Object type
 	 */
-	public JsonObjectPair pair(CharSequence name, Object value) {
-		return pair(JsonString.unescaped(name), value);
-	}
-	
+	public JsonObjectPair pair(CharSequence name, Object value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -526,10 +386,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(CharSequence name, int value) {
-		return pair(JsonString.unescaped(name), value);
-	}
-	
+	public JsonObjectPair pair(CharSequence name, int value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -537,10 +395,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(CharSequence name, long value) {
-		return pair(JsonString.unescaped(name), value);
-	}
-	
+	public JsonObjectPair pair(CharSequence name, long value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -548,10 +404,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(CharSequence name, float value) {
-		return pair(JsonString.unescaped(name), value);
-	}
-	
+	public JsonObjectPair pair(CharSequence name, float value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -559,10 +413,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(CharSequence name, double value) {
-		return pair(JsonString.unescaped(name), value);
-	}
-	
+	public JsonObjectPair pair(CharSequence name, double value);
+
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
@@ -570,10 +422,8 @@ public class JsonHubBuilder {
 	 * @param value
 	 * @return JsonObjectPair
 	 */
-	public JsonObjectPair pair(CharSequence name, boolean value) {
-		return pair(JsonString.unescaped(name), value);
-	}
-	
+	public JsonObjectPair pair(CharSequence name, boolean value);
+
 	/**
 	 * Returns parsed JsonHub instance from JSON-String.
 	 * 
@@ -585,12 +435,8 @@ public class JsonHubBuilder {
 	 * @return parsed JsonHub instance
 	 * @throws JsonHubParseException if parse failed
 	 */
-	public JsonHub fromJson(CharSequence v) {
-		return JsonReader.fromJson(v);
-		//TODO
-//		return JsonHubJsonReader.getInstance().parse(v);
-	}
-	
+	public JsonHub fromJson(CharSequence v);
+
 	/**
 	 * Returns parsed JsonHub instance from Reader includes JSON-String.
 	 * 
@@ -599,10 +445,6 @@ public class JsonHubBuilder {
 	 * @throws IOException
 	 * @throws JsonHubParseException if parse failed
 	 */
-	public JsonHub fromJson(Reader reader) throws IOException {
-		return JsonReader.fromJson(reader);
-		//TODO
-		//return JsonHubJsonReader.getInstance().parse(reader);
-	}
-	
+	public JsonHub fromJson(Reader reader) throws IOException;
+
 }
