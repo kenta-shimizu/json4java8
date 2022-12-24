@@ -11,7 +11,6 @@ import java.util.Map;
  * This class is parser, from POJO (Plain-Old-Java-Object) to JsonHub instance.
  * 
  * <p>
- * To get parser instance, {@link #getInstance()}.<br />
  * To parse, {@link #parse(Object)}.<br />
  * </p>
  * <p>
@@ -25,29 +24,11 @@ import java.util.Map;
  * @author kenta-shimizu
  *
  */
-public class JsonHubFromPojoParser {
+public final class JsonHubFromPojoParser {
 	
-	protected final JsonHubBuilder jhb = JsonHubBuilder.getInstance();
+	private static final JsonHubBuilder jhb = JsonHubBuilder.getInstance();
 	
-	protected JsonHubFromPojoParser() {
-		/* Nothing */
-	}
-	
-	private static class SingletonHolder {
-		private static final JsonHubFromPojoParser inst = new JsonHubFromPojoParser();
-	}
-	
-	/**
-	 * Returns parser instance.
-	 * 
-	 * <p>
-	 * This class is Singleton-pattern.
-	 * </p>
-	 * 
-	 * @return JsonHubFromPojoParser instance
-	 */
-	public static JsonHubFromPojoParser getInstance() {
-		return SingletonHolder.inst;
+	private JsonHubFromPojoParser() {
 	}
 	
 	/**
@@ -65,10 +46,10 @@ public class JsonHubFromPojoParser {
 	 * </p>
 	 * 
 	 * @param pojo (Plain-Old-Java-Object)
-	 * @return AbstractJsonHub instance
+	 * @return JsonHub instance
 	 * @throws JsonHubParseException if parse failed
 	 */
-	public AbstractJsonHub parse(Object pojo) {
+	public static JsonHub parse(Object pojo) {
 		try {
 			return fromObjectPojo(pojo);
 		}
@@ -86,7 +67,7 @@ public class JsonHubFromPojoParser {
 	 * @throws IllegalAccessException
 	 * @throws ClassCastException
 	 */
-	protected AbstractJsonHub fromObjectPojo(Object pojo)
+	private static AbstractJsonHub fromObjectPojo(Object pojo)
 			throws IllegalArgumentException, IllegalAccessException, ClassCastException {
 		
 		if ( pojo == null ) {

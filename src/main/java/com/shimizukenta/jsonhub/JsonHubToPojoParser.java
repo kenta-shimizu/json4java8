@@ -12,7 +12,6 @@ import java.util.List;
  * This class is parser, from JsonHub instance to POJO(Plain-Old-Java-Object).
  * 
  * <p>
- * To get parser instance, {@link #getInstance()}.<br />
  * To parse, {@link #parse(JsonHub, Class)}.<br />
  * </p>
  * <p>
@@ -28,27 +27,9 @@ import java.util.List;
  * @author kenta-shimizu
  *
  */
-public class JsonHubToPojoParser {
+public final class JsonHubToPojoParser {
 	
-	protected JsonHubToPojoParser() {
-		/* Nothing */
-	}
-	
-	private static class SingletonHolder {
-		private static final JsonHubToPojoParser inst = new JsonHubToPojoParser();
-	}
-	
-	/**
-	 * Returns parser instance.
-	 * 
-	 * <p>
-	 * This class is Singleton-pattern.<br />
-	 * </p>
-	 * 
-	 * @return JsonHubToPojoParser instance
-	 */
-	public static JsonHubToPojoParser getInstance() {
-		return SingletonHolder.inst;
+	private JsonHubToPojoParser() {
 	}
 	
 	/**
@@ -70,7 +51,7 @@ public class JsonHubToPojoParser {
 	 * @return parsed POJO
 	 * @throws JsonHubParseException if parse failed
 	 */
-	public <T> T parse(JsonHub jh, Class<T> classOfT) {
+	public static <T> T parse(JsonHub jh, Class<T> classOfT) {
 		
 		try {
 			return toTopLevelPojo(jh, classOfT);

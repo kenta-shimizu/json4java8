@@ -662,7 +662,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromPojo(Object pojo) {
-		return JsonHubFromPojoParser.getInstance().parse(pojo);
+		return JsonHubFromPojoParser.parse(pojo);
 	}
 	
 	/**
@@ -674,7 +674,7 @@ public interface JsonHub extends Iterable<JsonHub> {
 	 * @throws JsonHubParseException if parse failed
 	 */
 	default public <T> T toPojo(Class<T> classOfT) {
-		return JsonHubToPojoParser.getInstance().parse(this, classOfT);
+		return JsonHubToPojoParser.parse(this, classOfT);
 	}
 	
 	/**
