@@ -730,4 +730,9 @@ public interface JsonHub extends Iterable<JsonHub> {
 		return JsonReader.fromBytes(strm);
 	}
 	
+	
+	default public List<JsonHub> jsonPath(CharSequence jsonPath) {
+		return JsonPathParser.parse(this, jsonPath);
+	}
+	
 }
