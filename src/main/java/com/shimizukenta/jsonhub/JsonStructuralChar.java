@@ -32,6 +32,10 @@ public enum JsonStructuralChar {
 		return str;
 	}
 	
+	public char chr() {
+		return chr;
+	}
+	
 	public boolean match(CharSequence cs) {
 		return Objects.requireNonNull(cs).toString().equals(str);
 	}

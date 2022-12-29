@@ -356,6 +356,8 @@ public final class JsonPathParser {
 			deepParse(jp, r.pos, ll);
 			return;
 		}
+		
+		throw new JsonPathParseException("Unkonwn format. position: " + pos);
 	}
 	
 	private static int findNextPeriodOrBracketOrEnd(String jp, int pos) {
