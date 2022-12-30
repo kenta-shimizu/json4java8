@@ -28,20 +28,24 @@ public final class JsonPathParser {
 	 */
 	public static List<JsonHub> parse(JsonHub jh, CharSequence jsonPath) {
 		LinkedList<JsonPathGetter> ll = parseJsonPathList(jsonPath);
-		return deepSeekPath(Stream.of(jh), ll).collect(Collectors.toList());
+		return deepSeekPath(Stream.of(jh), ll, jh).collect(Collectors.toList());
 	}
 	
-	private static Stream<JsonHub> deepSeekPath(Stream<JsonHub> jhs, LinkedList<JsonPathGetter> ll) {
+	private static Stream<JsonHub> deepSeekPath(
+			Stream<JsonHub> jhs,
+			LinkedList<JsonPathGetter> ll,
+			JsonHub top) {
+		
 		if ( ll.isEmpty() ) {
 			return jhs;
 		} else {
 			JsonPathGetter x = ll.removeFirst();
-			return deepSeekPath(x.get(jhs), ll);
+			return deepSeekPath(x.get(jhs, top), ll, top);
 		}
 	}
 	
 	private static interface JsonPathGetter {
-		public Stream<JsonHub> get(Stream<JsonHub> jh);
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top);
 	}
 	
 	private static class ChildObjectKeys implements JsonPathGetter {
@@ -53,7 +57,7 @@ public final class JsonPathParser {
 		}
 		
 		@Override
-		public Stream<JsonHub> get(Stream<JsonHub> jhs) {
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top) {
 			return jhs.flatMap(jh -> {
 				if ( jh.isObject() ) {
 					return this.keys.stream()
@@ -77,7 +81,7 @@ public final class JsonPathParser {
 		}
 		
 		@Override
-		public Stream<JsonHub> get(Stream<JsonHub> jhs) {
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top) {
 			return jhs.flatMap(jh -> {
 				final List<JsonHub> ll = new ArrayList<>();
 				this.recursive(jh, ll);
@@ -150,7 +154,7 @@ public final class JsonPathParser {
 		}
 		
 		@Override
-		public Stream<JsonHub> get(Stream<JsonHub> jhs) {
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top) {
 			return jhs.flatMap(jh -> {
 				if ( jh.isArray() ) {
 					
@@ -184,7 +188,7 @@ public final class JsonPathParser {
 		}
 		
 		@Override
-		public Stream<JsonHub> get(Stream<JsonHub> jhs) {
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top) {
 			return jhs.flatMap(jh -> {
 				final List<JsonHub> ll = new ArrayList<>();
 				this.recursive(jh, ll);
@@ -229,7 +233,7 @@ public final class JsonPathParser {
 		}
 		
 		@Override
-		public Stream<JsonHub> get(Stream<JsonHub> jhs) {
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top) {
 			return jhs.flatMap(jh -> {
 				if ( jh.isObject() || jh.isArray() ) {
 					return jh.stream();
@@ -245,7 +249,7 @@ public final class JsonPathParser {
 		}
 		
 		@Override
-		public Stream<JsonHub> get(Stream<JsonHub> jhs) {
+		public Stream<JsonHub> get(Stream<JsonHub> jhs, JsonHub top) {
 			return jhs.flatMap(jh -> {
 				List<JsonHub> ll = new ArrayList<>();
 				this.recursive(jh, ll);
@@ -263,8 +267,10 @@ public final class JsonPathParser {
 		}
 	}
 	
+	
 	//TODO
 	//filter
+	//script
 	
 	
 	private static LinkedList<JsonPathGetter> parseJsonPathList(CharSequence jsonpath) {
@@ -482,18 +488,50 @@ public final class JsonPathParser {
 		
 		if ( r.c == '?' ) {
 			
-			//TODO
-			//filter
-			
-			throw new JsonPathParseException("Not yet supported");
+			FindCharResult sr = FindChars.nextIgnoreWhiteSpace(jp, r.pos + 1);
+			if (sr.c == '(') {
+				
+				int endIndex = findScriptEnd(jp, sr.pos);
+				if ( endIndex < 0 ) {
+					throw new JsonPathParseException("Not Found Filter end ')'. position: " + r.pos);
+				}
+				
+				String filter = jp.substring(sr.pos + 1, endIndex);
+				
+				FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp, endIndex + 1);
+				if (er.c == ']') {
+					
+					return new FindBracketGetterResult(
+							parseFilterGetter(filter),
+							er.pos + 1);
+					
+				} else {
+					throw new JsonPathParseException("Not found Filter start, position: " + (r.pos + 1));
+				}
+				
+			} else {
+				throw new JsonPathParseException("Not found Filter end ']', position: " + r.pos);
+			}
 		}
 		
 		if (r.c == '(') {
+			int endIndex = findScriptEnd(jp, r.pos);
+			if ( endIndex < 0 ) {
+				throw new JsonPathParseException("Not Found Script end ')'. position: " + r.pos);
+			}
 			
-			//TODO
-			//script
+			String script = jp.substring(r.pos + 1, endIndex);
 			
-			throw new JsonPathParseException("Not yet supported");
+			FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp, endIndex + 1);
+			if (er.c == ']') {
+				
+				return new FindBracketGetterResult(
+						parseScriptGetter(script),
+						er.pos + 1);
+				
+			} else {
+				throw new JsonPathParseException("Not found Script start, position: " + (r.pos + 1));
+			}
 		}
 		
 		throw new JsonPathParseException("Bracket not understand. position: " + pos);
@@ -542,4 +580,68 @@ public final class JsonPathParser {
 		}
 	}
 	
+	private static int findScriptEnd(String jp, int fromIndex) {
+		
+		int len = jp.length();
+		int count = 1;
+			
+		for (int p = fromIndex; p < len;) {
+			FindCharResult r = FindChars.next(jp, p, '(', ')', '"', '\'');
+			if (r.pos < 0 ) {
+				break;
+			}
+			
+			p = r.pos + 1;
+			
+			if (r.c == '(') {
+				++ count;
+				continue;
+			}
+			
+			if (r.c == ')'){
+				-- count;
+				if ( count > 0 ) {
+					continue;
+				} else {
+					return p;
+				}
+			}
+			
+			if (r.c == '"') {
+				FindCharResult xr = FindChars.nextIgnoreEscape(jp, p, '"');
+				if (xr.pos < 0 ) {
+					break;
+				} else {
+					p = xr.pos + 1;
+					continue;
+				}
+			}
+			
+			if (r.c == '\'') {
+				FindCharResult xr = FindChars.nextIgnoreEscape(jp, p, '\'');
+				if (xr.pos < 0 ) {
+					break;
+				} else {
+					p = xr.pos + 1;
+					continue;
+				}
+			}
+		}
+		
+		return -1;
+	}
+	
+	private static JsonPathGetter parseFilterGetter(String filter) {
+		
+		//TODO
+		
+		return null;
+	}
+	
+	private static JsonPathGetter parseScriptGetter(String script) {
+		
+		//TODO
+		
+		return null;
+	}
 }
