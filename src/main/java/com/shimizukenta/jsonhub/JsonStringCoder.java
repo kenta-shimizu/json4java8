@@ -10,34 +10,15 @@ import java.nio.charset.StandardCharsets;
  * @author kenta-shimizu
  *
  */
-public class JsonStringCoder {
+public final class JsonStringCoder {
 
 	private JsonStringCoder() {
-		/* Nothing */
 	}
-	
-	private static class SingletonHolder {
-		private static final JsonStringCoder inst = new JsonStringCoder();
-	}
-	
-	/**
-	 * Returns coder instance.
-	 * 
-	 * <p>
-	 * This class is Singleton-pattern.
-	 * </p>
-	 * 
-	 * @return coder instance
-	 */
-	public static JsonStringCoder getInstance() {
-		return SingletonHolder.inst;
-	}
-	
 	
 	protected static final byte BACKSLASH = 0x5C;	/* \ */
 	protected static final byte UNICODE = 0x75;	/* u */
 	
-	protected enum EscapeSets {
+	private static enum EscapeSets {
 		
 		BS(0x08, 0x62),	/* b */
 		HT(0x09, 0x74),	/* t */
@@ -90,7 +71,7 @@ public class JsonStringCoder {
 	 * @param cs unescaped-JSON-Stirng
 	 * @return escaped-JSON-String
 	 */
-	public String escape(CharSequence cs) {
+	public static String escape(CharSequence cs) {
 		
 		String v = cs.toString();
 		
@@ -132,7 +113,7 @@ public class JsonStringCoder {
 	 * @param cs escaped-JSON-String
 	 * @return unescaped-JSON-String
 	 */
-	public String unescape(CharSequence cs) {
+	public static String unescape(CharSequence cs) {
 		
 		String v = cs.toString();
 		

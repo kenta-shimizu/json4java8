@@ -63,7 +63,7 @@ public class JsonString implements Serializable {
 		synchronized ( this ) {
 			
 			if ( escaped == null ) {
-				escaped = JsonStringCoder.getInstance().escape(unescaped);
+				escaped = JsonStringCoder.escape(unescaped);
 			}
 			
 			return escaped;
@@ -80,7 +80,7 @@ public class JsonString implements Serializable {
 		synchronized ( this ) {
 			
 			if ( unescaped == null ) {
-				unescaped = JsonStringCoder.getInstance().unescape(escaped);
+				unescaped = JsonStringCoder.unescape(escaped);
 			}
 			
 			return unescaped;
