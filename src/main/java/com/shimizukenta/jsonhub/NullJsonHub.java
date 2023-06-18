@@ -16,8 +16,11 @@ import java.io.Writer;
 public class NullJsonHub extends AbstractJsonHub {
 
 	private static final long serialVersionUID = 4404413772323952148L;
-
-	protected NullJsonHub() {
+	
+	/**
+	 * Constructor.
+	 */
+	public NullJsonHub() {
 		super();
 	}
 	

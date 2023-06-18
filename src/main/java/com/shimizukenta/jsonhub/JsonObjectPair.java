@@ -13,10 +13,23 @@ public class JsonObjectPair implements Serializable {
 	
 	private static final long serialVersionUID = 5500254554321018084L;
 	
+	/**
+	 * Name of Object
+	 */
 	private final JsonString name;
+	
+	/**
+	 * Value of Object
+	 */
 	private final JsonHub v;
 	
-	protected JsonObjectPair(JsonString name, JsonHub v) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param name the name
+	 * @param v the value
+	 */
+	public JsonObjectPair(JsonString name, JsonHub v) {
 		this.name = Objects.requireNonNull(name, "JsonObjectPair nonNull \"name\"");
 		this.v = Objects.requireNonNull(v, "JsonObjectPair nonNull \"value\"");
 	}

@@ -31,11 +31,27 @@ public class ObjectJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = 6707336078321312442L;
 	
+	/**
+	 * value.
+	 */
 	private final Collection<JsonObjectPair> v;
+	
+	/**
+	 * cache.
+	 */
 	private String toJsonCache;
+	
+	/**
+	 * cache.
+	 */
 	private String toJsonExcludedNullValueInObjectCache;
 	
-	protected ObjectJsonHub(Collection<? extends JsonObjectPair> v) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param v the JsonObjectPair collection
+	 */
+	public ObjectJsonHub(Collection<? extends JsonObjectPair> v) {
 		super();
 		
 		this.v = new ArrayList<>(Objects.requireNonNull(v));

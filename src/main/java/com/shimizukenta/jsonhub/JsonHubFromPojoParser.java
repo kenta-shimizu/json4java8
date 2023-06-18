@@ -15,11 +15,11 @@ import java.util.Map;
  * </p>
  * <p>
  * From POJO Conditions.<br />
+ * </p>
  * <ul>
  * <li>Field is {@code public}</li>
  * <li>Field is <i>not</i> {@code static}</li>
  * </ul>
- * </p>
  * 
  * @author kenta-shimizu
  *
@@ -36,11 +36,11 @@ public final class JsonHubFromPojoParser {
 	 * 
 	 * <p>
 	 * From POJO Conditions.<br />
+	 * </p>
 	 * <ul>
 	 * <li>Field is {@code public}</li>
 	 * <li>Field is <i>not</i> {@code static}</li>
 	 * </ul>
-	 * </p>
 	 * <p>
 	 * Not accept {@code null}.<br />
 	 * </p>

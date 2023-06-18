@@ -22,10 +22,22 @@ public class NumberJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = -2924637446448005150L;
 	
+	/**
+	 * Cache Number.
+	 */
 	private final Number num;
+	
+	/**
+	 * Cache String.
+	 */
 	private final String str;
 	
-	protected NumberJsonHub(CharSequence cs) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param cs the character sequence
+	 */
+	public NumberJsonHub(CharSequence cs) {
 		super();
 		
 		this.str = Objects.requireNonNull(cs).toString();
@@ -42,7 +54,12 @@ public class NumberJsonHub extends AbstractJsonHub {
 		}
 	}
 	
-	protected NumberJsonHub(Number num) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param num the Number
+	 */
+	public NumberJsonHub(Number num) {
 		super();
 		
 		this.num = Objects.requireNonNull(num);

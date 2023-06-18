@@ -15,8 +15,8 @@ public final class JsonStringCoder {
 	private JsonStringCoder() {
 	}
 	
-	protected static final byte BACKSLASH = 0x5C;	/* \ */
-	protected static final byte UNICODE = 0x75;	/* u */
+	private static final byte BACKSLASH = 0x5C;	/* \ */
+	private static final byte UNICODE = 0x75;	/* u */
 	
 	private static enum EscapeSets {
 		
@@ -38,7 +38,7 @@ public final class JsonStringCoder {
 			this.b = (byte)b;
 		}
 		
-		public static Byte escape(byte b) {
+		private static Byte escape(byte b) {
 			
 			for ( EscapeSets x : values() ) {
 				if ( x.a == b ) {
@@ -49,7 +49,7 @@ public final class JsonStringCoder {
 			return null;
 		}
 		
-		public static Byte unescape(byte b) {
+		private static Byte unescape(byte b) {
 			
 			for ( EscapeSets x : values() ) {
 				if ( x.b == b ) {
@@ -107,7 +107,7 @@ public final class JsonStringCoder {
 	 * Returns unescaped JSON-String.
 	 * 
 	 * <p>
-	 * Not Accept {@code null}.<br />
+	 * Not Accept null.<br />
 	 * </p>
 	 * 
 	 * @param cs escaped-JSON-String

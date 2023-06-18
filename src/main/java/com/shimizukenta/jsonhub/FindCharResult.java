@@ -18,15 +18,20 @@ public final class FindCharResult {
 	public final char c;
 	
 	/**
-	 * Find position.
+	 * Finded position index.
 	 * 
 	 * <p>
-	 * Find position.<br />
-	 * -1 if not found.<br />
+	 * if not found, -1.<br />
 	 * </p>
 	 */
 	public final int pos;
 	
+	/**
+	 * Find character and position result.
+	 * 
+	 * @param c finded character.
+	 * @param pos finded position.
+	 */
 	public FindCharResult(char c, int pos) {
 		this.c = c;
 		this.pos = pos;

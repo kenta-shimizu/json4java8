@@ -18,7 +18,11 @@ public class TrueJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = -788713372914256563L;
 	
-	protected TrueJsonHub() {
+	/**
+	 * Constructor.
+	 * 
+	 */
+	public TrueJsonHub() {
 		super();
 	}
 	

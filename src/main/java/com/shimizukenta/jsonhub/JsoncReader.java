@@ -59,7 +59,7 @@ public final class JsoncReader {
 	 * 
 	 * @param reader of JSONC
 	 * @return parsed JsonHub.
-	 * @throws IOException
+	 * @throws IOException if IO-Exception
 	 * @throws JsonHubParseException if parse failed
 	 * @throws JsoncReaderException if parse failed
 	 */
@@ -82,7 +82,7 @@ public final class JsoncReader {
 	 * 
 	 * @param path of JSONC file
 	 * @return parsed JsonHub.
-	 * @throws IOException
+	 * @throws IOException if IO-Exception
 	 * @throws JsonHubParseException if parse failed
 	 * @throws JsoncReaderException if parse failed
 	 */

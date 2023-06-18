@@ -1,7 +1,5 @@
 package com.shimizukenta.jsonhub;
 
-import java.util.Objects;
-
 /**
  * JSON structural characters.
  * 
@@ -10,13 +8,44 @@ import java.util.Objects;
  */
 public enum JsonStructuralChar {
 	
+	/**
+	 * ESCAPE (BACK-SLASH)
+	 */
 	ESCAPE("\\"),
+	
+	/**
+	 * DOUBLE-QUOTATION "
+	 */
 	QUOT("\""),
+	
+	/**
+	 * OBJECT=BEGIN {
+	 */
 	OBJECT_BIGIN("{"),
+	
+	/**
+	 * OBJECT-END }
+	 */
 	OBJECT_END("}"),
+	
+	/**
+	 * ARRAY-BEGIN [
+	 */
 	ARRAY_BIGIN("["),
+	
+	/**
+	 * ARRAY-END ]
+	 */
 	ARRAY_END("]"),
+	
+	/**
+	 * SEPARATOR_VALUE ,
+	 */
 	SEPARATOR_VALUE(","),
+	
+	/**
+	 * SEPARATOR_NAME :
+	 */
 	SEPARATOR_NAME(":"),
 	;
 	
@@ -28,19 +57,42 @@ public enum JsonStructuralChar {
 		this.chr = s.charAt(0);
 	}
 	
+	/**
+	 * Returns string value.
+	 * 
+	 * @return string value
+	 */
 	public String str() {
 		return str;
 	}
 	
+	/**
+	 * Returns char value.
+	 * 
+	 * @return char value
+	 */
 	public char chr() {
 		return chr;
 	}
 	
+	/**
+	 * Returns true if match CharSequence.
+	 * 
+	 * @param cs the CharSequence
+	 * @return ttue if match CharSequence
+	 */
 	public boolean match(CharSequence cs) {
-		return Objects.requireNonNull(cs).toString().equals(str);
+		return this.str.contentEquals(cs);
 	}
 	
+	/**
+	 * Returns true if is equals c.
+	 * 
+	 * @param c the character
+	 * @return true if is equals c
+	 */
 	public boolean match(char c) {
 		return chr == c;
 	}
+	
 }

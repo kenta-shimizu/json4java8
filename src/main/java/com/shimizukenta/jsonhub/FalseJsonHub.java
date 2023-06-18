@@ -17,8 +17,12 @@ import java.util.Optional;
 public class FalseJsonHub extends AbstractJsonHub {
 
 	private static final long serialVersionUID = 3644504159696333609L;
-
-	protected FalseJsonHub() {
+	
+	/**
+	 * Constructor.
+	 * 
+	 */
+	public FalseJsonHub() {
 		super();
 	}
 	

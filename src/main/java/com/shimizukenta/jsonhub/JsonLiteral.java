@@ -1,7 +1,5 @@
 package com.shimizukenta.jsonhub;
 
-import java.util.Objects;
-
 /**
  * JSON Literals.
  * 
@@ -10,22 +8,40 @@ import java.util.Objects;
  */
 public enum JsonLiteral {
 	
+	/**
+	 * null
+	 */
 	NULL("null"),
+	
+	/**
+	 * true
+	 */
 	TRUE("true"),
+	
+	/**
+	 * false
+	 */
 	FALSE("false"),
 	;
 	
 	private final String s;
+	
 	private JsonLiteral(String s) {
 		this.s = s;
 	}
 	
+	/**
+	 * Matcher.
+	 * 
+	 * @param cs the character sequence
+	 * @return true if matches
+	 */
 	public boolean match(CharSequence cs) {
-		return Objects.requireNonNull(cs).toString().equals(s);
+		return this.s.contentEquals(cs);
 	}
 	
 	@Override
 	public String toString() {
-		return s;
+		return this.s;
 	}
 }

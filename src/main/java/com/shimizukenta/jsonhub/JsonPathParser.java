@@ -21,10 +21,10 @@ public final class JsonPathParser {
 	/**
 	 * Returns List of match JsonHubs by JsonPath.
 	 * 
-	 * @param jh
-	 * @param jsonPath
+	 * @param jh the JsonHub
+	 * @param jsonPath the path
 	 * @return List of match JsonHubs
-	 * @throws JsonPathParseException
+	 * @throws JsonPathParseException if if JsonPath parse failed.
 	 */
 	public static List<JsonHub> parse(JsonHub jh, CharSequence jsonPath) {
 		LinkedList<JsonPathGetter> ll = parseJsonPathList(jsonPath);
@@ -491,14 +491,14 @@ public final class JsonPathParser {
 			FindCharResult sr = FindChars.nextIgnoreWhiteSpace(jp, r.pos + 1);
 			if (sr.c == '(') {
 				
-				int endIndex = findScriptEnd(jp, sr.pos);
+				int endIndex = findScriptEnd(jp, sr.pos + 1);
 				if ( endIndex < 0 ) {
 					throw new JsonPathParseException("Not Found Filter end ')'. position: " + r.pos);
 				}
 				
-				String filter = jp.substring(sr.pos + 1, endIndex);
+				String filter = jp.substring(sr.pos + 1, endIndex - 1);
 				
-				FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp, endIndex + 1);
+				FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp, endIndex);
 				if (er.c == ']') {
 					
 					return new FindBracketGetterResult(
@@ -506,23 +506,23 @@ public final class JsonPathParser {
 							er.pos + 1);
 					
 				} else {
-					throw new JsonPathParseException("Not found Filter start, position: " + (r.pos + 1));
+					throw new JsonPathParseException("Not found Filter end ']', position: " + (r.pos + 1));
 				}
 				
 			} else {
-				throw new JsonPathParseException("Not found Filter end ']', position: " + r.pos);
+				throw new JsonPathParseException("Not found Filter start '(', position: " + r.pos);
 			}
 		}
 		
 		if (r.c == '(') {
-			int endIndex = findScriptEnd(jp, r.pos);
+			int endIndex = findScriptEnd(jp, r.pos + 1);
 			if ( endIndex < 0 ) {
 				throw new JsonPathParseException("Not Found Script end ')'. position: " + r.pos);
 			}
 			
-			String script = jp.substring(r.pos + 1, endIndex);
+			String script = jp.substring(r.pos + 1, endIndex - 1);
 			
-			FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp, endIndex + 1);
+			FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp, endIndex);
 			if (er.c == ']') {
 				
 				return new FindBracketGetterResult(
@@ -635,13 +635,14 @@ public final class JsonPathParser {
 		
 		//TODO
 		
-		return null;
+		return (a, b) -> a;
 	}
 	
 	private static JsonPathGetter parseScriptGetter(String script) {
 		
 		//TODO
 		
-		return null;
+		return (a, b) -> a;
 	}
+	
 }

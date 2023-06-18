@@ -45,7 +45,7 @@ public abstract class AbstractJsonHubPrettyPrinter implements JsonHubPrettyPrint
 	/**
 	 * Returns custom-pretty-printer instance.
 	 * 
-	 * @param config
+	 * @param config the config
 	 * @return customized-pretty-printer instance
 	 */
 	public static AbstractJsonHubPrettyPrinter newPrinter(JsonHubPrettyPrinterConfig config) {

@@ -1,7 +1,6 @@
 package com.shimizukenta.jsonhub;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * This class is implements of escape/unescape JSON-String.
@@ -13,10 +12,17 @@ public class JsonString implements Serializable {
 	
 	private static final long serialVersionUID = -2222040816285239082L;
 	
+	/**
+	 * Cache escaped.
+	 */
 	private String escaped;
+	
+	/**
+	 * Cache unescaped.
+	 */
 	private String unescaped;
 	
-	protected JsonString() {
+	private JsonString() {
 		escaped = null;
 		unescaped = null;
 	}
@@ -25,7 +31,7 @@ public class JsonString implements Serializable {
 	 * Returns JsonString instance from escaped-String.
 	 * 
 	 * <p>
-	 * Not accept {@code null}.<br />
+	 * Not accept null.<br />
 	 * </p>
 	 * 
 	 * @param escaped String
@@ -33,7 +39,7 @@ public class JsonString implements Serializable {
 	 */
 	public static JsonString escaped(CharSequence escaped) {
 		JsonString inst = new JsonString();
-		inst.escaped = Objects.requireNonNull(escaped, "JsonString nonNull \"escaped\"").toString();
+		inst.escaped = escaped.toString();
 		return inst;
 	}
 	
@@ -41,7 +47,7 @@ public class JsonString implements Serializable {
 	 * Returns JsonString instance from unescaped-String.
 	 * 
 	 * <p>
-	 * Not accept {@code null}.<br />
+	 * Not accept null.<br />
 	 * </p>
 	 * 
 	 * @param unescaped String
@@ -49,64 +55,64 @@ public class JsonString implements Serializable {
 	 */
 	public static JsonString unescaped(CharSequence unescaped) {
 		JsonString inst = new JsonString();
-		inst.unescaped = Objects.requireNonNull(unescaped, "JsonString nonNull \"unescaped\"").toString();
+		inst.unescaped = unescaped.toString();
 		return inst;
 	}
 	
 	/**
-	 * Returns escaped-String.
+	 * Returns escaped string.
 	 * 
-	 * @return escaped-String
+	 * @return escaped string
 	 */
 	public String escaped() {
 		
 		synchronized ( this ) {
 			
-			if ( escaped == null ) {
-				escaped = JsonStringCoder.escape(unescaped);
+			if ( this.escaped == null ) {
+				this.escaped = JsonStringCoder.escape(unescaped);
 			}
 			
-			return escaped;
+			return this.escaped;
 		}
 	}
 	
 	/**
-	 * Returns unescaped String.
+	 * Returns unescaped string.
 	 * 
-	 * @return unescaped-String
+	 * @return unescaped string
 	 */
 	public String unescaped() {
 		
 		synchronized ( this ) {
 			
-			if ( unescaped == null ) {
-				unescaped = JsonStringCoder.unescape(escaped);
+			if ( this.unescaped == null ) {
+				this.unescaped = JsonStringCoder.unescape(escaped);
 			}
 			
-			return unescaped;
+			return this.unescaped;
 		}
 	}
 	
 	/**
-	 * Returns {@code unescaped().length()}.
+	 * Returns unescaped#length.
 	 * 
-	 * @return {@code unescaped().length()}
+	 * @return unescaped#length
 	 */
 	public int length() {
 		return unescaped().length();
 	}
 	
 	/**
-	 * Returns {@code unescaped().isEmpty()}.
+	 * Returns unescaped#isEmpty.
 	 * 
-	 * @return {@code unescaped().isEmpty()}
+	 * @return unescaped#isEmpty
 	 */
 	public boolean isEmpty() {
 		return unescaped().isEmpty();
 	}
 	
 	/**
-	 * Return {@code unescaped()}.
+	 * Return unescaped string.
 	 * 
 	 */
 	@Override

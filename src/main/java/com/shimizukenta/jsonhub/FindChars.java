@@ -17,6 +17,14 @@ public final class FindChars {
 	
 	private static final FindCharResult notfound = new FindCharResult(NOTFOUND, -1);
 	
+	/**
+	 * Seek Next Character.
+	 * 
+	 * @param cs reference of charsequence
+	 * @param fromIndex fromIndex of cs
+	 * @param targets seek targets
+	 * @return FindCharResult
+	 */
 	public static FindCharResult next(CharSequence cs, int fromIndex, char... targets) {
 		if ( fromIndex>= 0 ) {
 			int len = cs.length();
@@ -32,6 +40,13 @@ public final class FindChars {
 		return notfound;
 	}
 	
+	/**
+	 * Seek next character ignore white-space({@code <=0x20}).
+	 * 
+	 * @param cs reference of character
+	 * @param fromIndex from index of cs
+	 * @return FindCharResult
+	 */
 	public static FindCharResult nextIgnoreWhiteSpace(CharSequence cs, int fromIndex) {
 		if ( fromIndex >= 0 ) {
 			int len = cs.length();
@@ -45,6 +60,14 @@ public final class FindChars {
 		return notfound;
 	}
 	
+	/**
+	 * Seek next character ignore ESCAPE (BACK-SLASH).
+	 * 
+	 * @param cs reference of character
+	 * @param fromIndex from index of cs
+	 * @param targets seek targets
+	 * @return FindCharResult
+	 */
 	public static FindCharResult nextIgnoreEscape(CharSequence cs, int fromIndex, char... targets) {
 		if ( fromIndex >= 0 ) {
 			int len = cs.length();

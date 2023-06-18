@@ -27,15 +27,54 @@ public class JsonHubPrettyPrinterConfig implements Serializable {
 	private static final boolean defaultLineSeparateAfterValueSeparator = true;
 	private static final boolean defaultLineSeparateIfBlank = false;
 	
+	/**
+	 * noneNullValueInObject
+	 */
 	private boolean noneNullValueInObject;
+	
+	/**
+	 * indent
+	 */
 	private String indent;
+	
+	/**
+	 * lineSeparator
+	 */
 	private String lineSeparator;
+	
+	/**
+	 * prefixValueSeparator
+	 */
 	private String prefixValueSeparator;
+	
+	/**
+	 * suffixValueSeparator
+	 */
 	private String suffixValueSeparator;
+	
+	/**
+	 * prefixNameSeparator
+	 */
 	private String prefixNameSeparator;
+	
+	/**
+	 * suffixNameSeparator
+	 */
 	private String suffixNameSeparator;
+	
+	/**
+	 * lineSeparateBeforeValueSeparator
+	 */
 	private boolean lineSeparateBeforeValueSeparator;
+	
+	/**
+	 * lineSeparateAfterValueSeparator
+	 */
 	private boolean lineSeparateAfterValueSeparator;
+	
+	/**
+	 * lineSeparateIfBlank
+	 */
 	private boolean lineSeparateIfBlank;
 	
 	protected JsonHubPrettyPrinterConfig() {

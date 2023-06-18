@@ -16,13 +16,13 @@ import java.util.List;
  * </p>
  * <p>
  * To POJO Conditions.<br />
+ * </p>
  * <ul>
  * <li>Class has {@code public new()} (arguments is 0)</li>
  * <li>Field is {@code public}</li>
  * <li>Field is <i>not</i> {@code static}</li>
  * <li>Field is <i>not</i> {@code final}</li>
  * </ul>
- * </p>
  * 
  * @author kenta-shimizu
  *
@@ -37,17 +37,17 @@ public final class JsonHubToPojoParser {
 	 * 
 	 * <p>
 	 * To POJO Conditions.<br />
+	 * </p>
 	 * <ul>
 	 * <li>Class has {@code public new()} (arguments is 0)</li>
 	 * <li>Field is {@code public}</li>
 	 * <li>Field is <i>not</i> {@code static}</li>
 	 * <li>Field is <i>not</i> {@code final}</li>
 	 * </ul>
-	 * </p>
 	 * 
-	 * @param <T>
+	 * @param <T> Type
 	 * @param jh JsonHub instance
-	 * @param classOfT
+	 * @param classOfT Class-of-Type
 	 * @return parsed POJO
 	 * @throws JsonHubParseException if parse failed
 	 */

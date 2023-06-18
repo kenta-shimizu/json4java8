@@ -18,12 +18,23 @@ import java.util.Optional;
 public class StringJsonHub extends AbstractJsonHub {
 	
 	private static final long serialVersionUID = -873784938882289245L;
-
+	
+	/**
+	 * value-string.
+	 */
 	private final JsonString v;
 	
+	/**
+	 * Proxy.
+	 */
 	private String toJsonProxy;
 	
-	protected StringJsonHub(JsonString v) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param v the JsonString
+	 */
+	public StringJsonHub(JsonString v) {
 		super();
 		
 		this.v = Objects.requireNonNull(v);

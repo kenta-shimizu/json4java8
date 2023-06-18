@@ -91,7 +91,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of int-value.
 	 * 
-	 * @param v
+	 * @param v int number
 	 * @return NumberJsonHub instance of int-value
 	 */
 	public NumberJsonHub build(int v);
@@ -99,7 +99,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of long-value.
 	 * 
-	 * @param v
+	 * @param v long number
 	 * @return NumberJsonHub instance of long-value
 	 */
 	public NumberJsonHub build(long v);
@@ -107,7 +107,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of float-value.
 	 * 
-	 * @param v
+	 * @param v float number
 	 * @return NumberJsonHub instance of float-value
 	 */
 	public NumberJsonHub build(float v);
@@ -115,7 +115,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of double-value.
 	 * 
-	 * @param v
+	 * @param v double number
 	 * @return NumberJsonHub instance of double-value
 	 */
 	public NumberJsonHub build(double v);
@@ -123,7 +123,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns TrueJsonHub or FalseJsonHub instance.
 	 * 
-	 * @param v
+	 * @param v boolean value
 	 * @return TrueJsonHub instance if true, and FalseJsonHub instance otherwise
 	 */
 	public AbstractJsonHub build(boolean v);
@@ -139,7 +139,7 @@ public interface JsonHubBuilder {
 	 * If {@code v instanceof Number}, return NumberJsonHub instance.<br />
 	 * </p>
 	 * 
-	 * @param v
+	 * @param v Object value
 	 * @return AbstractJsonHub (NULL, TRUE, FALSE, STRING or NUMBER)
 	 * @throws JsonHubBuildException if type is unsupported
 	 */
@@ -154,7 +154,7 @@ public interface JsonHubBuilder {
 	 * 
 	 * @param cs Number-String
 	 * @return NumberJsonHub
-	 * @throws JsonHubNumberFormatException
+	 * @throws JsonHubNumberFormatException if Number format failed.
 	 */
 	public NumberJsonHub number(CharSequence cs);
 
@@ -165,7 +165,7 @@ public interface JsonHubBuilder {
 	 * Not accept {@code null}.<br />
 	 * </p>
 	 * 
-	 * @param n
+	 * @param n Number value
 	 * @return NumberJsonHub instance
 	 */
 	public NumberJsonHub number(Number n);
@@ -173,7 +173,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of int-value.
 	 * 
-	 * @param n
+	 * @param n int number
 	 * @return NumberJsonHub instance of int-value
 	 */
 	public NumberJsonHub number(int n);
@@ -181,7 +181,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of long-value.
 	 * 
-	 * @param n
+	 * @param n long number
 	 * @return NumberJsonHub instance of long-value
 	 */
 	public NumberJsonHub number(long n);
@@ -189,7 +189,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of float-value.
 	 * 
-	 * @param n
+	 * @param n float number
 	 * @return NumberJsonHub instance of float-value
 	 */
 	public NumberJsonHub number(float n);
@@ -197,7 +197,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns NumberJsonHub instance of double-value.
 	 * 
-	 * @param n
+	 * @param n double number
 	 * @return NumberJsonHub instance of double-value
 	 */
 	public NumberJsonHub number(double n);
@@ -209,7 +209,7 @@ public interface JsonHubBuilder {
 	 * Not accept {@code null}.<br />
 	 * </p>
 	 * 
-	 * @param v
+	 * @param v charsequence
 	 * @return StringJsonHub
 	 */
 	public StringJsonHub string(CharSequence v);
@@ -221,7 +221,7 @@ public interface JsonHubBuilder {
 	 * Not accept {@code null}.<br />
 	 * </p>
 	 * 
-	 * @param v
+	 * @param v JsonString
 	 * @return StringJsonHub
 	 */
 	public StringJsonHub string(JsonString v);
@@ -241,7 +241,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns ArrayJsonHub instance.
 	 * 
-	 * @param values
+	 * @param values Array of JsonHub
 	 * @return ArrayJsonHub instance
 	 */
 	public ArrayJsonHub array(JsonHub... values);
@@ -249,7 +249,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns ArrayJsonHub instance.
 	 * 
-	 * @param values
+	 * @param values List of JsonHub
 	 * @return ArrayJsonHub instance
 	 */
 	public ArrayJsonHub array(List<? extends JsonHub> values);
@@ -281,7 +281,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns ObjectJsonHub instance.
 	 * 
-	 * @param pairs
+	 * @param pairs pairs of name and value
 	 * @return ObjectJsonHub instance
 	 */
 	public ObjectJsonHub object(JsonObjectPair... pairs);
@@ -289,7 +289,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns ObjectJsonHub instance.
 	 * 
-	 * @param pairs
+	 * @param pairs pairs of name and value
 	 * @return ObjectJsonHub instance
 	 */
 	public ObjectJsonHub object(Collection<? extends JsonObjectPair> pairs);
@@ -297,7 +297,7 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns ObjectJsonHub instance.
 	 * 
-	 * @param map
+	 * @param map Map
 	 * @return ObjectJsonHub instance
 	 */
 	public ObjectJsonHub object(Map<? extends JsonString, ? extends JsonHub> map);
@@ -317,8 +317,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value value of Object
 	 * @return JsonObjectPair
 	 * @throws JsonHubBuildException if unsupported Object type
 	 */
@@ -327,8 +327,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value int value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(JsonString name, int value);
@@ -336,8 +336,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value long value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(JsonString name, long value);
@@ -345,8 +345,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value float value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(JsonString name, float value);
@@ -354,8 +354,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value double value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(JsonString name, double value);
@@ -363,8 +363,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value boolean value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(JsonString name, boolean value);
@@ -372,8 +372,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value Object value of Object
 	 * @return JsonObjectPair
 	 * @throws JsonHubBuildException if unsupported Object type
 	 */
@@ -382,8 +382,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value int value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(CharSequence name, int value);
@@ -391,8 +391,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value long value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(CharSequence name, long value);
@@ -400,8 +400,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value float value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(CharSequence name, float value);
@@ -409,8 +409,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value double value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(CharSequence name, double value);
@@ -418,8 +418,8 @@ public interface JsonHubBuilder {
 	/**
 	 * Returns JsonObjectPair instance.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name name of Object
+	 * @param value boolean value of Object
 	 * @return JsonObjectPair
 	 */
 	public JsonObjectPair pair(CharSequence name, boolean value);
@@ -431,7 +431,7 @@ public interface JsonHubBuilder {
 	 * Not accept {@code null}.<br />
 	 * </p>
 	 * 
-	 * @param v 
+	 * @param v JSON-string
 	 * @return parsed JsonHub instance
 	 * @throws JsonHubParseException if parse failed
 	 */
@@ -442,7 +442,7 @@ public interface JsonHubBuilder {
 	 * 
 	 * @param reader includes JSON-String
 	 * @return parsed JsonHub instance
-	 * @throws IOException
+	 * @throws IOException if IO-Except
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public JsonHub fromJson(Reader reader) throws IOException;

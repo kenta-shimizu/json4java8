@@ -28,9 +28,19 @@ abstract public class AbstractJsonHub implements JsonHub, Serializable {
 	
 	private static final long serialVersionUID = -8854276210327173340L;
 	
+	/**
+	 * toBytesCache
+	 */
 	private byte[] toBytesCache;
+	
+	/**
+	 * toBytesExcludeNullValueInObjectCache
+	 */
 	private byte[] toBytesExcludeNullValueInObjectCache;
 	
+	/**
+	 * Constructor.
+	 */
 	public AbstractJsonHub() {
 		toBytesCache = null;
 		toBytesExcludeNullValueInObjectCache = null;

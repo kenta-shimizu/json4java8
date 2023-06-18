@@ -31,7 +31,7 @@ public final class JsonReader {
 	 * Not accept {@code null}.<br />
 	 * </p>
 	 * 
-	 * @param json
+	 * @param json the charsequence
 	 * @return parsed JsonHub instance
 	 * @throws JsonHubParseException if parse failed
 	 */
@@ -53,9 +53,9 @@ public final class JsonReader {
 	/**
 	 * Returns parsed JaonHub from Reader.
 	 * 
-	 * @param reader
+	 * @param reader the reader of JSON
 	 * @return parsed JsonHub instance
-	 * @throws IOException
+	 * @throws IOException if IO-Exception
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromJson(Reader reader) throws IOException {
@@ -68,22 +68,20 @@ public final class JsonReader {
 				int r = reader.read();
 				
 				if ( r < 0 ) {
-					break;
+					return fromJson(writer.toString());
 				}
 				
 				writer.write(r);
 			}
-			
-			return fromJson(writer.toString());
 		}
 	}
 	
 	/**
 	 * Returns parsed JsonHub instance from read file.
 	 * 
-	 * @param path of JSON file
+	 * @param path JSON file path
 	 * @return parsed JsonHub instance
-	 * @throws IOException
+	 * @throws IOException if IO-Exception
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromFile(Path path) throws IOException {
@@ -110,7 +108,7 @@ public final class JsonReader {
 	 * 
 	 * @param strm JSON-UTF8-bytes-stream
 	 * @return parsed JsonHub instance
-	 * @throws IOException
+	 * @throws IOException if IO-Exception
 	 * @throws JsonHubParseException if parse failed
 	 */
 	public static JsonHub fromBytes(InputStream strm) throws IOException {
