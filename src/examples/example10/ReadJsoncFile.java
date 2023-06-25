@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.shimizukenta.jsonhub.JsonHub;
-import com.shimizukenta.jsonhub.JsoncReader;
+import com.shimizukenta.jsonhub.impl.JsoncReaderImpl;
 
 public class ReadJsoncFile {
 
@@ -45,7 +45,7 @@ public class ReadJsoncFile {
 						StandardOpenOption.CREATE);
 			}
 			
-			JsonHub jh = JsoncReader.fromFile(path);
+			JsonHub jh = JsoncReaderImpl.readFile(path);
 			
 			System.out.println(jh.prettyPrint());
 		}

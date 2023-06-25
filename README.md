@@ -32,6 +32,8 @@ public class POJO {
 }
 ```
 
+[Javadoc](https://kenta-shimizu.github.io/json4java8/index.html)
+
 ## Convert
 
 1. Create JsonHub instance from `#fromPojo`, `#fromJson`, `#fromFile`, `#fromBytes`.
@@ -234,7 +236,7 @@ String json = jh.toJson();
 
 System.out.println(json);
 
-/* {"num":100,"str":"STRING","bool":true,"array":["a","b","c"]} */
+/* {"str":"STRING","num":100,"bool":true,"array":["a","b","c"]} */
 ```
 
 See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/examples/example07/CreateJsonStringByBuilder.java)

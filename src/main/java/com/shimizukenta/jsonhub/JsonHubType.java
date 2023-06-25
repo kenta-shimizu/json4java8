@@ -7,13 +7,40 @@ package com.shimizukenta.jsonhub;
  *
  */
 public enum JsonHubType {
-
+	
+	/**
+	 * null
+	 */
 	NULL,
+	
+	/**
+	 * true
+	 */
 	TRUE,
+	
+	/**
+	 * false
+	 */
 	FALSE,
+	
+	/**
+	 * STRING
+	 */
 	STRING,
+	
+	/**
+	 * NUMBER
+	 */
 	NUMBER,
+	
+	/**
+	 * ARRAY
+	 */
 	ARRAY,
+	
+	/**
+	 * OBJECT
+	 */
 	OBJECT,
 	;
 	
