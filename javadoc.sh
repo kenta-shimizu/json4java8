@@ -8,8 +8,9 @@ path_docs="./docs"
 rm -Rf ${path_docs}
 mkdir ${path_docs}
 
-javadoc -locale en_US \
---show-members public \
+javadoc \
+-locale en_US \
 -d ${path_docs} \
+--show-members public \
 --source-path ${path_src} \
 ${package}

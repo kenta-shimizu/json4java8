@@ -1,31 +1,42 @@
 package com.shimizukenta.jsonhub;
 
-import java.io.Serializable;
+import com.shimizukenta.jsonhub.impl.JsonStringImpl;
 
 /**
- * This class is implements of escape/unescape JSON-String.
+ * This interface is escape/unescape JSON-String.
  * 
  * @author kenta-shimizu
  *
  */
-public class JsonString implements Serializable {
-	
-	private static final long serialVersionUID = -2222040816285239082L;
+public interface JsonString {
+
+	/**
+	 * Returns escaped string.
+	 * 
+	 * @return escaped string
+	 */
+	String escaped();
 	
 	/**
-	 * Cache escaped.
+	 * Returns unescaped string.
+	 * 
+	 * @return unescaped string
 	 */
-	private String escaped;
+	public String unescaped();
 	
 	/**
-	 * Cache unescaped.
+	 * Returns unescaped#length.
+	 * 
+	 * @return unescaped#length
 	 */
-	private String unescaped;
-	
-	private JsonString() {
-		escaped = null;
-		unescaped = null;
-	}
+	int length();
+
+	/**
+	 * Returns unescaped#isEmpty.
+	 * 
+	 * @return unescaped#isEmpty
+	 */
+	boolean isEmpty();
 	
 	/**
 	 * Returns JsonString instance from escaped-String.
@@ -37,10 +48,8 @@ public class JsonString implements Serializable {
 	 * @param escaped String
 	 * @return JsonString instance
 	 */
-	public static JsonString escaped(CharSequence escaped) {
-		JsonString inst = new JsonString();
-		inst.escaped = escaped.toString();
-		return inst;
+	public static JsonString ofEscaped(CharSequence escaped) {
+		return JsonStringImpl.ofEscaped(escaped);
 	}
 	
 	/**
@@ -53,84 +62,8 @@ public class JsonString implements Serializable {
 	 * @param unescaped String
 	 * @return JsonString instance
 	 */
-	public static JsonString unescaped(CharSequence unescaped) {
-		JsonString inst = new JsonString();
-		inst.unescaped = unescaped.toString();
-		return inst;
+	public static JsonString ofUnescaped(CharSequence unescaped) {
+		return JsonStringImpl.ofUnescaped(unescaped);
 	}
 	
-	/**
-	 * Returns escaped string.
-	 * 
-	 * @return escaped string
-	 */
-	public String escaped() {
-		
-		synchronized ( this ) {
-			
-			if ( this.escaped == null ) {
-				this.escaped = JsonStringCoder.escape(unescaped);
-			}
-			
-			return this.escaped;
-		}
-	}
-	
-	/**
-	 * Returns unescaped string.
-	 * 
-	 * @return unescaped string
-	 */
-	public String unescaped() {
-		
-		synchronized ( this ) {
-			
-			if ( this.unescaped == null ) {
-				this.unescaped = JsonStringCoder.unescape(escaped);
-			}
-			
-			return this.unescaped;
-		}
-	}
-	
-	/**
-	 * Returns unescaped#length.
-	 * 
-	 * @return unescaped#length
-	 */
-	public int length() {
-		return unescaped().length();
-	}
-	
-	/**
-	 * Returns unescaped#isEmpty.
-	 * 
-	 * @return unescaped#isEmpty
-	 */
-	public boolean isEmpty() {
-		return unescaped().isEmpty();
-	}
-	
-	/**
-	 * Return unescaped string.
-	 * 
-	 */
-	@Override
-	public String toString() {
-		return unescaped();
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if ((o != null) && (o instanceof JsonString)) {
-			return o.toString().equals(toString());
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public int hashCode() {
-		return toString().hashCode();
-	}
 }

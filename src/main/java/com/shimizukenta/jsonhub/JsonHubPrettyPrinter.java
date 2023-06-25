@@ -5,6 +5,10 @@ import java.io.Writer;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 
+import com.shimizukenta.jsonhub.impl.AbstractJsonHubPrettyPrinter;
+import com.shimizukenta.jsonhub.impl.JsonHubCompactPrettyPrinter;
+import com.shimizukenta.jsonhub.impl.JsonHubNoneNullValueInObjectCompactPrettyPrinter;
+
 /**
  * This interface is implements of pretty-printing JSON.
  * 
@@ -22,6 +26,7 @@ import java.nio.file.Path;
  * </ul>
  * 
  * @author kenta-shimizu
+ * @see JsonHubPrettyPrinterConfig
  *
  */
 public interface JsonHubPrettyPrinter {
@@ -29,38 +34,38 @@ public interface JsonHubPrettyPrinter {
 	/**
 	 * Write to writer
 	 * 
-	 * @param v the JsonHub
+	 * @param value the JsonHub
 	 * @param writer output writer
-	 * @throws IOException if IO failed.
+	 * @throws IOException if IO failed
 	 */
-	public void print(JsonHub v, Writer writer) throws IOException;
+	public void print(JsonHub value, Writer writer) throws IOException;
 	
 	/**
 	 * Write to File.
 	 * 
-	 * @param v the JsonHub
+	 * @param value the JsonHub
 	 * @param path output file-path
-	 * @throws IOException if IO failed.
+	 * @throws IOException if IO failed
 	 */
-	public void print(JsonHub v, Path path) throws IOException;
+	public void print(JsonHub value, Path path) throws IOException;
 	
 	/**
 	 * Write to File with options.
 	 * 
-	 * @param v the JsonHub
+	 * @param value the JsonHub
 	 * @param path output file-path
 	 * @param options the File-open-options.
-	 * @throws IOException if IO failed.
+	 * @throws IOException if IO failed
 	 */
-	public void print(JsonHub v, Path path, OpenOption... options) throws IOException;
+	public void print(JsonHub value, Path path, OpenOption... options) throws IOException;
 	
 	/**
 	 * Returns Pritty-JSON-String.
 	 * 
-	 * @param v the JsonHub
+	 * @param value the JsonHub
 	 * @return Pretty-JSON-String
 	 */
-	public String print(JsonHub v);
+	public String print(JsonHub value);
 	
 	
 	/**

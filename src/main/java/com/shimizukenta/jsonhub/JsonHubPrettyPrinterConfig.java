@@ -10,6 +10,7 @@ import java.io.Serializable;
  * </p>
  * 
  * @author kenta-shimizu
+ * @see JsonHubPrettyPrinter
  *
  */
 public class JsonHubPrettyPrinterConfig implements Serializable {
