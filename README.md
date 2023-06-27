@@ -241,6 +241,14 @@ System.out.println(json);
 
 See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/examples/example07/CreateJsonStringByBuilder.java)
 
+## JSONPath
+
+Supports
+
+
+
+See also ["/src/examples/example11/JsonPath.java"](/src/examples/example11/JsonPath.java)
+
 ## JSONC Reading
 
 JSONC (JSON with comments) support.
