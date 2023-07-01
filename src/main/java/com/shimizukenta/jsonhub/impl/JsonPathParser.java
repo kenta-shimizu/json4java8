@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import com.shimizukenta.jsonhub.JsonHub;
 import com.shimizukenta.jsonhub.JsonPathParseException;
+import com.shimizukenta.jsonhub.JsonPathUnsupportedParseException;
 
 /**
  * This class is JsonPath parser.
@@ -271,7 +272,7 @@ public final class JsonPathParser {
 	}
 	
 	
-	//TODO
+	//HOOK
 	//filter
 	//script
 	
@@ -392,6 +393,19 @@ public final class JsonPathParser {
 	private static FindBracketGetterResult findBracketEnd(String jp, int pos, boolean recursive) {
 		
 		final FindCharResult r = FindChars.nextIgnoreWhiteSpace(jp, pos);
+		
+		if ( r.c == '*' ) {
+			final FindCharResult er = FindChars.nextIgnoreWhiteSpace(jp,  r.pos + 1);
+			if ( er.c == ']' ) {
+				if ( recursive ) {
+					return new FindBracketGetterResult(recursiveWildcard, er.pos + 1);
+				} else {
+					return new FindBracketGetterResult(childWildcard, er.pos + 1);
+				}
+			} else {
+				throw new JsonPathParseException("Fount after '*'. position: " + er.pos);
+			}
+		}
 		
 		if (
 				(r.c >= '0' && r.c <= '9')
@@ -636,16 +650,20 @@ public final class JsonPathParser {
 	
 	private static JsonPathGetter parseFilterGetter(String filter) {
 		
-		//TODO
+		//HOOK
 		
-		return (a, b) -> a;
+		throw new JsonPathUnsupportedParseException("?()");
+		
+//		return (a, b) -> a;
 	}
 	
 	private static JsonPathGetter parseScriptGetter(String script) {
 		
-		//TODO
+		//HOOK
 		
-		return (a, b) -> a;
+		throw new JsonPathUnsupportedParseException("()");
+		
+//		return (a, b) -> a;
 	}
 	
 }
