@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8. Also supports JSONC reading.
+This library is JSON ([RFC8259](https://tools.ietf.org/html/rfc8259)) parser implementation on Java8. Also supports JSONPath, JSONC reading.
 
 ## Example of use
 
@@ -243,7 +243,7 @@ See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/example
 
 ## JSONPath
 
-JSON Path is ["https://goessner.net/articles/JsonPath/"](https://goessner.net/articles/JsonPath/)
+JSONPath is ["https://goessner.net/articles/JsonPath/"](https://goessner.net/articles/JsonPath/)
 
 ### Supports
 
@@ -265,7 +265,7 @@ List<JsonHub> results = jh.jsonPath("$.store.book[*].author");
 
 See also ["/src/examples/example11/JsonPath.java"](/src/examples/example11/JsonPath.java)
 
-## JSONC Reading
+## JSONC reading
 
 JSONC (JSON with comments) support.
 
