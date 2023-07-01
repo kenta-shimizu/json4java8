@@ -243,9 +243,25 @@ See also ["/src/examples/example07/CreateJsonStringByBuilder.java"](/src/example
 
 ## JSONPath
 
-Supports
+JSON Path is ["https://goessner.net/articles/JsonPath/"](https://goessner.net/articles/JsonPath/)
 
+### Supports
 
+| Operator | Description |
+|:--|:--|
+|`$`|The root element.|
+|`*`|Wildcard, all object-name or array-number.|
+|`..`|Recursive descent.|
+|`.<name>`|Child object name operator.|
+|`[<name>(, <name>)]`|Child object name(s) operator.|
+|`[<number>(, <number>)]`|Child array number(s) operator.|
+|`[start:end:step]`|Child array slice operator.|
+
+Not support `@`, `?()`, `()`
+
+```java
+List<JsonHub> results = jh.jsonPath("$.store.book[*].author");
+```
 
 See also ["/src/examples/example11/JsonPath.java"](/src/examples/example11/JsonPath.java)
 
@@ -255,8 +271,8 @@ JSONC (JSON with comments) support.
 
 - /* comment... */
 - // comment...
-- Array trailing comma(,).
-- Object trailing comma(,).
+- Array trailing comma(,)
+- Object trailing comma(,)
 
 ```java
 Path path = Paths.get("path/of/file.jsonc");
